@@ -1,5 +1,5 @@
 
-# ComputerVisionCP3
+# Computer Vision CP3 4SIZ
 
 ## MediaPipe VRChat Full Body Tracking
 
@@ -7,11 +7,9 @@
 
 Este projeto tem como objetivo desenvolver um sistema de rastreamento corporal (*Full Body Tracking*) para o VRChat utilizando o MediaPipe e uma câmera convencional.
 
-A proposta é identificar os movimentos do corpo humano em tempo real, utilizando visão computacional para detectar pontos importantes, como ombros, cotovelos, quadril, joelhos e tornozelos. A partir desses pontos, o sistema processa as informações de movimento e busca utilizá-las para controlar os movimentos de um avatar dentro do VRChat.
+A proposta é identificar os movimentos do corpo humano em tempo real, utilizando visão computacional para detectar pontos importantes. O sistema processa as informações de movimento e busca utilizá-las para controlar os movimentos de um avatar dentro do VRChat.
 
 O foco principal é explorar uma alternativa mais acessível aos equipamentos tradicionais de Full Body Tracking, que geralmente dependem de sensores específicos ou dispositivos adicionais.
-
-O projeto também tem como objetivo estudar a aplicação de visão computacional, processamento de dados em tempo real e integração entre diferentes tecnologias.
 
 ## 🎯 Objetivos
 
@@ -73,12 +71,8 @@ A compatibilidade com o VRChat também dependerá da implementação da comunica
 
 O projeto busca demonstrar como técnicas de visão computacional podem ser aplicadas ao rastreamento corporal em ambientes virtuais. A utilização do MediaPipe pode reduzir a dependência de equipamentos especializados, tornando o desenvolvimento de uma solução de Full Body Tracking mais acessível.
 
-Além do aspecto prático, o projeto permite explorar conceitos de processamento de imagens, visão computacional, comunicação entre aplicações e interação em ambientes virtuais.
-
 O resultado esperado é um protótipo funcional capaz de capturar os movimentos do usuário e utilizá-los para movimentar um avatar no VRChat, respeitando as limitações técnicas da abordagem proposta.
 
 ---
 
-**Status do projeto:** Em desenvolvimento.
-
-**Área:** Visão Computacional, Sistemas de Informação e Realidade Virtual.
+**Integrantes:** Mauro rm553574, Lucas rm552877, Fernando rm553499 
