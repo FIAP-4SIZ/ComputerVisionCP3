@@ -1,0 +1,8 @@
+# Ambiente validado em Python 3.12. Não instalar outro pacote OpenCV junto deste.
+# Mantém mp.solutions.pose; não migra o programa para a API Tasks.
+mediapipe==0.10.21
+opencv-contrib-python==4.11.0.86
+numpy==1.26.4
+scipy==1.17.1
+python-osc==1.10.2
+Flask==3.1.3
