@@ -76,3 +76,13 @@ O resultado esperado é um protótipo funcional capaz de capturar os movimentos 
 ---
 
 **Integrantes:** Mauro rm553574, Lucas rm552877, Fernando rm553499 
+
+## Aplicação e desenvolvimento incremental
+
+A implementação está em [`tracking/`](tracking/), derivada do projeto MIT de ju1ce, com atribuição e licença preservadas. O código mantém Python, OpenCV e MediaPipe.
+
+- [Instalação, câmera e arquivo de vídeo](tracking/VIDEO_INPUT.md).
+- [Arquitetura e estudo de PDI](tracking/ESTUDO_PDI.md).
+- [Branches e verificações de integração](DEVELOPMENT.md).
+
+O modo de arquivo oferece análise sequencial, timestamps, progresso e controles de reprodução. **Somente análise** permite executá-lo sem headset. A aprovação de integração depende das verificações documentadas; a presença do código não significa que testes com equipamento VR foram concluídos.
