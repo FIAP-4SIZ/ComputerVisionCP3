@@ -1,6 +1,7 @@
 import tkinter as tk
 import sys
 import pickle
+from tkinter import filedialog
 
 from sys import platform
 
@@ -71,6 +72,8 @@ def getparams():
         param["advanced"] = False
     if "webui" not in param:
         param["webui"] = False
+    param.setdefault('input_mode', 'camera')
+    param.setdefault('video_path', '')
        
     window = tk.Tk()
 
@@ -79,6 +82,24 @@ def getparams():
         sys.exit("INFO: Exiting... You can close the window after 10 seconds.")
 
     window.protocol("WM_DELETE_WINDOW", on_close)
+
+    input_mode = tk.StringVar(value=param['input_mode'])
+    tk.Label(text='Entrada para análise de movimento:').pack()
+    tk.Radiobutton(text='Câmera ao vivo', variable=input_mode, value='camera').pack()
+    tk.Radiobutton(text='Arquivo de vídeo', variable=input_mode, value='video').pack()
+    video_path = tk.StringVar(value=param['video_path'])
+    tk.Entry(textvariable=video_path, width=50).pack()
+
+    def select_video():
+        path = filedialog.askopenfilename(title='Selecionar vídeo', filetypes=[
+            ('Vídeos', '*.mp4 *.avi *.mov *.mkv *.webm *.m4v *.mpg *.mpeg'), ('Todos', '*.*')])
+        if path:
+            video_path.set(path)
+            input_mode.set('video')
+            varbackend.set(0)
+            show_hide_backend_options()
+
+    tk.Button(text='Selecionar vídeo...', command=select_video).pack()
 
     if not param["advanced"]:
         tk.Label(text="The format http://<ip-here>:8080/video is for use with\n the IP Webcam android application.\n If using something else, such as a regular USB Webcam,\n just try 0,1,2... until the correct camera opens.", width = 50).pack()
@@ -176,6 +197,7 @@ def getparams():
             backend_options_frame.pack_forget()
 
     tk.Label(backend_selection_frame, text="Backend: ").pack(side = tk.LEFT)
+    tk.Radiobutton(backend_selection_frame, text='Somente análise', variable=varbackend, value=0, command=show_hide_backend_options).pack(side=tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text="SteamVR", variable = varbackend, value = 1, command = show_hide_backend_options).pack(side = tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text="VRChatOSC",  variable = varbackend, value = 2, command = show_hide_backend_options).pack(side = tk.LEFT)
     backend_selection_frame.pack(side = tk.TOP)
@@ -256,7 +278,11 @@ def getparams():
 
     advanced = param["advanced"]
 
+    selected_mode = input_mode.get()
+    selected_video = video_path.get()
     param = {}
+    param['input_mode'] = selected_mode
+    param['video_path'] = selected_video
     param["camid"] = cameraid
     param["imgsize"] = maximgsize
     #param["neckoffset"] = hmd_to_neck_offset

@@ -337,15 +337,20 @@ class CameraStream():
     
     def update(self):
         # continuously grab images
-        while True:
+        while not getattr(self, 'stopped', False):
             capture_start = time.perf_counter()
-            ret, image = self.cap.read()
+            try:
+                ret, image = self.cap.read()
+            except Exception as exc:
+                print('ERROR: Camera read failed: ' + str(exc))
+                ret, image = False, None
             captured_at = time.perf_counter()
 
             if not ret or image is None or image.size == 0:
                 print("ERROR: Camera capture failed! missed frames.")
                 self.params.exit_ready = True
                 self.cap.release()
+                self.closed = True
                 return
 
             # Publica imagem e seus tempos juntos. Nunca publica uma falha de read().
@@ -363,6 +368,16 @@ class CameraStream():
             frame = (self.image_from_thread.copy(), self.capture_seconds, self.captured_at)
             self.image_ready = False
             return frame
+
+    def close(self):
+        if getattr(self, 'closed', False):
+            return
+        self.closed = True
+        self.stopped = True
+        self.thread.join(timeout=1)
+        self.cap.release()
+        if self.thread.is_alive():
+            self.thread.join(timeout=1)
  
 
 def shutdown(params):

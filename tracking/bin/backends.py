@@ -11,6 +11,10 @@ import numpy as np
 
 class Backend(ABC):
 
+    def reset(self):
+        """Reinicia estado temporal, quando o backend possui histórico local."""
+        pass
+
     @abstractmethod
     def onparamchanged(self, params):
         ...
@@ -39,7 +43,7 @@ class DummyBackend(Backend):
         pass
 
     def updatepose(self, params, pose3d, rots, hand_rots):
-        pass
+        return True
 
     def disconnect(self):
         pass
@@ -165,6 +169,9 @@ class VRChatOSCBackend(Backend):
 
     def onparamchanged(self, params):
         pass
+
+    def reset(self):
+        self.prev_pose3d = np.zeros((29, 3))
 
     def connect(self, params):
         if hasattr(params, "backend_ip") and hasattr(params, "backend_port"):

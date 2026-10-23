@@ -53,6 +53,13 @@ class InferenceWindow(tk.Frame):
         # pause tracking
         tk.Button(self.root, text='Pause/Unpause tracking', 
                     command=self.pause_tracking).pack()
+        if getattr(params, 'input_mode', 'camera') == 'video':
+            tk.Button(self.root, text='Iniciar / retomar vídeo', command=self.resume_video).pack()
+            tk.Button(self.root, text='Reiniciar vídeo', command=self.restart_video).pack()
+            tk.Button(self.root, text='Cancelar vídeo', command=self.cancel_video).pack()
+            self.input_status = tk.StringVar()
+            tk.Label(self.root, textvariable=self.input_status, wraplength=500).pack()
+            self.refresh_input_status()
                   
         
         # show the Profile 1 profile 2 text:
@@ -411,6 +418,21 @@ class InferenceWindow(tk.Frame):
         else:
             print("INFO: Pose estimation unpaused") 
         self.params.paused = not self.params.paused
+
+    def resume_video(self):
+        self.params.paused = False
+
+    def restart_video(self):
+        self.params.restart_input = True
+        self.params.paused = False
+
+    def cancel_video(self):
+        self.params.cancel_input = True
+
+    def refresh_input_status(self):
+        # Esta função é agendada na própria thread Tk, sem atualizar widgets da inferência.
+        self.input_status.set(self.params.input_status)
+        self.root.after(100, self.refresh_input_status)
 
 
 def make_inference_gui(_params):

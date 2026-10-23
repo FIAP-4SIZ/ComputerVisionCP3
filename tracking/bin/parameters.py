@@ -10,6 +10,11 @@ class Parameters():
             param = getparams()
         
         self.advanced = param["advanced"]
+        self.input_mode = param.get('input_mode', 'camera')
+        self.video_path = param.get('video_path', '')
+        self.restart_input = False
+        self.cancel_input = False
+        self.input_status = ''
         
         self.model = param["model_complexity"]
         self.smooth_landmarks = param["smooth_landmarks"]
