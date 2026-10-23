@@ -33,3 +33,40 @@ O experimento antigo `bin/tests/pipetest.py` não foi executado: exige driver/St
 **Integração bloqueada:** não foi feito merge, nem atualização de `main`/`develop`. Windows e validações com equipamento permanecem pendentes. Commits e branches publicados para revisão não representam aprovação de integração.
 
 Próxima melhoria definida pelo diagnóstico: validação de visibilidade/coordenadas/rotações, em `feature/pose-validation`, sem adicionar outro filtro. A política inicial deve ser simples e explicável antes de avaliar uma retenção independente por tracker.
+
+## Validação de poses
+
+Branch `feature/pose-validation`, dependente do branch de vídeo, sem merge para `develop`. Implementa a prioridade já definida em `ESTUDO_PDI.md`; especificação e explicação acadêmica em `POSE_VALIDATION.md`.
+
+Implementado: checagem dos 33 landmarks, coordenadas finitas, visibilidade nos pontos necessários, limiar ajustável/persistido, rejeição de geometria/quaternions inválidos, aviso e valores de visibilidade na imagem, invalidação de dados de calibração obsoletos e proteção dos backends. OSC inicia o histórico na primeira pose válida e preserva a fórmula de suavização existente; entradas rejeitadas não contaminam o histórico.
+
+Arquivos principais: `bin/pose_validation.py`, `bin/mediapipepose.py`, `bin/backends.py`, `bin/parameters.py`, `bin/inference_gui.py`, `tests/test_pose_validation.py` e fixture de `tests/test_first_improvement.py`.
+
+| Verificação | Resultado |
+|---|---|
+| Suíte completa após a melhoria | 48 aprovados, zero falhas e zero skips |
+| Câmera: pipeline e falhas de leitura | Regressões automatizadas com hardware substituído |
+| Vídeo: leitura, MediaPipe e controles | Integrações reais de decoder/inferência, GUI substituída |
+| Histórico OSC e mensagens inválidas | Testes aprovados; respostas HMD inválidas também não geram trackers |
+| Persistência do limiar | Teste de salvar/recarregar aprovado |
+| Dependências, sintaxe e diff | `pip check`, `compileall` e `git diff --check` aprovados |
+| Build/runtime Linux | PyInstaller e executável `--check-runtime` aprovados na revisão final, com inferência real |
+| Windows, GUI física e VR | Pendentes; integração não aprovada |
+
+Ensaio real adicional: 30 quadros do vídeo da aula retornaram pose e timestamps crescentes. Nenhum passou no limiar 0,5 para trackers, com os pés fora do enquadramento. É uma demonstração de rejeição conservadora; não é medição de precisão, jitter ou estabilidade em equipamento VR.
+
+Próxima melhoria recomendada: validação e expiração independentes por tracker, para preservar quadril/pé visíveis durante oclusão localizada. Antes de implementá-la, verificar no receptor OSC e no driver o efeito de interromper cada tracker e definir o tempo máximo de retenção com testes de movimento.
+
+O estado de integração permanece **bloqueado** pelos mesmos itens externos da feature de vídeo. Nenhum teste não executado foi considerado aprovado. Não houve merge para `develop` ou `main`.
+
+## Histórico rastreável
+
+Todos os commits desta entrega estão no repositório acadêmico:
+
+- `f399d0c`: importa a base necessária, licença e regressões.
+- `4c39eb6`: implementa arquivo de vídeo e controles com testes.
+- `277bafa`: documenta o recurso, configura CI e corrige paths de empacotamento.
+- `53b4166`: corrige a corrida de pausa, sinaliza timestamps estimados e registra resultados de vídeo.
+- `e60c3ce`: valida poses, protege histórico/backends e inclui testes de confiança/protocolo.
+
+O commit documental final registra este relatório e a especificação acadêmica. `feature/pose-validation` incorpora `feature/video-input` como pré-requisito; isso não é merge para `develop`. A branch `develop` não existia no remoto inspecionado e não foi criada/atualizada com alterações não aprovadas.

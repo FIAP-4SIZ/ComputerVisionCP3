@@ -82,6 +82,8 @@ O resultado esperado é um protótipo funcional capaz de capturar os movimentos 
 A implementação está em [`tracking/`](tracking/), derivada do projeto MIT de ju1ce, com atribuição e licença preservadas. O código mantém Python, OpenCV e MediaPipe.
 
 - [Instalação, câmera e arquivo de vídeo](tracking/VIDEO_INPUT.md).
+- [Validação de landmarks e limites da confiança](tracking/POSE_VALIDATION.md).
+- [Resultados e pendências de integração](tracking/VALIDATION_REPORT.md).
 - [Arquitetura e estudo de PDI](tracking/ESTUDO_PDI.md).
 - [Branches e verificações de integração](DEVELOPMENT.md).
 
