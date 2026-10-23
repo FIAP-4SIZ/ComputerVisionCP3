@@ -134,6 +134,7 @@ class VideoTests(unittest.TestCase):
                 self.now += 1
                 self.assertIsNotNone(source.read_latest())
                 self.assertAlmostEqual(source.timestamp_ms, timestamp)
+            self.assertEqual(source.timestamp_estimated, timestamps[-1] != expected[-1])
 
     def test_one_pending_frame_and_no_decode_until_due(self):
         source, cap = self.source(total=100000)
@@ -181,6 +182,9 @@ class RealVideoIntegrationTests(unittest.TestCase):
     def test_main_loop_pause_resume_restart_and_cancel(self):
         self.run_real_main('controls')
 
+    def test_pause_arriving_after_read_does_not_drop_a_frame(self):
+        self.run_real_main('pause-boundary')
+
     def run_real_main(self, mode):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'application.avi'
@@ -199,6 +203,14 @@ class RealVideoIntegrationTests(unittest.TestCase):
             detector = mp.solutions.pose.Pose(model_complexity=1)
             real_process = detector.process
             timestamps = []
+            original_read = source.read_latest
+            injected_pause = [False]
+            def read_with_pause():
+                packet = original_read()
+                if mode == 'pause-boundary' and packet is not None and not injected_pause[0]:
+                    params.paused = True
+                    injected_pause[0] = True
+                return packet
             def process(image):
                 timestamps.append(params.frame_timestamp_ms)
                 if mode == 'pose-error':
@@ -233,11 +245,13 @@ class RealVideoIntegrationTests(unittest.TestCase):
                     stack.enter_context(patch.object(app, target, **kwargs) if '.' not in target
                         else patch('mediapipepose.' + target, **kwargs))
                 stack.enter_context(patch.object(detector, 'process', side_effect=process))
+                stack.enter_context(patch.object(source, 'read_latest', side_effect=read_with_pause))
                 with self.assertRaises(SystemExit):
                     app.main()
-            expected = {'normal': [0, 40, 80], 'pose-error': [0], 'controls': [0, 40, 0]}
+            expected = {'normal': [0, 40, 80], 'pose-error': [0], 'controls': [0, 40, 0],
+                        'pause-boundary': [0, 40, 80]}
             np.testing.assert_allclose(timestamps, expected[mode])
-            self.assertEqual(source.state, {'normal': 'completed', 'pose-error': 'error',
+            self.assertEqual(source.state, {'normal': 'completed', 'pause-boundary': 'completed', 'pose-error': 'error',
                                            'controls': 'cancelled'}[mode])
             backend.updatepose.assert_not_called()  # Vídeo vazio não deve inventar trackers.
             backend.disconnect.assert_called_once()

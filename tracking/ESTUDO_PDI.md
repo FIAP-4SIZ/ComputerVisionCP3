@@ -1,5 +1,7 @@
 # Diagnóstico e primeira melhoria — PDI aplicado ao rastreamento VR
 
+> Relatório histórico da primeira etapa, preservado com seus resultados originais. A implementação ativa agora pertence a `FIAP-4SIZ/ComputerVisionCP3`, em `tracking/`. Para instalação e recursos atuais, consulte `VIDEO_INPUT.md`, `DEVELOPMENT.md` na raiz e `VALIDATION_REPORT.md`. As referências abaixo ao checkout de ju1ce e aos oito testes descrevem a etapa anterior, não o estado atual.
+
 ## Escopo e fontes
 
 Esta entrega implementa somente a primeira melhoria do plano. Não implementa ainda filtros de imagem, novas suavizações ou rejeição de landmarks.

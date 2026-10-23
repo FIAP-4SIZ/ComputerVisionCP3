@@ -36,6 +36,7 @@ class VideoFileSource:
             self.total = int(count) if math.isfinite(count) and count > 0 else None
             self.index = -1
             self.timestamp_ms = 0.0
+            self.timestamp_estimated = False
             self._decoded = 0
             self._previous_timestamp = -1.0
             self._pending = self._decode()
@@ -61,11 +62,12 @@ class VideoFileSource:
             raise VideoInputError('Quadro inválido ou corrompido.')
         timestamp = self.cap.get(cv2.CAP_PROP_POS_MSEC)
         # Alguns codecs devolvem zero sempre. O índice/FPS fornece uma estimativa explícita.
-        if not math.isfinite(timestamp) or timestamp < 0 or timestamp <= self._previous_timestamp:
+        estimated = not math.isfinite(timestamp) or timestamp < 0 or timestamp <= self._previous_timestamp
+        if estimated:
             timestamp = max(self._decoded * 1000 / self.fps,
                             self._previous_timestamp + 1000 / self.fps)
         self._previous_timestamp = timestamp
-        packet = (image, captured_at - start, captured_at, timestamp, self._decoded)
+        packet = (image, captured_at - start, captured_at, timestamp, self._decoded, estimated)
         self._decoded += 1
         return packet
 
@@ -95,9 +97,10 @@ class VideoFileSource:
                 return None
             if self.clock() < self._anchor + self._pending[3] / 1000:
                 return None
-            image, duration, captured_at, timestamp, index = self._pending
+            image, duration, captured_at, timestamp, index, estimated = self._pending
             self._pending = None
             self.index, self.timestamp_ms = index, timestamp
+            self.timestamp_estimated = estimated
             return image, duration, captured_at
         except Exception as exc:
             self.fail(str(exc))
@@ -128,4 +131,5 @@ class VideoFileSource:
         total = str(self.total) if self.total is not None else '?'
         progress = f' ({min(100, (self.index + 1) * 100 / self.total):.1f}%)' if self.total else ''
         return (f'{self.state}: quadro {self.index + 1}/{total}{progress} | '
-                f'{self.timestamp_ms / 1000:.2f}s' + (f' | {self.error}' if self.error else ''))
+                f'{self.timestamp_ms / 1000:.2f}s' + (' (estimado por FPS)' if self.timestamp_estimated else '')
+                + (f' | {self.error}' if self.error else ''))

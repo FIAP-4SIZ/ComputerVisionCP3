@@ -26,8 +26,9 @@ Formatos aceitos: MP4, AVI, MOV, MKV, WEBM, M4V, MPG, MPEG, sujeitos aos codecs 
 ## Decisões de implementação
 
 - `bin/video_source.py`: máquina de estados ready/running/paused/completed/cancelled/error. Usa leitura síncrona de um quadro por vez e mantém no máximo um quadro pendente para o agendamento. Não usa a thread da câmera, que descartaria frames.
-- Timestamps vêm de `CAP_PROP_POS_MSEC`. Se forem inválidos, repetidos ou regressivos, estima-se o próximo tempo pelo índice/FPS, assegurando crescimento. FPS inválido bloqueia o arquivo, evitando inventar velocidade de reprodução. Arquivos de taxa variável dependem dos timestamps disponibilizados pelo decodificador.
+- Timestamps vêm de `CAP_PROP_POS_MSEC`. Se forem inválidos, repetidos ou regressivos, estima-se o próximo tempo pelo índice/FPS, assegurando crescimento, e o estado mostra **estimado por FPS**. FPS inválido bloqueia o arquivo, evitando inventar velocidade de reprodução. Arquivos de taxa variável dependem dos timestamps disponibilizados pelo decodificador.
 - O relógio monotônico agenda a reprodução; atraso de inferência deixa a reprodução mais lenta, mas não elimina frames. Pausa congela a posição e desloca a referência do relógio ao retomar.
+- Uma pausa que chega depois da entrega de um quadro permite concluir esse quadro e pausa antes do próximo. Há regressão específica para evitar consumir um frame sem análise nessa condição.
 - `params.frame_timestamp_ms` e `params.frame_index` associam a pose ao quadro do arquivo. Não se altera o protocolo dos backends VR. A API legada `Pose.process` não recebe timestamp externo; sua filtragem interna usa o comportamento da própria biblioteca. O timestamp do arquivo permanece disponível na aplicação, sem fingir que a API o recebeu.
 - `mediapipepose.py` escolhe apenas a fonte: cor, tamanho, detector, conversão geométrica, desenho e backend são compartilhados. `finally` libera fonte/detector/backend/janelas, inclusive na falha.
 - `helpers.CameraStream.close` encerra a thread com espera limitada e libera a câmera. Drivers que bloqueiam indefinidamente uma chamada nativa ainda dependem do comportamento do dispositivo.

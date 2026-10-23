@@ -150,7 +150,7 @@ def main():
                 ratio = max(img.shape)/params.maximgsize
                 img = cv2.resize(img, (int(img.shape[1]/ratio),int(img.shape[0]/ratio)))
 
-            if params.paused:
+            if params.paused and not is_video:
                 cv2.imshow("out", img)
                 cv2.waitKey(1)
                 # Não mistura o tempo em pausa com as medições do rastreamento.
