@@ -2,6 +2,7 @@ from init_gui import getparams
 from scipy.spatial.transform import Rotation as R
 import cv2
 import json
+import math
 
 class Parameters():
     def __init__(self) -> None:
@@ -15,6 +16,8 @@ class Parameters():
         self.restart_input = False
         self.cancel_input = False
         self.input_status = ''
+        self.min_visibility = .5
+        self.pose_status = ''
         
         self.model = param["model_complexity"]
         self.smooth_landmarks = param["smooth_landmarks"]
@@ -94,6 +97,17 @@ class Parameters():
     def change_recalibrate(self):
         self.recalibrate = True
 
+    def set_min_visibility(self, value):
+        try:
+            value = float(value)
+            if not math.isfinite(value) or not 0 <= value <= 1:
+                raise ValueError
+        except (ValueError, TypeError):
+            self.pose_status = 'Visibilidade deve estar entre 0 e 1'
+            return False
+        self.min_visibility = value
+        return True
+
 
     def rot_change_y(self, value):                                  #callback functions. Whenever the value on sliders are changed, they are called
         print(f"INFO: Changed y rotation value to {value}")
@@ -164,6 +178,7 @@ class Parameters():
 
     def save_params(self):
         param = {}
+        param['min_visibility'] = self.min_visibility
         param["rotate"] = self.img_rot_dict_rev[self.rotate_image] 
         param["smooth1"] = self.smoothing_1
         param["smooth2"] = self.smoothing_2
@@ -199,6 +214,7 @@ class Parameters():
         try:
             with open("saved_params.json", "r") as f:
                 param = json.load(f)
+            self.set_min_visibility(param.get('min_visibility', .5))
 
             #print(param["roty"])
 

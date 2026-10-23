@@ -24,6 +24,7 @@ from tkinter import messagebox
 import mediapipe as mp
 from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
+from pose_validation import prepare_pose, InvalidPose
 
 
 def main():
@@ -122,6 +123,9 @@ def main():
             if is_video:
                 params.input_status = camera_thread.status
             if frame is None:
+                if is_video and camera_thread.state in ('completed', 'cancelled', 'error'):
+                    if hasattr(params, 'pose3d_og'):
+                        del params.pose3d_og
                 if is_video and preview is not None:
                     view = preview.copy()
                     cv2.putText(view, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
@@ -178,45 +182,22 @@ def main():
             img.flags.writeable = True
             tracker_seconds = 0.0
 
-            if results.pose_world_landmarks:        #if any pose was detected
+            params.pose_status = 'Sem pose detectável'
+            if results.pose_world_landmarks:
                 tracker_start = time.perf_counter()
-
-                pose3d = mediapipeTo3dpose(results.pose_world_landmarks.landmark)   #convert keypoints to a format we use
-
-                #do we need this with osc as well?
-
-                pose3d[:,0] = -pose3d[:,0]      #flip the points a bit since steamvrs coordinate system is a bit diffrent
-                pose3d[:,1] = -pose3d[:,1]
-
-                pose3d_og = pose3d.copy()
-                params.pose3d_og = pose3d_og
-
-                for j in range(pose3d.shape[0]):        #apply the rotations from the sliders
-                    pose3d[j] = params.global_rot_z.apply(pose3d[j])
-                    pose3d[j] = params.global_rot_x.apply(pose3d[j])
-                    pose3d[j] = params.global_rot_y.apply(pose3d[j])
-
-                if not params.feet_rotation:
-                    rots = get_rot(pose3d)          #get rotation data of feet and hips from the position-only skeleton data
+                try:
+                    pose3d, calibration, rots, hand_rots = prepare_pose(
+                        results.pose_world_landmarks.landmark, params)
+                except InvalidPose as exc:
+                    params.pose_status = str(exc)
                 else:
-                    rots = get_rot_mediapipe(pose3d)
-
-                if params.use_hands:
-                    hand_rots = get_rot_hands(pose3d)
-                else:
-                    hand_rots = None
-
-
-                #pose3d[0] = [1,0,1]
-                #rots = (rots[0], R.from_euler('ZXY',[i/17,i/11,i/10]).as_quat(),rots[2])   #for testing rotation conversions
-                #i+=1
-
-                updated = backend.updatepose(params, pose3d, rots, hand_rots)
+                    params.pose_status = 'Pose válida'
+                    params.pose3d_og = calibration
+                    if backend.updatepose(params, pose3d, rots, hand_rots) is False:
+                        params.pose_status = 'Backend rejeitou pose: sem nova atualizacao'
                 tracker_seconds = time.perf_counter() - tracker_start
-                if not updated:
-                    cycle_start = time.perf_counter()
-                    continue
-
+            if params.pose_status != 'Pose válida' and hasattr(params, 'pose3d_og'):
+                del params.pose3d_og
 
             img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)       #convert back to bgr and draw the pose
             mp_drawing.draw_landmarks(
@@ -227,8 +208,12 @@ def main():
             first_line, second_line = summary.split(' | idade:', 1) if ' | idade:' in summary else (summary, '')
             for row, text in enumerate((first_line, 'idade:' + second_line if second_line else '')):
                 cv2.putText(img, text, (10, 22 + row * 22), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 1, cv2.LINE_AA)
-            if not results.pose_world_landmarks:
-                cv2.putText(img, 'SEM POSE - trackers sem nova medicao', (10, 66), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 1, cv2.LINE_AA)
+            if params.pose_status != 'Pose válida':
+                cv2.putText(img, params.pose_status, (10, 66), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 1, cv2.LINE_AA)
+            else:
+                landmarks = results.pose_world_landmarks.landmark
+                visibility = f'Vis tornozelos E:{float(landmarks[27].visibility):.2f} D:{float(landmarks[28].visibility):.2f}'
+                cv2.putText(img, visibility, (10, 66), cv2.FONT_HERSHEY_SIMPLEX, .45, (0, 255, 0), 1, cv2.LINE_AA)
             if is_video:
                 cv2.putText(img, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                 preview = img.copy()

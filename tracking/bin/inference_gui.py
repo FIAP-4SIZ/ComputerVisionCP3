@@ -53,6 +53,20 @@ class InferenceWindow(tk.Frame):
         # pause tracking
         tk.Button(self.root, text='Pause/Unpause tracking', 
                     command=self.pause_tracking).pack()
+        visibility_frame = tk.Frame(self.root)
+        visibility_frame.pack()
+        tk.Label(visibility_frame, text='Visibilidade mínima (0 a 1):').pack(side='left')
+        visibility_entry = tk.Entry(visibility_frame, width=6)
+        visibility_entry.insert(0, str(params.min_visibility))
+        visibility_entry.pack(side='left')
+        self.visibility_feedback = tk.StringVar(value='')
+        def apply_visibility():
+            if params.set_min_visibility(visibility_entry.get()):
+                self.visibility_feedback.set(f'Limiar aplicado: {params.min_visibility:.2f}')
+            else:
+                self.visibility_feedback.set('Valor inválido: use um número entre 0 e 1')
+        tk.Button(visibility_frame, text='Aplicar', command=apply_visibility).pack(side='left')
+        tk.Label(self.root, textvariable=self.visibility_feedback).pack()
         if getattr(params, 'input_mode', 'camera') == 'video':
             tk.Button(self.root, text='Iniciar / retomar vídeo', command=self.resume_video).pack()
             tk.Button(self.root, text='Reiniciar vídeo', command=self.restart_video).pack()
@@ -311,6 +325,10 @@ class InferenceWindow(tk.Frame):
 
 
     def autocalibrate(self):
+
+        if not hasattr(self.params, 'pose3d_og'):
+            print('INFO: Nenhuma pose válida disponível para calibrar.')
+            return
 
         use_steamvr = True if self.params.backend == 1 else False
 

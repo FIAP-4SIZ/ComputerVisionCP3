@@ -7,6 +7,7 @@ from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
 from helpers import shutdown
+from pose_validation import valid_tracker_data, valid_alignment
 import numpy as np
 
 class Backend(ABC):
@@ -103,25 +104,36 @@ class SteamVRBackend(Backend):
             shutdown(params)
 
     def updatepose(self, params, pose3d, rots, hand_rots):
+        if not valid_tracker_data(pose3d, rots, hand_rots) or not valid_alignment(params):
+            return False
+        pose3d = np.asarray(pose3d, dtype=float)
         array = sendToSteamVR("getdevicepose 0")        #get hmd data to allign our skeleton to
 
         if array is None or len(array) < 10:
             print("ERROR: Could not connect to SteamVR after 10 tries! Launch SteamVR and try again.")
             shutdown(params)
 
-        headsetpos = [float(array[3]),float(array[4]),float(array[5])]
-        headsetrot = R.from_quat([float(array[7]),float(array[8]),float(array[9]),float(array[6])])
+        try:
+            headsetpos = [float(array[3]), float(array[4]), float(array[5])]
+            headsetquat = [float(array[7]), float(array[8]), float(array[9]), float(array[6])]
+            if not np.isfinite(headsetpos + headsetquat).all():
+                return False
+            headsetrot = R.from_quat(headsetquat)
+        except (ValueError, TypeError):
+            return False
 
-        neckoffset = headsetrot.apply(params.hmd_to_neck_offset)   #the neck position seems to be the best point to allign to, as its well defined on
+        neckoffset = headsetrot.apply(np.asarray(params.hmd_to_neck_offset, dtype=float))   #the neck position seems to be the best point to allign to, as its well defined on
                                                             #the skeleton (unlike the eyes/nose, which jump around) and can be calculated from hmd.
 
         if params.recalibrate:
             print("INFO: frame to recalibrate")
 
         else:
-            pose3d = pose3d * params.posescale     #rescale skeleton to calibrated height
+            pose3d = pose3d * float(params.posescale)     #rescale skeleton to calibrated height
             #print(pose3d)
             offset = pose3d[7] - (headsetpos+neckoffset)    #calculate the position of the skeleton
+            if not np.isfinite(pose3d).all() or not np.isfinite(offset).all():
+                return False
             if not params.preview_skeleton:
                 numadded = 3
                 if not params.ignore_hip:
@@ -164,14 +176,14 @@ def osc_build_bundle(trackers):
 class VRChatOSCBackend(Backend):
 
     def __init__(self, **kwargs):
-        self.prev_pose3d = np.zeros((29,3))
+        self.prev_pose3d = None
         pass
 
     def onparamchanged(self, params):
         pass
 
     def reset(self):
-        self.prev_pose3d = np.zeros((29, 3))
+        self.prev_pose3d = None
 
     def connect(self, params):
         if hasattr(params, "backend_ip") and hasattr(params, "backend_port"):
@@ -184,20 +196,32 @@ class VRChatOSCBackend(Backend):
         #pose3d[:,1] = -pose3d[:,1]      #flip the positions as coordinate system is different from steamvr
         #pose3d[:,0] = -pose3d[:,0]
         
-        pose3d = self.prev_pose3d*params.additional_smoothing + pose3d*(1-params.additional_smoothing)
-        self.prev_pose3d = pose3d
+        if not valid_tracker_data(pose3d, rots, hand_rots) or not valid_alignment(params):
+            return False
+        try:
+            weight = float(params.additional_smoothing)
+        except (ValueError, TypeError):
+            return False
+        if not np.isfinite(weight) or not 0 <= weight <= 1:
+            return False
+        pose3d = np.asarray(pose3d, dtype=float)
+        if self.prev_pose3d is not None:
+            pose3d = self.prev_pose3d * weight + pose3d * (1 - weight)
+        self.prev_pose3d = pose3d.copy()
     
         headsetpos = [float(0),float(0),float(0)]
         headsetrot = R.from_quat([float(0),float(0),float(0),float(1)])
 
-        neckoffset = headsetrot.apply(params.hmd_to_neck_offset)   #the neck position seems to be the best point to allign to, as its well defined on
+        neckoffset = headsetrot.apply(np.asarray(params.hmd_to_neck_offset, dtype=float))   #the neck position seems to be the best point to allign to, as its well defined on
                                                             #the skeleton (unlike the eyes/nose, which jump around) and can be calculated from hmd.
         if params.recalibrate:
             print("frame to recalibrate")
         else:
-            pose3d = pose3d * params.posescale     #rescale skeleton to calibrated height
+            pose3d = pose3d * float(params.posescale)     #rescale skeleton to calibrated height
             #print(pose3d)
             offset = pose3d[7] - (headsetpos+neckoffset)    #calculate the position of the skeleton
+            if not np.isfinite(pose3d).all() or not np.isfinite(offset).all():
+                return False
             if not params.preview_skeleton:
                 trackers = []
                 trackers.append({ "name": "head", "position": [ 0, 0, 0 ]})

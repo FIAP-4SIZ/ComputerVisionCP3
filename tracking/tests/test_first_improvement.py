@@ -73,11 +73,11 @@ class CameraTests(unittest.TestCase):
         self.assertIsNone(camera.read_latest())
 
 
-def run_one_frame(module, with_pose):
+def run_one_frame(module, with_pose, existing_calibration=False):
     """Executa o laço real; apenas hardware, GUI e inferência são substituídos."""
     original = np.zeros((120, 160, 3), np.uint8)
     original[:, :, 2] = 255  # Vermelho em BGR: deve chegar como [255, 0, 0] ao detector.
-    landmarks = [SimpleNamespace(x=i*.01, y=(i % 5)*.1, z=(i % 7)*.04)
+    landmarks = [SimpleNamespace(x=i*.01, y=(i % 5)*.1, z=(i % 7)*.04, visibility=1.)
                  for i in range(33)]
     result = SimpleNamespace(pose_world_landmarks=SimpleNamespace(landmark=landmarks)
                              if with_pose else None, pose_landmarks=None)
@@ -89,6 +89,9 @@ def run_one_frame(module, with_pose):
                              global_rot_x=Rotation.identity(), global_rot_y=Rotation.identity(),
                              feet_rotation=False, use_hands=False, log_frametime=True)
     backend = Mock()
+    backend.test_params = params
+    if existing_calibration:
+        params.pose3d_og = np.ones((29, 3))
     backend.updatepose.return_value = True
     camera = SimpleNamespace(image_ready=True, image_from_thread=original,
                              read_latest=lambda: (original.copy(), .02, module.time.perf_counter()))
