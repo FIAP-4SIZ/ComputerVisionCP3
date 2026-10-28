@@ -1,5 +1,7 @@
 # Próxima melhoria prioritária: validar poses antes de enviar trackers
 
+> Esta página registra a etapa de validação da pose inteira. A evolução que valida os trackers separadamente está em `PER_TRACKER_VALIDATION.md`, com novos testes e limites de expiração local. Os resultados de 48 testes abaixo pertencem à etapa anterior.
+
 ## Por que esta melhoria
 
 O diagnóstico em `ESTUDO_PDI.md` já identificava a ausência de verificação de visibilidade e coordenadas, além de normalizações que podem dividir por zero. Não foi escolhida uma feature arbitrária: após adicionar vídeo, o mesmo problema passa a ocorrer também em gravações com pés fora do quadro e oclusões. A prioridade é confiabilidade, antes de tentar melhorar precisão com filtros de imagem.

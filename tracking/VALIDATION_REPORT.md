@@ -70,3 +70,35 @@ Todos os commits desta entrega estão no repositório acadêmico:
 - `e60c3ce`: valida poses, protege histórico/backends e inclui testes de confiança/protocolo.
 
 O commit documental final registra este relatório e a especificação acadêmica. `feature/pose-validation` incorpora `feature/video-input` como pré-requisito; isso não é merge para `develop`. A branch `develop` não existia no remoto inspecionado e não foi criada/atualizada com alterações não aprovadas.
+
+## Validação independente por tracker
+
+Branch: `feature/per-tracker-validation`, baseada em `feature/pose-validation`, exclusivamente no repositório acadêmico. Especificação, conceitos de PDI, instruções e avaliação em `PER_TRACKER_VALIDATION.md`.
+
+Escopo: quadril, pés e mãos possuem dependências e estados próprios. Um pé inválido não bloqueia os trackers que ainda possuem dados suficientes. O emissor nunca reenvia a posição antiga de um tracker perdido. O histórico OSC é independente e expira conforme prazo ajustável/persistido, com padrão zero (limpar ao observar perda). IDs, eixos e fórmulas de orientação foram preservados; slots SteamVR acompanham a ordem de criação, inclusive com quadril desabilitado. Preview do esqueleto completo mantém a validação conservadora.
+
+| Verificação | Resultado nesta etapa |
+|---|---|
+| Suíte anterior antes das alterações | 48 aprovados |
+| Suíte final | 83 aprovados, zero falhas e zero skips; 35 testes novos |
+| Regressão das orientações | Referências do commit `968bbf1`, incluindo pernas retas e seus fallbacks |
+| Regressão OSC com todos os trackers válidos | Mesmos valores da referência dentro da precisão do protocolo float32 |
+| Oclusão em AVI real | Decoder real; inferência controlada; quadril/pé válido continuam, pé perdido é omitido e volta com histórico limpo |
+| Integrações MediaPipe reais anteriores | Continuam executadas, com vídeo sintético sem pessoa |
+| Transporte UDP local | Pacote real decodificado; endereço do pé inválido não é enviado |
+| Estado e tempo | Perda, expiração no limite, precisão decimal, recuperação, reinício, EOF e entradas inválidas cobertos |
+| SteamVR | Comandos verificados com driver substituído, incluindo mãos, quadril desabilitado e preview |
+| Dependências/sintaxe/diff | `pip check`, `compileall`, `git diff --check` aprovados |
+| Linux | Build PyInstaller e smoke do binário com inferência real aprovados |
+| Windows, GUI real, câmera e VR | Não executados; pendências de integração |
+| Lint/tipagem | Não configurados no projeto, não contabilizados como aprovados |
+
+Inspeção do driver de referência `c440e117`: o argumento final `0.8` de `updatepose` é suavização, não TTL. A expiração implementada é local; não promete desativação imediata do avatar/receptor. Documentação oficial OSC retornou HTTP 403; consulta à API de Actions retornou `Forbidden`. Não se inferiu aprovação da CI a partir do push.
+
+Commits desta melhoria:
+
+- `1917fc2`: extrai cálculos independentes e adiciona referências congeladas de regressão.
+- `a88dfb2`: implementa máscaras, estados, expiração, histórico independente, GUI e testes.
+- O commit documental seguinte registra decisões e resultados finais.
+
+**Sem merge para `develop` ou `main` e sem aprovação de integração.** Não foram medidos precisão, jitter ou FPS real; a comparação de oclusões usa entradas controladas. Após os testes com equipamento e a CI Windows, a próxima melhoria da lista é a comparação opcional de pré-processamento de iluminação, usando o mesmo vídeo e conservando a imagem original.
