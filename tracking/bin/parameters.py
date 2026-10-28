@@ -18,6 +18,8 @@ class Parameters():
         self.input_status = ''
         self.min_visibility = .5
         self.pose_status = ''
+        self.tracker_status = ''
+        self.tracker_timeout = 0.0
         
         self.model = param["model_complexity"]
         self.smooth_landmarks = param["smooth_landmarks"]
@@ -108,6 +110,16 @@ class Parameters():
         self.min_visibility = value
         return True
 
+    def set_tracker_timeout(self, value):
+        try:
+            value = float(value)
+            if not math.isfinite(value) or value < 0:
+                raise ValueError
+        except (ValueError, TypeError):
+            return False
+        self.tracker_timeout = value
+        return True
+
 
     def rot_change_y(self, value):                                  #callback functions. Whenever the value on sliders are changed, they are called
         print(f"INFO: Changed y rotation value to {value}")
@@ -179,6 +191,7 @@ class Parameters():
     def save_params(self):
         param = {}
         param['min_visibility'] = self.min_visibility
+        param['tracker_timeout'] = self.tracker_timeout
         param["rotate"] = self.img_rot_dict_rev[self.rotate_image] 
         param["smooth1"] = self.smoothing_1
         param["smooth2"] = self.smoothing_2
@@ -215,6 +228,7 @@ class Parameters():
             with open("saved_params.json", "r") as f:
                 param = json.load(f)
             self.set_min_visibility(param.get('min_visibility', .5))
+            self.set_tracker_timeout(param.get('tracker_timeout', 0.))
 
             #print(param["roty"])
 

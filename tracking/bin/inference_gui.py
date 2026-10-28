@@ -67,6 +67,20 @@ class InferenceWindow(tk.Frame):
                 self.visibility_feedback.set('Valor inválido: use um número entre 0 e 1')
         tk.Button(visibility_frame, text='Aplicar', command=apply_visibility).pack(side='left')
         tk.Label(self.root, textvariable=self.visibility_feedback).pack()
+        cache_frame = tk.Frame(self.root)
+        cache_frame.pack()
+        tk.Label(cache_frame, text='Expirar historico do tracker apos perda (s):').pack(side='left')
+        cache_entry = tk.Entry(cache_frame, width=6)
+        cache_entry.insert(0, str(params.tracker_timeout))
+        cache_entry.pack(side='left')
+        self.tracker_feedback = tk.StringVar(value='0 = limpar ao perder; nunca reenvia pose antiga')
+        def apply_tracker_timeout():
+            if params.set_tracker_timeout(cache_entry.get()):
+                self.tracker_feedback.set(f'Expiracao local: {params.tracker_timeout:.2f}s')
+            else:
+                self.tracker_feedback.set('Use segundos finitos, maiores ou iguais a zero')
+        tk.Button(cache_frame, text='Aplicar', command=apply_tracker_timeout).pack(side='left')
+        tk.Label(self.root, textvariable=self.tracker_feedback).pack()
         if getattr(params, 'input_mode', 'camera') == 'video':
             tk.Button(self.root, text='Iniciar / retomar vídeo', command=self.resume_video).pack()
             tk.Button(self.root, text='Reiniciar vídeo', command=self.restart_video).pack()

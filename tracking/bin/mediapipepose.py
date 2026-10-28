@@ -24,7 +24,8 @@ from tkinter import messagebox
 import mediapipe as mp
 from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
-from pose_validation import prepare_pose, InvalidPose
+from pose_validation import InvalidPose
+from independent_trackers import prepare_trackers, enabled_names, TrackerLifecycle
 
 
 def main():
@@ -78,6 +79,8 @@ def main():
         metrics = FrameMetrics()
         cycle_start = time.perf_counter()
         preview = None
+        tracker_lifecycle = TrackerLifecycle(enabled_names(params))
+        params.tracker_status = tracker_lifecycle.summary()
         if is_video:
             camera_thread.start()
 
@@ -106,6 +109,7 @@ def main():
                         camera_thread.restart()
                         pose.reset()
                         backend.reset()
+                        tracker_lifecycle.reset()
                         if hasattr(params, 'pose3d_og'):
                             del params.pose3d_og
                         metrics = FrameMetrics()
@@ -124,10 +128,16 @@ def main():
                 params.input_status = camera_thread.status
             if frame is None:
                 if is_video and camera_thread.state in ('completed', 'cancelled', 'error'):
+                    if (tracker_lifecycle.timestamp is not None
+                            or any(state != 'expired' for state in tracker_lifecycle.states.values())):
+                        backend.expire_trackers(tracker_lifecycle.invalidate())
+                    params.tracker_status = tracker_lifecycle.summary()
                     if hasattr(params, 'pose3d_og'):
                         del params.pose3d_og
                 if is_video and preview is not None:
                     view = preview.copy()
+                    cv2.rectangle(view, (0, 97), (view.shape[1], 118), (0, 0, 0), -1)
+                    cv2.putText(view, params.tracker_status, (10, 112), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                     cv2.putText(view, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                     cv2.imshow('out', view)
                     if cv2.waitKey(1) == 27:
@@ -182,22 +192,36 @@ def main():
             img.flags.writeable = True
             tracker_seconds = 0.0
 
-            params.pose_status = 'Sem pose detectável'
+            params.pose_status = 'Sem pose detectavel'
+            tracking = None
+            valid = dict.fromkeys(tracker_lifecycle.names, False)
+            tracker_start = time.perf_counter()
             if results.pose_world_landmarks:
-                tracker_start = time.perf_counter()
                 try:
-                    pose3d, calibration, rots, hand_rots = prepare_pose(
-                        results.pose_world_landmarks.landmark, params)
+                    tracking = prepare_trackers(results.pose_world_landmarks.landmark, params)
+                    valid = tracking.valid
                 except InvalidPose as exc:
                     params.pose_status = str(exc)
+            expired = tracker_lifecycle.update(valid, params.frame_timestamp_ms / 1000,
+                                               getattr(params, 'tracker_timeout', 0.))
+            backend.expire_trackers(expired)
+            params.tracker_status = tracker_lifecycle.summary()
+            calibration = None
+            if tracking is not None and any(valid.values()):
+                options = {} if getattr(params, 'preview_skeleton', False) else {'valid_trackers': valid}
+                updated = backend.updatepose(params, tracking.pose, tracking.rotations, tracking.hands, **options)
+                if updated is False:
+                    params.pose_status = 'Backend rejeitou pose: sem nova atualizacao'
                 else:
-                    params.pose_status = 'Pose válida'
-                    params.pose3d_og = calibration
-                    if backend.updatepose(params, pose3d, rots, hand_rots) is False:
-                        params.pose_status = 'Backend rejeitou pose: sem nova atualizacao'
-                tracker_seconds = time.perf_counter() - tracker_start
-            if params.pose_status != 'Pose válida' and hasattr(params, 'pose3d_og'):
+                    params.pose_status = 'Pose válida' if all(valid.values()) else 'Rastreamento parcial'
+                    calibration = tracking.calibration
+            elif tracking is not None and tracking.reasons:
+                params.pose_status = next(iter(tracking.reasons.values()))
+            if calibration is not None:
+                params.pose3d_og = calibration
+            elif hasattr(params, 'pose3d_og'):
                 del params.pose3d_og
+            tracker_seconds = time.perf_counter() - tracker_start
 
             img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)       #convert back to bgr and draw the pose
             mp_drawing.draw_landmarks(
@@ -214,6 +238,7 @@ def main():
                 landmarks = results.pose_world_landmarks.landmark
                 visibility = f'Vis tornozelos E:{float(landmarks[27].visibility):.2f} D:{float(landmarks[28].visibility):.2f}'
                 cv2.putText(img, visibility, (10, 66), cv2.FONT_HERSHEY_SIMPLEX, .45, (0, 255, 0), 1, cv2.LINE_AA)
+            cv2.putText(img, params.tracker_status, (10, 112), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
             if is_video:
                 cv2.putText(img, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                 preview = img.copy()

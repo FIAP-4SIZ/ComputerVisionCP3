@@ -8,9 +8,14 @@ from pythonosc import udp_client
 
 from helpers import shutdown
 from pose_validation import valid_tracker_data, valid_alignment
+from independent_trackers import NAMES, JOINTS, enabled_names, tracker_mask
 import numpy as np
 
 class Backend(ABC):
+
+    def expire_trackers(self, names):
+        """Expiração local; não inventa um comando de desativação no receptor VR."""
+        pass
 
     def reset(self):
         """Reinicia estado temporal, quando o backend possui histórico local."""
@@ -25,7 +30,7 @@ class Backend(ABC):
         ...
 
     @abstractmethod
-    def updatepose(self, params, pose3d, rots, hand_rots):
+    def updatepose(self, params, pose3d, rots, hand_rots, valid_trackers=None):
         ...
 
     @abstractmethod
@@ -43,7 +48,7 @@ class DummyBackend(Backend):
     def connect(self, params):
         pass
 
-    def updatepose(self, params, pose3d, rots, hand_rots):
+    def updatepose(self, params, pose3d, rots, hand_rots, valid_trackers=None):
         return True
 
     def disconnect(self):
@@ -103,7 +108,17 @@ class SteamVRBackend(Backend):
             print("ERROR: Could not connect to SteamVR after 10 tries! Launch SteamVR and try again.")
             shutdown(params)
 
-    def updatepose(self, params, pose3d, rots, hand_rots):
+    def updatepose(self, params, pose3d, rots, hand_rots, valid_trackers=None):
+        try:
+            mask = tracker_mask(params, valid_trackers)
+        except ValueError:
+            return False
+        if params.preview_skeleton and valid_trackers is not None:
+            return False
+        if not any(mask.values()):
+            return True
+        if hand_rots is None and any(mask.get(name, False) for name in NAMES[3:]):
+            return False
         if not valid_tracker_data(pose3d, rots, hand_rots) or not valid_alignment(params):
             return False
         pose3d = np.asarray(pose3d, dtype=float)
@@ -135,20 +150,14 @@ class SteamVRBackend(Backend):
             if not np.isfinite(pose3d).all() or not np.isfinite(offset).all():
                 return False
             if not params.preview_skeleton:
-                numadded = 3
-                if not params.ignore_hip:
-                    for i in [(0,1),(5,2),(6,0)]:
-                        joint = pose3d[i[0]] - offset       #for each foot and hips, offset it by skeleton position and send to steamvr
-                        sendToSteamVR(f"updatepose {i[1]} {joint[0]} {joint[1]} {joint[2]} {rots[i[1]][3]} {rots[i[1]][0]} {rots[i[1]][1]} {rots[i[1]][2]} {params.camera_latency} 0.8")
-                else:
-                    for i in [(0,1),(5,2)]:
-                        joint = pose3d[i[0]] - offset       #for each foot and hips, offset it by skeleton position and send to steamvr
-                        sendToSteamVR(f"updatepose {i[1]} {joint[0]} {joint[1]} {joint[2]} {rots[i[1]][3]} {rots[i[1]][0]} {rots[i[1]][1]} {rots[i[1]][2]} {params.camera_latency} 0.8")
-                        numadded = 2
-                if params.use_hands:
-                    for i in [(10,0),(15,1)]:
-                        joint = pose3d[i[0]] - offset       #for each foot and hips, offset it by skeleton position and send to steamvr
-                        sendToSteamVR(f"updatepose {i[1]+numadded} {joint[0]} {joint[1]} {joint[2]} {hand_rots[i[1]][3]} {hand_rots[i[1]][0]} {hand_rots[i[1]][1]} {hand_rots[i[1]][2]} {params.camera_latency} 0.8")
+                # IDs acompanham a ordem dos dispositivos criados no connect().
+                for device_id, name in enumerate(enabled_names(params)):
+                    if not mask[name]:
+                        continue
+                    index = NAMES.index(name)
+                    quaternion = rots[index] if index < 3 else hand_rots[index - 3]
+                    joint = pose3d[JOINTS[name]] - offset
+                    sendToSteamVR(f"updatepose {device_id} {joint[0]} {joint[1]} {joint[2]} {quaternion[3]} {quaternion[0]} {quaternion[1]} {quaternion[2]} {params.camera_latency} 0.8")
             else:
                 for i in range(23):
                     joint = pose3d[i] - offset      #if previewing skeleton, send the position of each keypoint to steamvr without rotation
@@ -176,87 +185,61 @@ def osc_build_bundle(trackers):
 class VRChatOSCBackend(Backend):
 
     def __init__(self, **kwargs):
-        self.prev_pose3d = None
-        pass
+        # Para cada tracker: posição e âncora do pescoço filtradas juntas.
+        self.history = {}
 
     def onparamchanged(self, params):
         pass
 
     def reset(self):
-        self.prev_pose3d = None
+        self.history.clear()
+
+    def expire_trackers(self, names):
+        for name in names:
+            self.history.pop(name, None)
 
     def connect(self, params):
-        if hasattr(params, "backend_ip") and hasattr(params, "backend_port"):
+        if hasattr(params, 'backend_ip') and hasattr(params, 'backend_port'):
             self.client = udp_client.UDPClient(params.backend_ip, params.backend_port)
         else:
-            self.client = udp_client.UDPClient("127.0.0.1", 9000)
+            self.client = udp_client.UDPClient('127.0.0.1', 9000)
 
-    def updatepose(self, params, pose3d, rots, hand_rots):
-    
-        #pose3d[:,1] = -pose3d[:,1]      #flip the positions as coordinate system is different from steamvr
-        #pose3d[:,0] = -pose3d[:,0]
-        
+    def updatepose(self, params, pose3d, rots, hand_rots, valid_trackers=None):
         if not valid_tracker_data(pose3d, rots, hand_rots) or not valid_alignment(params):
             return False
         try:
+            mask = tracker_mask(params, valid_trackers)
             weight = float(params.additional_smoothing)
         except (ValueError, TypeError):
             return False
         if not np.isfinite(weight) or not 0 <= weight <= 1:
             return False
-        pose3d = np.asarray(pose3d, dtype=float)
-        if self.prev_pose3d is not None:
-            pose3d = self.prev_pose3d * weight + pose3d * (1 - weight)
-        self.prev_pose3d = pose3d.copy()
-    
-        headsetpos = [float(0),float(0),float(0)]
-        headsetrot = R.from_quat([float(0),float(0),float(0),float(1)])
-
-        neckoffset = headsetrot.apply(np.asarray(params.hmd_to_neck_offset, dtype=float))   #the neck position seems to be the best point to allign to, as its well defined on
-                                                            #the skeleton (unlike the eyes/nose, which jump around) and can be calculated from hmd.
-        if params.recalibrate:
-            print("frame to recalibrate")
-        else:
-            pose3d = pose3d * float(params.posescale)     #rescale skeleton to calibrated height
-            #print(pose3d)
-            offset = pose3d[7] - (headsetpos+neckoffset)    #calculate the position of the skeleton
-            if not np.isfinite(pose3d).all() or not np.isfinite(offset).all():
+        if params.recalibrate or params.preview_skeleton:
+            return True  # Preview e mãos continuam não suportados pelo OSC.
+        pose = np.asarray(pose3d, dtype=float)
+        scale = float(params.posescale)
+        neckoffset = np.asarray(params.hmd_to_neck_offset, dtype=float)
+        trackers = [{'name': 'head', 'position': [0, 0, 0]}]
+        next_history = {}
+        for index, name in enumerate(NAMES[:3]):
+            if not mask.get(name, False):
+                continue
+            pair = pose[[JOINTS[name], 7]].copy()
+            if name in self.history:
+                pair = self.history[name] * weight + pair * (1 - weight)
+            scaled = pair * scale
+            position = scaled[0] - (scaled[1] - neckoffset)
+            if (not np.isfinite(pair).all() or not np.isfinite(position).all()
+                    or np.any(np.abs(position) > np.finfo(np.float32).max)):
                 return False
-            if not params.preview_skeleton:
-                trackers = []
-                trackers.append({ "name": "head", "position": [ 0, 0, 0 ]})
-                if not params.ignore_hip:
-                    for i in [(0,1),(5,2),(6,0)]:
-                        #left foot should be position 0 and rotation 1, but for osc, the rotations got switched at some point so its (0,2)
-                        position = pose3d[i[0]] - offset       #for each foot and hips, offset it by skeleton position and send to steamvr
-                        #position[0] = -position[0]
-                        #position[1] = -position[1]
-                        position[2] = -position[2]
-                        rotation = R.from_quat(rots[i[1]])
-                        #rotation *= R.from_euler("ZY", [ 180, -90 ], degrees=True)
-                        rotation = rotation.as_euler("zxy", degrees=True)
-                        rotation = [ -rotation[1], -rotation[2], rotation[0] ]  #mirror the rotation, as we mirrored the positions
-                        trackers.append({ "name": str(i[1]+1), "position": position, "rotation": rotation })
-                else:
-                    for i in [(0,1),(5,2)]:
-                        position = pose3d[i[0]] - offset       #for each foot and hips, offset it by skeleton position and send to steamvr
-                        #position[0] = -position[0]
-                        #position[1] = -position[1]
-                        position[2] = -position[2]
-                        rotation = R.from_quat(rots[i[1]])
-                        #rotation *= R.from_euler("ZY", [ 180, -90 ], degrees=True)
-                        rotation = rotation.as_euler("zxy", degrees=True)
-                        rotation = [ -rotation[1], -rotation[2], rotation[0] ]
-                        trackers.append({ "name": str(i[1]+1), "position": position, "rotation": rotation })
-                if params.use_hands:
-                    # Sending hand trackers unsupported
-                    pass
-                if len(trackers) > 1:
-                    self.client.send(osc_build_bundle(trackers))
-
-            else:
-                # Preview skeleton unsupported
-                pass
+            position[2] *= -1
+            rotation = R.from_quat(rots[index]).as_euler('zxy', degrees=True)
+            rotation = [-rotation[1], -rotation[2], rotation[0]]
+            trackers.append({'name': str(index + 1), 'position': position, 'rotation': rotation})
+            next_history[name] = pair
+        if len(trackers) > 1:
+            self.client.send(osc_build_bundle(trackers))
+            self.history.update(next_history)
         return True
 
     def disconnect(self):

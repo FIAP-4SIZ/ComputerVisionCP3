@@ -44,9 +44,11 @@ class LandmarkValidationTests(unittest.TestCase):
                  patch('parameters.open', side_effect=local_open, create=True):
                 params = Parameters()
                 params.set_min_visibility(.7)
+                params.set_tracker_timeout(.2)
                 params.save_params()
                 restored = Parameters()
         self.assertEqual(restored.min_visibility, .7)
+        self.assertEqual(restored.tracker_timeout, .2)
 
     def test_valid_pose_retains_all_positions_and_quaternions(self):
         landmarks, params = fixture()
@@ -143,7 +145,7 @@ class LandmarkValidationTests(unittest.TestCase):
         send.assert_not_called()
 
     def test_main_rejects_invalid_pose_without_updating_backend(self):
-        with patch.object(app, 'prepare_pose', side_effect=InvalidPose('occluded')):
+        with patch.object(app, 'prepare_trackers', side_effect=InvalidPose('occluded')):
             backend = run_one_frame(app, with_pose=True)
         backend.updatepose.assert_not_called()
         backend.disconnect.assert_called_once()
@@ -166,9 +168,9 @@ class OSCValidationTests(unittest.TestCase):
 
     def test_first_valid_frame_seeds_history_and_existing_filter_is_preserved(self):
         self.assertTrue(self.backend.updatepose(self.params, self.pose, self.rotations, None))
-        np.testing.assert_array_equal(self.backend.prev_pose3d, self.pose)
+        np.testing.assert_array_equal(self.backend.history['hip'], self.pose[[6, 7]])
         self.assertTrue(self.backend.updatepose(self.params, self.pose * 2, self.rotations, None))
-        np.testing.assert_allclose(self.backend.prev_pose3d, self.pose * 1.3)
+        np.testing.assert_allclose(self.backend.history['hip'], self.pose[[6, 7]] * 1.3)
         np.testing.assert_array_equal(self.pose, np.ones((29, 3)))
         bundle = self.backend.client.send.call_args.args[0]
         messages = OscPacket(bundle.dgram).messages
@@ -179,25 +181,26 @@ class OSCValidationTests(unittest.TestCase):
 
     def test_invalid_frame_does_not_contaminate_history_or_send_messages(self):
         self.backend.updatepose(self.params, self.pose, self.rotations, None)
-        previous = self.backend.prev_pose3d.copy()
+        previous = {name: pair.copy() for name, pair in self.backend.history.items()}
         for pose, rotations in ((np.full((29, 3), np.nan), self.rotations),
                                 (np.zeros((3, 3)), self.rotations),
                                 (self.pose, np.zeros((3, 4))),
                                 (self.pose, np.full((3, 4), np.inf))):
             self.assertFalse(self.backend.updatepose(self.params, pose, rotations, None))
-        np.testing.assert_array_equal(previous, self.backend.prev_pose3d)
+        for name, pair in previous.items():
+            np.testing.assert_array_equal(pair, self.backend.history[name])
         self.backend.client.send.assert_called_once()
 
     def test_smoothing_invalid_boundaries_and_reset(self):
         for value in (-1, 2, np.nan, np.inf, 'bad', None):
             self.params.additional_smoothing = value
             self.assertFalse(self.backend.updatepose(self.params, self.pose, self.rotations, None))
-        self.assertIsNone(self.backend.prev_pose3d)
+        self.assertEqual(self.backend.history, {})
         for value in (0, 1):
             self.params.additional_smoothing = value
             self.assertTrue(self.backend.updatepose(self.params, self.pose, self.rotations, None))
         self.backend.reset()
-        self.assertIsNone(self.backend.prev_pose3d)
+        self.assertEqual(self.backend.history, {})
 
     def test_tracker_data_rejects_invalid_hands_and_unnormalized_quaternion(self):
         self.assertFalse(valid_tracker_data(self.pose, self.rotations * 2))
