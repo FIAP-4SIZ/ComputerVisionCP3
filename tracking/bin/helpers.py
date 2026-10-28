@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from sys import platform
 from scipy.spatial.transform import Rotation as R
+from tracker_math import hip_rotation, leg_rotation, foot_rotation, hand_rotation
 import cv2
 import threading
 import sys
@@ -87,168 +88,15 @@ def normalize_screen_coordinates(X, w, h):
     return X / w * 2 - [1, h / w]
 
 def get_rot_hands(pose3d):
+    return hand_rotation(pose3d, right=False), hand_rotation(pose3d, right=True)
 
-    hand_r_f = pose3d[26]
-    hand_r_b = pose3d[27]
-    hand_r_u = pose3d[28]
-    
-    hand_l_f = pose3d[23]
-    hand_l_b = pose3d[24]
-    hand_l_u = pose3d[25]
-    
-    # left hand
-    
-    x = hand_l_f - hand_l_b
-    w = hand_l_u - hand_l_b
-    z = np.cross(x, w)
-    y = np.cross(z, x)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    l_hand_rot = np.vstack((z, y, -x)).T
-    
-    # right hand
-    
-    x = hand_r_f - hand_r_b
-    w = hand_r_u - hand_r_b
-    z = np.cross(x, w)
-    y = np.cross(z, x)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    r_hand_rot = np.vstack((z, y, -x)).T
-
-    r_hand_rot = R.from_matrix(r_hand_rot).as_quat()
-    l_hand_rot = R.from_matrix(l_hand_rot).as_quat()
-    
-    return l_hand_rot, r_hand_rot
 
 def get_rot_mediapipe(pose3d):
-    hip_left = pose3d[2]
-    hip_right = pose3d[3]
-    hip_up = pose3d[16]
-    
-    foot_l_f = pose3d[20]
-    foot_l_b = pose3d[21]
-    foot_l_u = pose3d[22]
-    
-    foot_r_f = pose3d[17]
-    foot_r_b = pose3d[18]
-    foot_r_u = pose3d[19]
-    
-    # hip
-    
-    x = hip_right - hip_left
-    w = hip_up - hip_left
-    z = np.cross(x, w)
-    y = np.cross(z, x)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    hip_rot = np.vstack((x, y, z)).T
-    
-    # left foot
-    
-    x = foot_l_f - foot_l_b
-    w = foot_l_u - foot_l_b
-    z = np.cross(x, w)
-    y = np.cross(z, x)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    l_foot_rot = np.vstack((x, y, z)).T
-    
-    # right foot
-    
-    x = foot_r_f - foot_r_b
-    w = foot_r_u - foot_r_b
-    z = np.cross(x, w)
-    y = np.cross(z, x)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    r_foot_rot = np.vstack((x, y, z)).T
-    
-    hip_rot = R.from_matrix(hip_rot).as_quat()
-    r_foot_rot = R.from_matrix(r_foot_rot).as_quat()
-    l_foot_rot = R.from_matrix(l_foot_rot).as_quat()
-    
-    return hip_rot, l_foot_rot, r_foot_rot
+    return hip_rotation(pose3d), foot_rotation(pose3d, right=True), foot_rotation(pose3d, right=False)
 
-    
+
 def get_rot(pose3d):
-
-    ## guesses
-    hip_left = 2
-    hip_right = 3
-    hip_up = 16
-    
-    knee_left = 1
-    knee_right = 4
-    
-    ankle_left = 0
-    ankle_right = 5
-    
-    # hip
-    
-    x = pose3d[hip_right] - pose3d[hip_left]
-    w = pose3d[hip_up] - pose3d[hip_left]
-    z = np.cross(x, w)
-    y = np.cross(z, x)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    hip_rot = np.vstack((x, y, z)).T
-
-    # right leg
-    
-    y = pose3d[knee_right] - pose3d[ankle_right]
-    w = pose3d[hip_right] - pose3d[ankle_right]
-    z = np.cross(w, y)
-    if np.sqrt(sum(z**2)) < 1e-6:
-        w = pose3d[hip_left] - pose3d[ankle_left]
-        z = np.cross(w, y)
-    x = np.cross(y,z)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    leg_r_rot = np.vstack((x, y, z)).T
-
-    # left leg
-    
-    y = pose3d[knee_left] - pose3d[ankle_left]
-    w = pose3d[hip_left] - pose3d[ankle_left]
-    z = np.cross(w, y)
-    if np.sqrt(sum(z**2)) < 1e-6:
-        w = pose3d[hip_right] - pose3d[ankle_left]
-        z = np.cross(w, y)
-    x = np.cross(y,z)
-    
-    x = x/np.sqrt(sum(x**2))
-    y = y/np.sqrt(sum(y**2))
-    z = z/np.sqrt(sum(z**2))
-    
-    leg_l_rot = np.vstack((x, y, z)).T
-
-    rot_hip = R.from_matrix(hip_rot).as_quat()
-    rot_leg_r = R.from_matrix(leg_r_rot).as_quat()
-    rot_leg_l = R.from_matrix(leg_l_rot).as_quat()
-    
-    return rot_hip, rot_leg_l, rot_leg_r
+    return hip_rotation(pose3d), leg_rotation(pose3d, right=True), leg_rotation(pose3d, right=False)
 
 
 def sendToPipe(text):
