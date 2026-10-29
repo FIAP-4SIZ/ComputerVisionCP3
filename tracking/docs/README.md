@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [VRChat Steam no Windows, sem headset: configurar e testar](guides/VRCHAT_DESKTOP.md).
+
 - [Câmera e arquivo de vídeo](guides/VIDEO_INPUT.md).
 - [Peitoral e enquadramentos parciais](guides/PARTIAL_BODY.md).
 - [Dedos e configuração do avatar VRChat](guides/VRCHAT_FINGERS.md).

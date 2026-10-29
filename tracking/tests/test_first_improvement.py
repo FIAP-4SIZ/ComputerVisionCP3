@@ -91,6 +91,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
     if parameter_overrides:
         vars(params).update(parameter_overrides)
     backend = Mock()
+    backend.status = 'Teste de destino desktop'
     backend.test_params = params
     if existing_calibration:
         params.pose3d_og = np.ones((29, 3))
@@ -103,6 +104,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
         for target, kwargs in (
             ('parameters.Parameters', {'return_value': params}),
             ('VRChatOSCBackend', {'return_value': backend}),
+            ('VRChatDesktopBackend', {'return_value': backend}),
             ('CameraStream', {'return_value': camera}),
             ('threading.Thread', {}),
             ('mp.solutions.pose.Pose', {'return_value': detector}),
@@ -111,7 +113,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
             ('cv2.waitKey', {'return_value': 27}),
             ('shutdown', {'side_effect': SystemExit}),
         ):
-            stack.enter_context(patch.object(module, target, **kwargs) if '.' not in target
+            stack.enter_context(patch.object(module, target, create=True, **kwargs) if '.' not in target
                                 else patch(module.__name__ + '.' + target, **kwargs))
         try:
             module.main()

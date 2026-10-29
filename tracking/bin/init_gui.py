@@ -198,7 +198,7 @@ def getparams():
     varbackend = tk.IntVar(value = param["backend"])
 
     def show_hide_backend_options():
-        if varbackend.get() == 2:
+        if varbackend.get() in (2,3):
             backend_options_frame.pack(side = tk.BOTTOM)
         else:
             backend_options_frame.pack_forget()
@@ -207,6 +207,7 @@ def getparams():
     tk.Radiobutton(backend_selection_frame, text='Somente análise', variable=varbackend, value=0, command=show_hide_backend_options).pack(side=tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text="SteamVR", variable = varbackend, value = 1, command = show_hide_backend_options).pack(side = tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text='VRChat OSC',  variable = varbackend, value = 2, command = show_hide_backend_options).pack(side = tk.LEFT)
+    tk.Radiobutton(backend_selection_frame, text='VRChat desktop (pulo)', variable=varbackend, value=3, command=show_hide_backend_options).pack(side=tk.LEFT)
     backend_selection_frame.pack(side = tk.TOP)
 
     tk.Label(backend_options_frame, text='IP/porta:').pack(side = tk.LEFT)

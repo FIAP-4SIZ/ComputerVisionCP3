@@ -4,6 +4,8 @@ Projeto acadêmico FIAP 4SIZ com Python 3.12, OpenCV e MediaPipe: análise por c
 
 **Protótipo experimental.** O código das melhorias está em branches de funcionalidades e PRs em rascunho. `main` e `develop` não recebem features com validações pendentes. CI aprovada não comprova funcionamento com webcam, SteamVR ou avatar real.
 
+Para VRChat Steam **sem headset**, consulte primeiro o [modo desktop e teste de pulo](tracking/docs/guides/VRCHAT_DESKTOP.md).
+
 ## Começar
 
 Instale Python **3.12** de 64 bits. Python 3.14 não é compatível com as dependências fixadas. A partir da raiz do repositório:

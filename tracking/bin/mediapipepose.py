@@ -22,6 +22,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import mediapipe as mp
+from desktop_osc import VRChatDesktopBackend
 from hand_quality import HandQualitySettings
 from finger_tracking import FingerTracking, draw_hands
 from body_observation import observe_body, draw_observation
@@ -48,7 +49,7 @@ def main():
     else:
         print("INFO: Interface web desativada nas configurações")
 
-    backends = { 0: DummyBackend, 1: SteamVRBackend, 2: VRChatOSCBackend }
+    backends = { 0: DummyBackend, 1: SteamVRBackend, 2: VRChatOSCBackend, 3: VRChatDesktopBackend }
     backend = backends[params.backend]()
     camera_thread = None
     pose = None
@@ -145,6 +146,8 @@ def main():
             if is_video:
                 params.input_status = camera_thread.status
             if frame is None:
+                if params.backend == 3 and is_video and camera_thread.state != 'running':
+                    backend.reset()
                 if fingers is not None and is_video and camera_thread.state != 'running':
                     fingers.suspend()
                 if is_video and camera_thread.state in ('completed', 'cancelled', 'error'):
@@ -188,6 +191,8 @@ def main():
             params.lighting_status = f'{LABELS[settings.mode]} | PDI:{preprocess_ms:.2f}ms'
 
             if params.paused and not is_video:
+                if params.backend == 3:
+                    backend.reset()
                 if fingers is not None:
                     fingers.suspend()
                 cv2.imshow("Análise de movimento", comparison_view(original, img, settings, preprocess_ms))
@@ -242,6 +247,9 @@ def main():
             image_landmarks = results.pose_landmarks.landmark if results.pose_landmarks else None
             params.body_observation = observe_body(image_landmarks, getattr(params, 'min_visibility', .5))
             params.body_status = params.body_observation.status
+            if params.backend == 3:
+                backend.process_image(image_landmarks, time.perf_counter(), getattr(params, "min_visibility", .5))
+                params.body_status = backend.status
             params.pose_status = 'Sem pose detectavel'
             tracking = None
             valid = dict.fromkeys(tracker_lifecycle.names, False)
