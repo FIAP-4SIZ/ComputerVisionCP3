@@ -53,3 +53,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/steamvr-readiness`: diagnóstico somente de leitura e plano de integração corporal/esquelética com HMD virtual; não fornece driver completo.
 
 - `feature/vrchat-documentation-audit`: pesquisa no índice completo oficial, correção das conclusões de compatibilidade e instruções do Selfie Expression; sem alegar nova integração funcional.
+
+- `feature/vrchat-osc-body-hands`: remetente OSC ampliado (trackers corporais opcionais e parâmetros configuráveis dos dedos), dependente da auditoria; validação de IK/Animator no cliente continua obrigatória.

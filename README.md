@@ -6,6 +6,8 @@ Projeto acadêmico FIAP 4SIZ com Python 3.12, OpenCV e MediaPipe: análise por c
 
 Para VRChat Steam **sem headset**, consulte primeiro o [modo desktop e teste de pulo](tracking/docs/guides/VRCHAT_DESKTOP.md).
 
+Para enviar o rastreamento MediaPipe por OSC, consulte [corpo e mãos: configuração e testes](tracking/docs/guides/OSC_BODY_HANDS.md). Há até oito trackers corporais opcionais e perfis de parâmetros por dedo. O corpo não exige editar o avatar; dedos por parâmetros exigem um avatar que já reconheça o contrato. O movimento no cliente e a calibração FBT em desktop ainda precisam ser validados.
+
 ## Começar
 
 Instale Python **3.12** de 64 bits. Python 3.14 não é compatível com as dependências fixadas. A partir da raiz do repositório:
@@ -33,6 +35,7 @@ Na primeira tela, escolha **Somente análise**, câmera **0** ou **Arquivo de v�
 - Câmera ao vivo e vídeo sequencial com timestamps, progresso, pausa, retomada, reinício e cancelamento.
 - Pontos visíveis e regiões parciais, com dependências verificadas antes de enviar trackers.
 - Mãos independentes do corpo, cinco flexões por mão, confirmação temporal e rejeição de dados incoerentes.
+- OSC ampliado opcional para peito/joelhos/cotovelos, abertura lateral aproximada de dedos e perfis JSON configuráveis, com monitor UDP local.
 - Ajustes opcionais de iluminação e comparação com a imagem original preservada.
 - Telas Tk e interface web em português; formulários com rolagem para telas menores.
 - SteamVR e OSC corporais preservados. A feature de dedos usa parâmetros customizados do avatar; não implementa esqueleto de dedos no driver SteamVR.

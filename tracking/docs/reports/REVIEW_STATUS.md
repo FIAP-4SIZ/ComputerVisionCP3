@@ -1,5 +1,7 @@
 # Revisão e integração no GitHub
 
+Atualização: `feature/vrchat-osc-body-hands`, baseada em `feature/vrchat-documentation-audit`, amplia exclusivamente a saída OSC de corpo/mãos e seus testes/controles. Os 219 testes locais, GUI virtual, build/runtime Linux e ensaio positivo de modelos/UDP estão registrados no [relatório](VALIDATION_REPORT.md). Revisão/CI do head publicado e validação no Windows/VRChat continuam necessárias; nenhum merge autorizado por estes resultados locais. Configuração e limites no [guia](../guides/OSC_BODY_HANDS.md).
+
 Todos os commits estão em FIAP-4SIZ/ComputerVisionCP3. Os PRs são rascunhos, comparados com a base imediatamente anterior para não misturar os diffs das features:
 
 | PR | Branch | Base |

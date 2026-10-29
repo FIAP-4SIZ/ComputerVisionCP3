@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [Enviar corpo e mãos por OSC: configuração, perfis e testes](guides/OSC_BODY_HANDS.md).
+
 - [Análise do exemplo leapmotion-osc e requisitos do avatar](guides/LEAPMOTION_OSC_ANALYSIS.md).
 
 - [Auditoria oficial: OSC corporal, dedos e Selfie Expression](guides/VRCHAT_OFFICIAL_RESEARCH.md).

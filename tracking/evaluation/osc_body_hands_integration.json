@@ -1,0 +1,153 @@
+{
+  "mediapipe": "0.10.21",
+  "opencv": "4.11.0",
+  "pose_image_sha256": "c8a830ed683c0276d713dd5aeda28f415f10cd6291972084a40d0d8b934ed62b",
+  "hand_image_sha256": "4b5134daa4cb60465535239535f9f74c2842aba3aa5fd30bf04ef5678f93d87f",
+  "hand_left_half": true,
+  "body_addresses": 17,
+  "hand_confirmation_states": [
+    [],
+    [
+      "Right"
+    ],
+    [
+      "Right"
+    ]
+  ],
+  "hand_addresses": 12,
+  "missing_hand_flags": {
+    "/avatar/parameters/MP_Left_Tracked": [
+      false
+    ],
+    "/avatar/parameters/MP_Right_Tracked": [
+      false
+    ]
+  },
+  "body_packet": {
+    "/tracking/trackers/head/position": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "/tracking/trackers/1/position": [
+      0.004910081624984741,
+      -0.6934912204742432,
+      -0.17144590616226196
+    ],
+    "/tracking/trackers/1/rotation": [
+      -7.617738723754883,
+      -159.86497497558594,
+      -4.652329921722412
+    ],
+    "/tracking/trackers/2/position": [
+      0.46946239471435547,
+      -1.1042016744613647,
+      -0.1766517460346222
+    ],
+    "/tracking/trackers/2/rotation": [
+      -12.836770057678223,
+      159.70948791503906,
+      2.9438529014587402
+    ],
+    "/tracking/trackers/3/position": [
+      -0.6691551208496094,
+      -1.1400225162506104,
+      -0.12319806963205338
+    ],
+    "/tracking/trackers/3/rotation": [
+      47.60515213012695,
+      124.16602325439453,
+      35.821189880371094
+    ],
+    "/tracking/trackers/4/position": [
+      0.001291673630475998,
+      -0.32332971692085266,
+      -0.11796034872531891
+    ],
+    "/tracking/trackers/4/rotation": [
+      -8.16444206237793,
+      -173.41885375976562,
+      -1.5363199710845947
+    ],
+    "/tracking/trackers/5/position": [
+      0.45864635705947876,
+      -0.7381783723831177,
+      -0.0917271301150322
+    ],
+    "/tracking/trackers/5/rotation": [
+      72.6172103881836,
+      -170.7500457763672,
+      -61.24089813232422
+    ],
+    "/tracking/trackers/6/position": [
+      -0.34308624267578125,
+      -0.9237241148948669,
+      -0.06466083973646164
+    ],
+    "/tracking/trackers/6/rotation": [
+      10.474654197692871,
+      -173.15638732910156,
+      48.199275970458984
+    ],
+    "/tracking/trackers/7/position": [
+      -0.39576253294944763,
+      -0.19489911198616028,
+      -0.04750782251358032
+    ],
+    "/tracking/trackers/7/rotation": [
+      85.46186828613281,
+      -163.1811065673828,
+      98.68525695800781
+    ],
+    "/tracking/trackers/8/position": [
+      0.43956518173217773,
+      -0.1899929642677307,
+      -0.1410486251115799
+    ],
+    "/tracking/trackers/8/rotation": [
+      32.96611404418945,
+      6.177416801452637,
+      93.0372543334961
+    ]
+  },
+  "hand_packet": {
+    "/avatar/parameters/MP_Left_Tracked": [
+      false
+    ],
+    "/avatar/parameters/MP_Right_Tracked": [
+      true
+    ],
+    "/avatar/parameters/MP_Right_Thumb": [
+      0.05791882798075676
+    ],
+    "/avatar/parameters/MP_Right_Thumb_Spread": [
+      0.007557211443781853
+    ],
+    "/avatar/parameters/MP_Right_Index": [
+      0.39614248275756836
+    ],
+    "/avatar/parameters/MP_Right_Index_Spread": [
+      0.5451958775520325
+    ],
+    "/avatar/parameters/MP_Right_Middle": [
+      0.2608509659767151
+    ],
+    "/avatar/parameters/MP_Right_Middle_Spread": [
+      0.20551228523254395
+    ],
+    "/avatar/parameters/MP_Right_Ring": [
+      0.15959057211875916
+    ],
+    "/avatar/parameters/MP_Right_Ring_Spread": [
+      1.0
+    ],
+    "/avatar/parameters/MP_Right_Little": [
+      0.12099111825227737
+    ],
+    "/avatar/parameters/MP_Right_Little_Spread": [
+      1.0
+    ]
+  },
+  "vrchat_tested": false,
+  "note": "Imagens estáticas distintas; não mede precisão, FPS ou sincronia corpo/mãos."
+}

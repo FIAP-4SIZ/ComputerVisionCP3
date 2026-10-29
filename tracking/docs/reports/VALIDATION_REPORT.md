@@ -1,5 +1,28 @@
 # Relatório de validação e integração
 
+## OSC: corpo e mãos — feature/vrchat-osc-body-hands
+
+Validação local em 29/10/2026, Python 3.12, MediaPipe 0.10.21 e OpenCV 4.11.0. Novos testes e código nesta feature; resultados anteriores abaixo permanecem históricos.
+
+| Verificação executada | Resultado |
+|---|---|
+| Suíte completa unittest | 219 testes aprovados; 33 novos em relação à base de auditoria |
+| UDP real local | Oito trackers e canais de dedos; perda, perfis e valores inválidos cobertos |
+| Integração positiva com modelos reais | Imagens MediaPipe de corpo/mão: oito trackers, uma mão confirmada e flags falsas na suspensão |
+| GUI Tk/OpenCV real em Xvfb | Aprovada em tela 1280×720; rolagem em janela 640×480; novos controles e perfil exercitados |
+| pip check / compileall / git diff --check | Aprovados |
+| PyInstaller Linux e executável --check-runtime | Aprovados com Pose, Hands e modelos |
+| Lint/tipagem | Não configurados no projeto; não declarados aprovados |
+| Windows desta feature / câmera e vídeo humanos / VRChat IK e dedos | Pendentes de validação própria; testes anteriores de pulo não aprovam esta funcionalidade |
+
+O [resultado do ensaio positivo](../../evaluation/osc_body_hands_integration.json) registra hashes das imagens e pacotes recebidos. Usa imagens estáticas distintas, não mede FPS, jitter, precisão nem movimento sincronizado. Os testes positivos da suíte de contratos usam inferência mockada; o ensaio separado executou os modelos reais. Instruções reproduzíveis no [guia OSC](../guides/OSC_BODY_HANDS.md).
+
+Escopo: até cinco trackers adicionais opcionais, desligados por padrão; dez flexões e até dez aberturas laterais aproximadas; perfil JSON de nomes/escalas; monitor local; limpeza de histórico/socket. As três saídas corporais originais mantêm suas fórmulas/contratos. Sem dependências novas.
+
+Limitações: OSC corporal não cria punhos ou esqueleto de dedos. Parâmetros de dedos precisam existir no avatar com animações correspondentes; remapeamento não instala suporte num avatar público. Dados ocultos não são reenviados como medições, mas não há comando documentado de desativação individual de OSC Tracker. Desaparecimento imediato no receptor não foi comprovado. Calibração/aplicação FBT em desktop sem headset continuam pendentes.
+
+**Integração não aprovada; nenhum merge para develop.** CI do commit publicado deve ser verificada separadamente; não transferir aprovação de uma execução anterior para este branch.
+
 ## Feature de vídeo
 
 Repositório de entrega: `FIAP-4SIZ/ComputerVisionCP3`. Branch `feature/video-input`. Importação da base é um pré-requisito: este repositório continha somente README, que foi preservado e recebeu apenas uma seção de navegação. A licença MIT e a origem dos arquivos estão registradas em `DEVELOPMENT.md`.
