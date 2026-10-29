@@ -1,0 +1,128 @@
+{
+  "channels": [
+    {
+      "side": "Left",
+      "finger": "Thumb",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Left_Thumb"
+    },
+    {
+      "side": "Left",
+      "finger": "Thumb",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Left_Thumb_Spread"
+    },
+    {
+      "side": "Left",
+      "finger": "Index",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Left_Index"
+    },
+    {
+      "side": "Left",
+      "finger": "Index",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Left_Index_Spread"
+    },
+    {
+      "side": "Left",
+      "finger": "Middle",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Left_Middle"
+    },
+    {
+      "side": "Left",
+      "finger": "Middle",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Left_Middle_Spread"
+    },
+    {
+      "side": "Left",
+      "finger": "Ring",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Left_Ring"
+    },
+    {
+      "side": "Left",
+      "finger": "Ring",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Left_Ring_Spread"
+    },
+    {
+      "side": "Left",
+      "finger": "Little",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Left_Little"
+    },
+    {
+      "side": "Left",
+      "finger": "Little",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Left_Little_Spread"
+    },
+    {
+      "side": "Right",
+      "finger": "Thumb",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Right_Thumb"
+    },
+    {
+      "side": "Right",
+      "finger": "Thumb",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Right_Thumb_Spread"
+    },
+    {
+      "side": "Right",
+      "finger": "Index",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Right_Index"
+    },
+    {
+      "side": "Right",
+      "finger": "Index",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Right_Index_Spread"
+    },
+    {
+      "side": "Right",
+      "finger": "Middle",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Right_Middle"
+    },
+    {
+      "side": "Right",
+      "finger": "Middle",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Right_Middle_Spread"
+    },
+    {
+      "side": "Right",
+      "finger": "Ring",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Right_Ring"
+    },
+    {
+      "side": "Right",
+      "finger": "Ring",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Right_Ring_Spread"
+    },
+    {
+      "side": "Right",
+      "finger": "Little",
+      "source": "curl",
+      "address": "/avatar/parameters/MP_Right_Little"
+    },
+    {
+      "side": "Right",
+      "finger": "Little",
+      "source": "spread",
+      "address": "/avatar/parameters/MP_Right_Little_Spread"
+    }
+  ],
+  "tracked": {
+    "Left": "/avatar/parameters/MP_Left_Tracked",
+    "Right": "/avatar/parameters/MP_Right_Tracked"
+  }
+}

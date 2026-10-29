@@ -48,6 +48,8 @@ class Parameters():
         self.feet_rotation = param["feetrot"]
         self.use_hands = param["use_hands"]
         self.track_fingers = param.get("track_fingers", False)
+        self.osc_full_body = param.get('osc_full_body', False)
+        self.osc_hand_profile = param.get('osc_hand_profile', '')
         self.ignore_hip = param["ignore_hip"]
         
         self.camera_settings = param["camera_settings"]

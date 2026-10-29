@@ -31,6 +31,8 @@ from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
 from pose_validation import InvalidPose
 from independent_trackers import prepare_trackers, enabled_names, TrackerLifecycle
+from osc_body import prepare_extra_trackers, EXTRA_IDS
+from osc_hands import load_profile, OSCProfileError
 from lighting import DEFAULT_LIGHTING, LABELS, apply_lighting, comparison_view, resize_for_pose
 
 
@@ -58,6 +60,10 @@ def main():
     fingers = None
     finger_frames = {}
     try:
+        hand_profile = None
+        if getattr(params, 'track_fingers', False):
+            profile_path = getattr(params, 'osc_hand_profile', '') if params.backend == 2 else ''
+            hand_profile = load_profile(profile_path)
         backend.connect(params)
         if params.exit_ready:
             return
@@ -81,7 +87,7 @@ def main():
             # Mãos independentes da pose corporal: funcionam sem quadris/pernas.
             fingers = FingerTracking(mp.solutions.hands.Hands(max_num_hands=2),
                                      backend.client if params.backend == 2 else None,
-                                     getattr(params, 'hand_quality', HandQualitySettings()))
+                                     getattr(params, 'hand_quality', HandQualitySettings()), hand_profile)
         cv2.namedWindow("Análise de movimento")
 
         #Main program loop:
@@ -169,6 +175,8 @@ def main():
                         del params.pose3d_og
                 if params.backend == 3 and is_video and camera_thread.state != 'running':
                     backend.reset()
+                if params.backend == 2 and is_video and camera_thread.state != 'running':
+                    backend.reset()  # Retomar não mistura posições anteriores à pausa/fim.
                 if fingers is not None and is_video and camera_thread.state != 'running':
                     fingers.suspend()
                 if is_video and camera_thread.state in ('completed', 'cancelled', 'error'):
@@ -213,7 +221,7 @@ def main():
             params.lighting_status = f'{LABELS[settings.mode]} | PDI:{preprocess_ms:.2f}ms'
 
             if params.paused and not is_video:
-                if params.backend == 3:
+                if params.backend in (2, 3):
                     backend.reset()
                 if fingers is not None:
                     fingers.suspend()
@@ -288,8 +296,16 @@ def main():
             params.tracker_status = ('Desktop: sem envio de trackers corporais' if params.backend == 3
                                      else tracker_lifecycle.summary())
             calibration = None
-            if tracking is not None and any(valid.values()):
+            extras = None
+            if params.backend == 2 and getattr(params, 'osc_full_body', False):
+                world = results.pose_world_landmarks.landmark if results.pose_world_landmarks else None
+                extras = prepare_extra_trackers(world, image_landmarks, params)
+                backend.expire_trackers(set(EXTRA_IDS) - set(extras))
+                params.tracker_status += f' | OSC adicionais:{len(extras)}/5'
+            if tracking is not None and (any(valid.values()) or extras):
                 options = {} if getattr(params, 'preview_skeleton', False) else {'valid_trackers': valid}
+                if extras is not None:
+                    options['extra_trackers'] = extras
                 updated = backend.updatepose(params, tracking.pose, tracking.rotations, tracking.hands, **options)
                 if updated is False:
                     params.pose_status = 'Destino rejeitou pose: sem nova atualizacao'
@@ -344,10 +360,10 @@ def main():
             if key == 27:
                 shutdown(params)
 
-    except (VideoInputError, CameraInputError) as exc:
+    except (VideoInputError, CameraInputError, OSCProfileError) as exc:
         params.input_status = str(exc)
         print('ERROR: ' + str(exc))
-        messagebox.showerror('Erro na entrada de imagem', str(exc))
+        messagebox.showerror('Erro na entrada ou configuração', str(exc))
     finally:
         if camera_thread is not None and hasattr(camera_thread, 'close'):
             camera_thread.close()

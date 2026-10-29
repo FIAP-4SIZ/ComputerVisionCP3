@@ -46,6 +46,8 @@ def getparams():
     if "calib_rot" not in param:
         param["calib_rot"] = True
     param.setdefault("track_fingers", False)
+    param.setdefault('osc_full_body', False)
+    param.setdefault('osc_hand_profile', '')
     if "use_hands" not in param:
         param["use_hands"] = False
     if "ignore_hip" not in param:
@@ -145,6 +147,17 @@ def getparams():
 
     varfingers = tk.IntVar(value=param["track_fingers"])
     tk.Checkbutton(content, text="Rastrear dedos (OSC requer avatar configurado)", variable=varfingers).pack()
+    full_body = tk.IntVar(value=param['osc_full_body'])
+    tk.Checkbutton(content, text='OSC: incluir peito, joelhos e cotovelos (até 8 trackers)', variable=full_body).pack()
+    hand_profile = tk.StringVar(value=param['osc_hand_profile'])
+    tk.Label(content, text='Perfil OSC das mãos (vazio = parâmetros MP padrão):').pack()
+    tk.Entry(content, textvariable=hand_profile, width=50).pack()
+    def select_hand_profile():
+        path = filedialog.askopenfilename(title='Selecionar perfil OSC das mãos', filetypes=[('Perfil JSON', '*.json')])
+        if path:
+            hand_profile.set(path)
+    tk.Button(content, text='Selecionar perfil de mãos...', command=select_hand_profile).pack()
+    tk.Label(content, text='Corpo: calibrar no VRChat. Dedos: o avatar deve reconhecer o perfil.').pack()
 
     varfeet = tk.IntVar(value = param["feetrot"])
     rot_feet_check = tk.Checkbutton(content, text = 'Ativar rotação experimental dos pés', variable = varfeet)
@@ -302,6 +315,8 @@ def getparams():
     param["feetrot"] = feet_rotation
     param["use_hands"] = use_hands
     param["track_fingers"] = bool(varfingers.get())
+    param['osc_full_body'] = bool(full_body.get())
+    param['osc_hand_profile'] = hand_profile.get().strip()
     param["ignore_hip"] = ignore_hip
     
     param["camera_settings"] = camera_settings

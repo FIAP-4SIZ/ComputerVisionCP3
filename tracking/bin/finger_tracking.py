@@ -5,6 +5,7 @@ import math
 import numpy as np
 from pythonosc.osc_bundle_builder import OscBundleBuilder, IMMEDIATELY
 from pythonosc.osc_message_builder import OscMessageBuilder
+from osc_hands import load_profile, validate_profile, hand_messages
 
 FINGERS = {'Thumb': (1, 2, 3, 4), 'Index': (5, 6, 7, 8),
            'Middle': (9, 10, 11, 12), 'Ring': (13, 14, 15, 16),
@@ -32,19 +33,49 @@ def finger_curls(landmarks):
     return values
 
 
+def finger_spreads(landmarks):
+    """Abertura lateral: ângulo projetado na palma / 45 graus, limitado a 1.
+
+    A direção neutra de cada dedo é punho→base; a direção observada é
+    base→articulação seguinte. Projeção remove a componente normal à palma.
+    Projeções degeneradas são omitidas, sem fabricar abertura lateral.
+    """
+    p = np.asarray([[v.x, v.y, v.z] for v in landmarks], dtype=float)
+    if p.shape != (21, 3) or not np.isfinite(p).all():
+        raise ValueError('Esperados 21 pontos finitos')
+    normal = np.cross(p[5] - p[0], p[17] - p[0])
+    length = np.linalg.norm(normal)
+    if length < 1e-8:
+        return {}
+    normal /= length
+    values = {}
+    for name, chain in FINGERS.items():
+        base, following = chain[:2]
+        vectors = np.stack((p[base] - p[0], p[following] - p[base]))
+        vectors -= (vectors @ normal)[:, None] * normal
+        lengths = np.linalg.norm(vectors, axis=1)
+        if np.any(lengths < 1e-8):
+            continue
+        a, b = vectors / lengths[:, None]
+        values[name] = float(np.clip(math.acos(float(np.clip(a @ b, -1, 1))) / (math.pi / 4), 0, 1))
+    return values
+
+
 @dataclass
 class HandFrame:
     side: str
     score: float
     points: object
     curls: dict
+    spreads: object = None
 
 
 class FingerTracking:
-    def __init__(self, detector, client=None, settings=HandQualitySettings()):
+    def __init__(self, detector, client=None, settings=HandQualitySettings(), profile=None):
         self.detector = detector
         self.client = client
         self.settings = settings
+        self.profile = load_profile() if profile is None else validate_profile(profile)
         self._settings_used = settings
         self._previous = {}
         self._counts = {}
@@ -92,7 +123,7 @@ class FingerTracking:
             except (AttributeError, TypeError, ValueError):
                 continue
             if side not in frames or score > frames[side].score:
-                frames[side] = HandFrame(side, score, points, curls)
+                frames[side] = HandFrame(side, score, points, curls, finger_spreads(world.landmark))
         for side in duplicates:
             frames.pop(side, None)  # Lateralidade ambígua não deve animar duas mãos.
         previous, counts, accepted = {}, {}, {}
@@ -116,6 +147,7 @@ class FingerTracking:
         if self.client is None:
             return
         bundle = OscBundleBuilder(IMMEDIATELY)
+        accepted = {}
         for side in SIDES:
             frame = frames.get(side)
             if frame is not None:
@@ -124,18 +156,19 @@ class FingerTracking:
                     valid = frame.side == side and set(frame.curls) == set(FINGERS)
                     valid = valid and all(not isinstance(v, bool) and math.isfinite(v) and 0 <= v <= 1
                                           for v in frame.curls.values())
-                except (AttributeError, TypeError, ValueError):
+                except (AttributeError, TypeError, ValueError, OverflowError):
                     valid = False
                 if not valid:
                     frame = None
-            values = {'Tracked': frame is not None}
             if frame is not None:
-                values.update(frame.curls)
-            for name, value in values.items():
-                message = OscMessageBuilder(address=f'/avatar/parameters/MP_{side}_{name}')
-                message.add_arg(value)
-                bundle.add_content(message.build())
-        self.client.send(bundle.build())
+                accepted[side] = frame
+        messages = hand_messages(self.profile, accepted)
+        for address, value in messages:
+            message = OscMessageBuilder(address=address)
+            message.add_arg(value)
+            bundle.add_content(message.build())
+        if messages:
+            self.client.send(bundle.build())
 
     def suspend(self):
         self._previous.clear()
