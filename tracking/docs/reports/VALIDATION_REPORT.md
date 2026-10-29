@@ -1,5 +1,13 @@
 # Relatório de validação e integração
 
+## Rotação inicial da câmera — feature/camera-rotation-default
+
+Em 29/10/2026, uma captura do usuário mostrou imagem lateral, pés expirados e mensagens OSC recebidas. A inspeção confirmou que `Parameters.rotate_image` iniciava com `0`, constante OpenCV para 90° horários. Corrigido para `None`, sem modificar rotações explícitas em `saved_params.json`. Quem já salvou 90° deve selecionar 0 na interface; apagar o arquivo não é necessário.
+
+Validação local: 223 testes aprovados, incluindo quatro regressões de primeira execução, persistência de todas as rotações, retorno a 0° e configuração corrompida. `pip check`, `compileall`, `git diff --check` e GUI real em display virtual aprovados. Build Linux e runtime verificados separadamente; CI do head publicado deve ser consultada no PR.
+
+O usuário informou que **Calibrate FBT aparece no desktop, mas ainda não havia calibrado**. Isso comprova disponibilidade relatada do botão, não confirmação/aplicação do IK. Recepção de `MP_*` também não comprova suporte do Animator. Guia atualizado para separar rotação, enquadramento, calibração do remetente, calibração do cliente e suporte dos dedos. Nenhum merge nem declaração de funcionamento físico após calibração.
+
 ## OSC: corpo e mãos — feature/vrchat-osc-body-hands
 
 Validação local em 29/10/2026, Python 3.12, MediaPipe 0.10.21 e OpenCV 4.11.0. Novos testes e código nesta feature; resultados anteriores abaixo permanecem históricos.

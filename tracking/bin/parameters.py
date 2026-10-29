@@ -39,7 +39,8 @@ class Parameters():
         self.hmd_to_neck_offset = [0,-0.2,0.1]    #offset of your hmd to the base of your neck, to ensure the tracking is stable even if you look around. Default is 20cm down, 10cm back.
         self.preview_skeleton = param["prevskel"]             #if True, whole skeleton will appear in vr 2 meters in front of you. Good to visualize if everything is working
         self.dont_wait_hmd = param["waithmd"]                  #dont wait for movement from hmd, start inference immediately.
-        self.rotate_image = 0 # cv2.ROTATE_90_CLOCKWISE # cv2.ROTATE_90_COUTERCLOCKWISE # cv2.ROTATE_180 # None # if you want, rotate the camera
+        # None preserva a orientação capturada; no OpenCV, 0 significa girar 90°.
+        self.rotate_image = None
         self.camera_latency = 0.0
         self.smoothing_1 = 0.0
         self.additional_smoothing_1 = 0.7
