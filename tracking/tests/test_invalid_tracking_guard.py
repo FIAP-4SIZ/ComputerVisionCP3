@@ -64,3 +64,14 @@ class InvalidTrackingTests(unittest.TestCase):
         FingerTracking(None,client).publish({'Right':HandFrame('Right',1,None,curls)})
         values={m.message.address:m.message.params[0] for m in OscPacket(client.send.call_args.args[0].dgram).messages}
         for key,value in curls.items():self.assertEqual(values['/avatar/parameters/MP_Right_'+key],value)
+
+    def test_pause_reset_requires_neutral_pose_before_new_action(self):
+        backend=VRChatDesktopBackend();backend.client=Mock()
+        for timestamp in (0,.1,.2):backend.process_image(points(),timestamp)
+        backend.reset()
+        backend.client.send_message.reset_mock()
+        for timestamp in (.3,.4,.5):backend.process_image(points(),timestamp)
+        backend.client.send_message.assert_not_called()
+        backend.process_image(points(False),.6)
+        for timestamp in (.7,.8,.9):backend.process_image(points(),timestamp)
+        backend.client.send_message.assert_called_once_with('/input/Jump',1)

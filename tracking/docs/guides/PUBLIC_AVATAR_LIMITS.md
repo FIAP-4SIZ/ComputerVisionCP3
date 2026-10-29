@@ -6,7 +6,7 @@ A regra solicitada de não mostrar posições inválidas é aplicada ao envio: n
 
 ## Proteções adicionais
 
-- Perder pontos durante um gesto libera o botão e desarma a ação. Recuperar a pose com braços ainda levantados não dispara outro pulo: abaixar os braços válidos é necessário para rearmar.
+- Perder pontos, pausar ou reiniciar o estado durante um gesto libera o botão e desarma a ação. Recuperar a pose com braços ainda levantados não dispara outro pulo: abaixar os braços válidos é necessário para rearmar.
 - O pulso de pulo também é liberado pelo relógio do laço, sem depender de outro quadro recebido.
 - Sem novos quadros por dois segundos, a aplicação suspende flags de mãos, descarta calibração anterior e expira estado local dos trackers uma vez por interrupção. O limite evita invalidar imediatamente câmeras lentas; não mede a qualidade de cada pixel.
 - Antes do envio dos dedos, NaN/infinito, valores fora de [0,1], dedos faltantes e lado incoerente resultam em `Tracked=false`, sem flexões daquele quadro.

@@ -54,7 +54,7 @@ class VRChatDesktopBackend:
         self.pressed = False
         self.deadline = None
         self.count = 0
-        self.armed = True
+        self.armed = False
 
     def disconnect(self):
         self.reset()
