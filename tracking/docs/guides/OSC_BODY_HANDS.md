@@ -39,15 +39,17 @@ Para corpo, não é necessário editar o avatar no Unity. Verifique no seu clien
 
 ### Recebo valores no OSC Debug, mas o avatar não se move
 
-Recepção é uma etapa diferente da calibração/aplicação de IK. Em teste do usuário no desktop, a opção **Calibrate FBT** foi relatada como disponível, mas ainda não utilizada; isso não confirma movimento após calibração. Para investigar:
+Recepção é uma etapa diferente da calibração/aplicação de IK. O relato inicial de que **Calibrate FBT** aparecia no desktop foi esclarecido pelo usuário: eram as opções de modelo de tracker (esfera, sistema, caixa e eixo). A captura posterior mostra configurações de calibração e o modelo de trackers, não confirma acesso ao comando para iniciar FBT. Não há movimento após calibração confirmado. Para investigar:
 
 1. Confira **Rotação da imagem (horária)**. Pessoa e ambiente devem aparecer em pé. O padrão foi corrigido para `None` (sem rotação): `0` é a constante OpenCV para girar 90°. Instalações que já salvaram 90° conservam sua escolha; selecione explicitamente **0** na interface para corrigir, sem apagar outras configurações.
 2. Enquadre quadril e pés para começar com os três trackers recomendados. `PD:expirado`/`PE:expirado` indica ausência de atualização válida dos pés. Valores antigos no console não provam que o tracker está sendo atualizado agora.
 3. Ajuste escala/alinhamento no remetente quando necessário. **Recalibrar**, no aplicativo Python, não substitui a calibração do receptor.
-4. No VRChat, feche o OSC Debug, clique em **Calibrate FBT**, confira as esferas e siga a confirmação exibida pelo cliente. A documentação oficial descreve confirmação com os dois botões Interact dos controles VR; não presumimos uma tecla equivalente no desktop sem verificar o que sua versão apresenta.
+4. No VRChat, feche o OSC Debug, abra a página principal do menu rápido com Esc e procure **Calibrate FBT** (calibrar corpo inteiro), fora das configurações de Tracking & IK. Se disponível, inicie, confira as esferas e siga a confirmação exibida pelo cliente. A documentação oficial descreve confirmação com os dois botões Interact dos controles VR; não presumimos uma tecla equivalente no desktop sem verificar o que sua versão apresenta.
 5. Só então teste o movimento. Registre se a calibração concluiu e quais regiões respondem. Se o desktop não fornecer confirmação utilizável, isso é uma limitação operacional a investigar; não será corrigida enviando mais trackers ou trocando os nomes MP.
 
 Para dedos, valores `MP_*` no console também não comprovam que o avatar possui os parâmetros/animações correspondentes. Corpo calibrado e parâmetros de dedos são contratos independentes.
+
+Na tela de configurações, **Enviar Dados OSC de Rastreio de RV da Cabeça e do Pulso** é saída do cliente, não habilitação do recebimento dos trackers Python. **Modelo dos Rastreadores FBT** escolhe visualização; **Confirmar Calibração** aparece como opção de configuração, não comprova início/conclusão da calibração. Não alterar esses interruptores aleatoriamente para tentar ativar IK.
 
 Para dedos, o avatar precisa **já possuir parâmetros e animações correspondentes**. Um avatar público preparado pode funcionar sem Unity do usuário. Um avatar público genérico não recebe novas animações por este programa. Na configuração OSC gerada pelo VRChat, confira os nomes/endereço de `input` e tipo `Float`/`Bool`; editar esse JSON não adiciona animações ao avatar. Selfie Expression é outra implementação, interna do VRChat, e pode disputar a webcam; feche-a durante este teste.
 

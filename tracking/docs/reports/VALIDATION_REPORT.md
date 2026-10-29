@@ -6,7 +6,7 @@ Em 29/10/2026, uma captura do usuário mostrou imagem lateral, pés expirados e 
 
 Validação local: 223 testes aprovados, incluindo quatro regressões de primeira execução, persistência de todas as rotações, retorno a 0° e configuração corrompida. `pip check`, `compileall`, `git diff --check` e GUI real em display virtual aprovados. Build Linux e runtime verificados separadamente; CI do head publicado deve ser consultada no PR.
 
-O usuário informou que **Calibrate FBT aparece no desktop, mas ainda não havia calibrado**. Isso comprova disponibilidade relatada do botão, não confirmação/aplicação do IK. Recepção de `MP_*` também não comprova suporte do Animator. Guia atualizado para separar rotação, enquadramento, calibração do remetente, calibração do cliente e suporte dos dedos. Nenhum merge nem declaração de funcionamento físico após calibração.
+O relato inicial de que **Calibrate FBT aparece no desktop** foi corrigido pelo usuário: eram as opções de modelo de tracker. A captura posterior mostra configurações (incluindo confirmação e modelo Esfera), não comprova disponibilidade do comando para iniciar FBT nem aplicação do IK. Recepção de `MP_*` também não comprova suporte do Animator. Guia atualizado para separar rotação, enquadramento, calibração do remetente, calibração do cliente e suporte dos dedos. Nenhum merge nem declaração de funcionamento físico após calibração.
 
 ## OSC: corpo e mãos — feature/vrchat-osc-body-hands
 
