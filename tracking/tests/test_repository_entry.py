@@ -53,7 +53,7 @@ class RepositoryEntryTests(unittest.TestCase):
         documents=[ROOT/'README.md',TRACKING/'README.md',ROOT/'DEVELOPMENT.md']
         documents += [p for p in (TRACKING/'docs').rglob('*.md') if 'reference' not in p.parts]
         for document in documents:
-            for target in re.findall(r'\]\(([^)]+)\)',document.read_text()):
+            for target in re.findall(r'\]\(([^)]+)\)',document.read_text(encoding="utf-8")):
                 if '://' in target or target.startswith(('#','mailto:','/')):
                     continue
                 path=target.split('#')[0]
@@ -61,6 +61,11 @@ class RepositoryEntryTests(unittest.TestCase):
                     self.assertTrue((document.parent/path).exists())
 
     def test_requirements_forward_to_single_runtime_definition(self):
-        self.assertIn('-r requirements-study.txt',(TRACKING/'requirements.txt').read_text())
-        self.assertIn('-r ../requirements-study.txt',(TRACKING/'bin/requirements.txt').read_text())
-        self.assertIn('-r requirements-study.txt',(TRACKING/'requirements-build.txt').read_text())
+        self.assertIn('-r requirements-study.txt',(TRACKING/'requirements.txt').read_text(encoding="utf-8"))
+        self.assertIn('-r ../requirements-study.txt',(TRACKING/'bin/requirements.txt').read_text(encoding="utf-8"))
+        self.assertIn('-r requirements-study.txt',(TRACKING/'requirements-build.txt').read_text(encoding="utf-8"))
+
+    def test_documentation_checks_with_windows_ansi_default(self):
+        # Reproduz a causa da falha na CI Windows sem exigir esse sistema aqui.
+        with patch('io.text_encoding', side_effect=lambda encoding=None, stacklevel=2: encoding or 'cp1252'):
+            self.test_current_markdown_local_links_exist()

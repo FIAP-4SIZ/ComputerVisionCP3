@@ -18,6 +18,7 @@ Os nomes das telas agora estão em português: use **Salvar e continuar**, **Pau
 - [Trackers independentes e limites do receptor VR](guides/PER_TRACKER_VALIDATION.md).
 - [Diagnóstico original e conceitos de PDI](architecture/ESTUDO_PDI.md).
 - [Relatório de testes e pendências](reports/VALIDATION_REPORT.md).
+- [Cadeia de PRs e situação da integração](reports/REVIEW_STATUS.md).
 - [Fluxo de desenvolvimento e PRs](../../DEVELOPMENT.md).
 - [Resultados experimentais de iluminação](../evaluation/lighting_jeff_60.json).
 

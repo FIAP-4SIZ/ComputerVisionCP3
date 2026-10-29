@@ -197,3 +197,8 @@ A API está acessível nesta etapa; as menções anteriores a Forbidden são his
 Versão organizada: **154 testes locais aprovados, zero skips**, incluindo 5 novos testes de entrada/documentação. `pip check`, compilação, referências locais de Markdown e inferência real por `run.py --check-runtime` iniciada de outra pasta aprovados. Widgets reais em Xvfb 1280×720: janela requisitada 715×596, rolagem até Sair numa janela 640×480 aprovada. O template alternativo não usado saiu dos recursos empacotados; o experimento SteamVR com assert 0 está preservado em examples, sem ter sido contabilizado como teste.
 
 As comparações de confiabilidade nos guias são cenários controlados, não medida de acurácia em pessoas. Ainda faltam webcam física na nova versão, condições reais de iluminação/oclusão, recepção dos trackers e animações dos dedos no avatar. Os scripts CMD atualizados também requerem execução manual no Windows. **Nenhum merge autorizado por estes resultados enquanto houver verificações obrigatórias pendentes.**
+
+
+### Correção de compatibilidade encontrada pela CI
+
+A primeira execução da organização, commit `29b8234`, falhou no Windows ao ler um documento UTF-8 com a codificação padrão CP1252 no novo teste de links. A execução Linux foi cancelada pelo fail-fast dessa matriz; não é aprovada. Corrigida a leitura para declarar UTF-8 e adicionado caso de regressão simulando padrão ANSI Windows. A matriz agora executa ambos os sistemas mesmo se um falhar, para preservar os diagnósticos. Nova suíte local: **155 testes**. O build e runtime Linux da organização já passaram localmente; a nova CI precisa confirmar o commit da correção.
