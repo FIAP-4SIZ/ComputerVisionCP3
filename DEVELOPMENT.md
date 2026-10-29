@@ -6,8 +6,9 @@ Na inspeção inicial havia somente `origin/main`, três commits descritivos em 
 - `feature/pose-validation`: validação das poses, dependente da funcionalidade de vídeo.
 - `feature/per-tracker-validation`: seleção e expiração locais por tracker, dependente da validação de poses.
 - `feature/lighting-comparison`: ajustes opcionais de iluminação e comparação do mesmo vídeo, dependente dos trackers independentes.
+- `feature/desktop-validation`: smoke de widgets reais e registro das validações de desktop.
 - Commits pequenos, descritivos em inglês; sem push para o repositório de referência.
-- `develop` só será criada/atualizada e receberá merge quando todas as verificações obrigatórias estiverem aprovadas. Ausência de infraestrutura não conta como aprovação.
+- `develop` foi criada, por autorização explícita do usuário, a partir de `main`, sem integrar features. Merges de features continuam condicionados a todas as verificações obrigatórias aprovadas. Ausência de infraestrutura não conta como aprovação.
 - Não editar diretamente `main` ou `develop`; não publicar merges com testes pendentes.
 
 ## Origem e arquitetura

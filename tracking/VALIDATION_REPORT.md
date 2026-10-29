@@ -138,3 +138,15 @@ Commits de implementação:
 **Integração bloqueada; nenhum merge para `develop` ou `main`.** Não há dispositivo de câmera, display ou Xvfb neste ambiente. A API do GitHub retornou `Forbidden` ao consultar Actions; não se inferiu aprovação da CI pelo push. O experimento manual de SteamVR continua não executado e não foi descrito como aprovado.
 
 Próxima recomendação: obter vídeos de corpo inteiro com iluminação normal/escura/contraluz e referência anotada, repetindo o ensaio. Adotar um ajuste, ou acrescentar outra técnica, só depois de observar benefício medido para esse cenário.
+
+## Validação posterior de desktop
+
+Por autorização do usuário, `develop` foi criada/publicada a partir de `main` (`3732575`), sem merge de features. As afirmações anteriores sobre inexistência dessa branch descrevem o estado anterior.
+
+Em `feature/desktop-validation`, foi adicionado `tools/validate_desktop.py`, que exige display e verifica widgets Tk reais e janela OpenCV real. Execução em Xvfb 1920×1200: controles aprovados, janela aprovada, layout 624×915 cabe na tela. A configuração inicial e os callbacks são automatizados; isso não equivale à execução completa com câmera/headset ou a teste Windows.
+
+Suíte repetida: 109 testes aprovados sem skips. Dependências, compilação e smoke do binário Linux aprovados. Windows e webcam estão disponíveis no computador do usuário, mas aguardam resultados. VR não está disponível no equipamento informado. API de Actions segue negando a consulta. Roteiro e critérios em `DESKTOP_VALIDATION.md`.
+
+**Nenhum merge para `develop`; integração não aprovada.**
+
+Na tentativa Windows enviada pelo usuário, o ambiente foi criado com Python 3.14. A instalação falhou em `mediapipe==0.10.21`, seguida de oito erros de importação por dependências ausentes. Não houve execução funcional da suíte, build ou smoke Windows. Diagnóstico: pré-requisito de instalação; é necessário criar ambiente Python 3.12 separado e confirmar a instalação antes de repetir as etapas. O `pip check` sem conflitos dessa tentativa não foi contabilizado como validação do ambiente completo.
