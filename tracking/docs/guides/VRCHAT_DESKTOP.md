@@ -69,3 +69,6 @@ Feche outras instâncias do aplicativo, OBS, navegador ou programa que esteja us
 A ferramenta deve receber dez quadros e liberar a câmera. Se falhar e houver outro dispositivo, repita explicitamente com `--camera 1`; não há varredura automática de webcams. Ela usa a resolução padrão do dispositivo para separar problemas de captura de uma resolução configurada. Se passar, abra `run.py` e escolha a mesma câmera. Um driver pode bloquear chamadas nativas; retries limitados não eliminam toda falha de hardware.
 
 Validação local da correção: 172 testes, incluindo inicialização sem quadro, fallback Windows no mesmo ID, aquecimento, liberação, impedimento de Tk em thread secundária, erros antes da GUI/modelo e encerramento do laço. Repetir CI Linux/Windows e captura real no equipamento do usuário antes de aprovar integração.
+
+
+O usuário recebeu cinco quadros 1280×720 após os avisos MSMF. Isso confirma captura parcial, não dez quadros contínuos. O diagnóstico agora observa por até 15 s (ajustável por `--seconds`) e distingue erro de leitura de amostra incompleta por tempo, que retorna código 2. Para a aplicação, testar 640×480. Não tratar cinco quadros em uma janela curta como desconexão comprovada. Suíte local atualizada: 174 testes; fluxo contínuo e gesto ainda precisam de confirmação física.

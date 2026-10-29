@@ -82,3 +82,22 @@ class CaptureLifecycleTests(unittest.TestCase):
         gui.assert_not_called();model.assert_not_called()
         message.assert_called_once()
         self.assertEqual(p.input_status,'camera indisponivel')
+
+    def test_diagnostic_reports_timeout_separately_and_releases(self):
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
+        import check_camera as tool
+        camera=Mock()
+        camera.read_latest.side_effect=[(np.zeros((4,4,3),np.uint8),0.,0.),None]
+        with patch.object(tool,'CameraStream',return_value=camera),patch.object(tool.time,'perf_counter',side_effect=[0.,.1,.2,2.]),patch.object(tool.time,'sleep'),patch('builtins.print') as output:
+            with self.assertRaises(SystemExit) as stopped:tool.main(['--seconds','1','--frames','2'])
+        self.assertEqual(stopped.exception.code,2)
+        self.assertIn('Captura parcial',output.call_args.args[0])
+        camera.close.assert_called_once()
+
+    def test_diagnostic_full_sample_success_and_release(self):
+        import check_camera as tool
+        camera=Mock();camera.read_latest.return_value=(np.zeros((4,4,3),np.uint8),0.,0.)
+        with patch.object(tool,'CameraStream',return_value=camera),patch('builtins.print') as output:
+            tool.main(['--frames','2'])
+        self.assertIn('Camera OK: 2',output.call_args.args[0])
+        camera.close.assert_called_once()
