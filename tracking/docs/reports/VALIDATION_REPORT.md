@@ -184,3 +184,16 @@ Branches publicados separadamente em FIAP-4SIZ/ComputerVisionCP3:
 A inferência Hands acrescenta custo por quadro; não há medição de ganho de FPS/precisão. Original preservado; câmera e vídeo continuam compartilhando o pipeline. Medidas corporais estimadas não viram profundidade real. A análise do peitoral não infere pernas ocultas nem fornece calibração corporal completa.
 
 **Sem merge para develop ou main. Validação de integração bloqueada pelos novos testes Windows, câmera e avatar VRChat pendentes, além das verificações de hardware anteriores.** Próxima melhoria recomendada: calibrar flexão por usuário e medir jitter/latência em vídeos anotados, depois de confirmar o contrato no avatar.
+
+
+## Atualização: confiabilidade, interface e organização
+
+- `feature/observed-pose-validation` (`a474140`): trackers cruzados com pontos de imagem, regiões parciais e confirmação das mãos. 145 testes Linux aprovados. CI de push [40906404055](https://github.com/FIAP-4SIZ/ComputerVisionCP3/actions/runs/40906404055): jobs Ubuntu e Windows concluídos com sucesso no mesmo commit, confirmados pela API.
+- `feature/portuguese-ui` (`c9a230e`): telas em português e formulários roláveis. 149 testes Linux aprovados. CI de push [40907124729](https://github.com/FIAP-4SIZ/ComputerVisionCP3/actions/runs/40907124729): jobs Ubuntu e Windows concluídos com sucesso no mesmo commit, confirmados pela API.
+- `feature/repository-organization`: guias/referências separados, entrada independente do diretório, requirements encaminhados para versões fixas, scripts atualizados, modelos de PR/issues e CI com desktop virtual e artefatos para teste manual.
+
+A API está acessível nesta etapa; as menções anteriores a Forbidden são históricas. Não há falha de CI inferida daquele bloqueio.
+
+Versão organizada: **154 testes locais aprovados, zero skips**, incluindo 5 novos testes de entrada/documentação. `pip check`, compilação, referências locais de Markdown e inferência real por `run.py --check-runtime` iniciada de outra pasta aprovados. Widgets reais em Xvfb 1280×720: janela requisitada 715×596, rolagem até Sair numa janela 640×480 aprovada. O template alternativo não usado saiu dos recursos empacotados; o experimento SteamVR com assert 0 está preservado em examples, sem ter sido contabilizado como teste.
+
+As comparações de confiabilidade nos guias são cenários controlados, não medida de acurácia em pessoas. Ainda faltam webcam física na nova versão, condições reais de iluminação/oclusão, recepção dos trackers e animações dos dedos no avatar. Os scripts CMD atualizados também requerem execução manual no Windows. **Nenhum merge autorizado por estes resultados enquanto houver verificações obrigatórias pendentes.**

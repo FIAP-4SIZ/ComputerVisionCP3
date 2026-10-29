@@ -1,0 +1,22 @@
+name: Propor melhoria
+description: Defina o problema e como avaliar uma solução simples.
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Cenário e problema do usuário
+    validations:
+      required: true
+  - type: textarea
+    id: escopo
+    attributes:
+      label: Melhoria proposta e limites do escopo
+    validations:
+      required: true
+  - type: textarea
+    id: verificacao
+    attributes:
+      label: Critérios de aceitação e testes
+      description: Indique equipamentos/dados necessários e medidas para comparar antes e depois.
+    validations:
+      required: true

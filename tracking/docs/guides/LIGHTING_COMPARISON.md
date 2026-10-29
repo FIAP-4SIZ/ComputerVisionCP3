@@ -88,7 +88,7 @@ A ferramenta não transmite para SteamVR/OSC e usa parâmetros explícitos: mode
 
 Foi utilizado [Jeff.mp4 do material da aula](https://github.com/arnaldojr/cognitivecomputing/blob/b3937428887da4d38a8eb7c760ccbd1969558d0e/material/aulas/PDI/lab17/Jeff.mp4), commit `b3937428887da4d38a8eb7c760ccbd1969558d0e`, primeiros 60 quadros, reduzidos de 1280×720 para 640×360. O vídeo enquadra principalmente tronco e cabeça; não serve como ground truth para pés ou rastreadores VR. O arquivo não foi adicionado ao projeto.
 
-O [relatório integral](evaluation/lighting_jeff_60.json) registra a execução em CPU compartilhada, com Python 3.12, MediaPipe 0.10.21, OpenCV 4.11.0 e NumPy 1.26.4. Os três passes receberam os mesmos quadros e timestamps. O SHA-256 do arquivo permaneceu `22bafdcee9c7851e15610f59fad0da0ba8e19aba7438bcaa84ff87ea78f29d88`.
+O [relatório integral](../../evaluation/lighting_jeff_60.json) registra a execução em CPU compartilhada, com Python 3.12, MediaPipe 0.10.21, OpenCV 4.11.0 e NumPy 1.26.4. Os três passes receberam os mesmos quadros e timestamps. O SHA-256 do arquivo permaneceu `22bafdcee9c7851e15610f59fad0da0ba8e19aba7438bcaa84ff87ea78f29d88`.
 
 | Medição | Original | Manual 1,2/+20 | Equalização Y |
 |---|---:|---:|---:|

@@ -1,14 +1,14 @@
 @echo off
-
-python\python.exe python\get-pip.py
-
-python\python.exe -m pip install --upgrade pip
-
-python\python.exe -m pip install numpy
-python\python.exe -m pip install opencv-python
-python\python.exe -m pip install scipy
-python\python.exe -m pip install turtle
-
-python\python.exe -m pip install mediapipe
-
-pause
+setlocal
+cd /d "%~dp0"
+py -3.12 --version
+if errorlevel 1 (
+  echo Instale Python 3.12 antes de continuar.
+  exit /b 1
+)
+if not exist "..\.venv312\Scripts\python.exe" py -3.12 -m venv "..\.venv312"
+if errorlevel 1 exit /b 1
+"..\.venv312\Scripts\python.exe" -m pip install -r requirements-build.txt
+if errorlevel 1 exit /b 1
+"..\.venv312\Scripts\python.exe" -m pip check
+exit /b %errorlevel%

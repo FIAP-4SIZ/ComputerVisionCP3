@@ -19,7 +19,7 @@ cd tracking
 python bin/mediapipepose.py
 ```
 
-Escolha **Arquivo de vídeo → Selecionar vídeo...**. A seleção configura **Somente análise** por padrão; troque o backend se precisar transmitir à VR. **Save and Continue** inicia a reprodução/análise. A janela mostra vídeo, esqueleto quando detectado, métricas e estado/quadro/percentual/tempo do arquivo. A GUI fornece pausa, retomar, reiniciar e cancelar. Após fim ou cancelamento, reiniciar reabre o mesmo arquivo e limpa os históricos do MediaPipe e do backend OSC. Para escolher outro arquivo, encerre e abra o aplicativo.
+Escolha **Arquivo de vídeo → Selecionar vídeo...**. A seleção configura **Somente análise** por padrão; troque o backend se precisar transmitir à VR. **Salvar e continuar** inicia a reprodução/análise. A janela mostra vídeo, esqueleto quando detectado, métricas e estado/quadro/percentual/tempo do arquivo. A GUI fornece pausa, retomar, reiniciar e cancelar. Após fim ou cancelamento, reiniciar reabre o mesmo arquivo e limpa os históricos do MediaPipe e do backend OSC. Para escolher outro arquivo, encerre e abra o aplicativo.
 
 Formatos aceitos: MP4, AVI, MOV, MKV, WEBM, M4V, MPG, MPEG, sujeitos aos codecs disponíveis no OpenCV. Extensão aceita não garante que o conteúdo seja decodificável. Arquivo inexistente, codec indisponível, FPS inválido, arquivo vazio e quadro corrompido são tratados como erros. Sem pessoa detectada, o quadro é exibido com aviso e nenhum tracker é inventado.
 

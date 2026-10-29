@@ -1,0 +1,27 @@
+name: Relatar erro
+description: Informe o cenário, o resultado e as evidências.
+body:
+  - type: input
+    id: versao
+    attributes:
+      label: Branch e commit testados
+    validations:
+      required: true
+  - type: textarea
+    id: ambiente
+    attributes:
+      label: Ambiente
+      description: Windows/Linux, Python, webcam/vídeo, backend e versões relevantes.
+  - type: textarea
+    id: passos
+    attributes:
+      label: Como reproduzir e qual resultado era esperado
+    validations:
+      required: true
+  - type: textarea
+    id: resultado
+    attributes:
+      label: Resultado observado e erro exato
+      description: Remova informações pessoais dos logs antes de enviar.
+    validations:
+      required: true

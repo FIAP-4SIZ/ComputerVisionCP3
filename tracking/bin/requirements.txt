@@ -1,5 +1,2 @@
-opencv-python
-numpy
-scipy
-mediapipe
-flask
+# Compatibilidade com o caminho antigo; há uma única definição de versões.
+-r ../requirements-study.txt

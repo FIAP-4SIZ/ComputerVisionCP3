@@ -1,7 +1,2 @@
-opencv-python
-numpy
-scipy
-mediapipe
-python-osc
-pyinstaller
-flask
+# Instalação padrão: mesma API e versões validadas do ambiente de estudo.
+-r requirements-study.txt

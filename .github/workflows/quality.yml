@@ -1,14 +1,15 @@
-name: Tracking quality
+name: Qualidade do rastreamento
 on:
   push:
     branches: [main, develop, 'feature/**']
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, 'feature/**']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   tracking:
+    timeout-minutes: 25
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -22,12 +23,27 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: tracking/requirements-study.txt
-      - run: python -m pip install -r requirements-study.txt pyinstaller
+          cache-dependency-path: |
+            tracking/requirements-study.txt
+            tracking/requirements-build.txt
+      - run: python -m pip install -r requirements-build.txt
       - run: python -m pip check
       - run: python -m unittest discover -s tests -v
-      - run: python -m compileall -q bin tests tools
+      - run: python -m compileall -q bin tests tools run.py
       - run: git diff --check
+      - name: Validar interfaces reais em tela pequena (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1 libegl1 libxkbcommon-x11-0 libxcb-xinerama0 libxcb-cursor0
+          xvfb-run -a -s "-screen 0 1280x720x24" python tools/validate_desktop.py > desktop-validation.log
+      - name: Guardar resultado da interface
+        if: always() && runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: interface-linux
+          path: tracking/desktop-validation.log
+          retention-days: 7
       - name: Build Linux
         if: runner.os == 'Linux'
         run: pyinstaller --noconfirm bin/mediapipepose_linux.spec
@@ -40,3 +56,9 @@ jobs:
       - name: Check Windows executable
         if: runner.os == 'Windows'
         run: ./dist/mediapipepose/mediapipepose.exe --check-runtime
+      - name: Guardar aplicativo para validação manual
+        uses: actions/upload-artifact@v4
+        with:
+          name: aplicativo-${{ runner.os }}
+          path: tracking/dist/mediapipepose/
+          retention-days: 7
