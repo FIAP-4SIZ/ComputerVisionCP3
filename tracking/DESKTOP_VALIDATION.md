@@ -15,7 +15,7 @@ A suíte foi executada novamente: **109 testes aprovados, sem falhas ou skips**.
 | Criar `develop` | Criada/publicada, sem merge de features |
 | Widgets reais da GUI | Tk e OpenCV aprovados em display virtual Linux |
 | GUI Windows / aplicação com câmera | Aguardando execução no computador do usuário |
-| Testes e build Windows | Aguardando resultados locais ou acesso à CI |
+| Testes e build Windows | Aprovados no log do usuário: Python 3.12.10, 109 testes, pip check, build e runtime do executável |
 | Webcam física | Não conectada à nuvem; usuário informou disponibilidade no Windows |
 | SteamVR/VRChat/headset | Não disponíveis no equipamento informado; pendentes |
 
@@ -73,3 +73,9 @@ DISPLAY=:97 python tools/validate_desktop.py
 ```
 
 O display `:97` é o utilizado nesta sessão; use o display efetivamente disponível em sua máquina. A ferramenta restaura o diretório de trabalho e não modifica seus arquivos de parâmetros.
+
+## Resultados Windows enviados pelo usuário
+
+O log enviado pelo usuário confirma instalação em Python 3.12.10, **109 testes em 3,157 s, OK**, `pip check` sem conflitos, build PyInstaller concluído e `--check-runtime` com OpenCV, MediaPipe Pose e modelos disponíveis. São evidências de execução no equipamento do usuário, não comandos executados na nuvem. A tentativa anterior com Python 3.14 e a falha de hash foram superadas pela instalação posterior; não foi necessário desativar a verificação de integridade.
+
+Na abertura normal, o backend selecionado era SteamVR. Após dez tentativas sem conexão, a aplicação encerrou antes de abrir a câmera. Isso não comprova falha nem sucesso da webcam. Para continuar sem headset, selecionar **Somente análise** e câmera **0** na configuração inicial, antes de salvar e continuar. Permanecem pendentes a aplicação completa com webcam, os controles no Windows, reprodução manual de vídeo e recepção física em VR. A consulta à CI remota continua sem confirmação.

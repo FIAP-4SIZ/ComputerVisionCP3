@@ -150,3 +150,9 @@ Suíte repetida: 109 testes aprovados sem skips. Dependências, compilação e s
 **Nenhum merge para `develop`; integração não aprovada.**
 
 Na tentativa Windows enviada pelo usuário, o ambiente foi criado com Python 3.14. A instalação falhou em `mediapipe==0.10.21`, seguida de oito erros de importação por dependências ausentes. Não houve execução funcional da suíte, build ou smoke Windows. Diagnóstico: pré-requisito de instalação; é necessário criar ambiente Python 3.12 separado e confirmar a instalação antes de repetir as etapas. O `pip check` sem conflitos dessa tentativa não foi contabilizado como validação do ambiente completo.
+
+### Atualização: testes Windows aprovados
+
+No log posterior fornecido pelo usuário, com Python 3.12.10: instalação concluída; 109 testes executados em 3,157 s com `OK`; `pip check` sem conflitos; build PyInstaller Windows concluído; executável com `--check-runtime` confirmou OpenCV, MediaPipe Pose e modelos disponíveis. Esses resultados substituem a pendência dos testes automatizados/build/runtime Windows, sem atribuir à nuvem sua execução.
+
+A execução normal tentou conectar ao SteamVR e encerrou após dez tentativas, antes da captura. Próximo teste: câmera 0 com backend **Somente análise**. Ainda não há comprovação de imagem/landmarks da webcam, controles da aplicação completa no Windows, reprodução manual de vídeo ou recepção em VR. Os testes de componentes reais em Xvfb permanecem aprovados; CI remota não confirmada por falta de acesso à API. **Nenhuma feature integrada à develop; integração permanece bloqueada pelas validações pendentes.**
