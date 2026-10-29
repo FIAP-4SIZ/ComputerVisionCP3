@@ -52,6 +52,7 @@ class InputControlTests(unittest.TestCase):
         self.assertEqual(result['input_mode'], 'video')
         self.assertEqual(result['video_path'], '/tmp/sample.avi')
         self.assertEqual(result['backend'], 0)
+        self.assertFalse(result['track_fingers'])
         self.assertEqual(save.call_args.args[0]['video_path'], '/tmp/sample.avi')
 
     def test_controls_signal_pause_resume_restart_and_cancel(self):

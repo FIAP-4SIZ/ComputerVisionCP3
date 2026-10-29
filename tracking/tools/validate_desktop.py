@@ -48,12 +48,16 @@ def main():
             root.after(5000, root.quit)
             def save():
                 button(root, 'Somente análise').invoke()
+                finger_toggle = next(w for w in widgets(root) if isinstance(w, tk.Checkbutton)
+                                     and w.cget('text').startswith('Rastrear dedos'))
+                finger_toggle.invoke()
                 button(root, 'Save and Continue').invoke()
             root.after(100, save)
             original_loop(root, *args, **kwargs)
         with patch.object(tk.Tk, 'mainloop', automated_loop):
             initial = init_gui.getparams()
         assert initial['backend'] == 0
+        assert initial['track_fingers'] is True
         initial['input_mode'] = 'video'
         initial['video_path'] = 'sample.avi'
         with patch('parameters.getparams', return_value=initial), patch.object(Parameters, 'load_params'):

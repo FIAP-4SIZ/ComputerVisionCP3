@@ -44,6 +44,7 @@ def getparams():
         param["calib_tilt"] = True
     if "calib_rot" not in param:
         param["calib_rot"] = True
+    param.setdefault("track_fingers", False)
     if "use_hands" not in param:
         param["use_hands"] = False
     if "ignore_hip" not in param:
@@ -138,6 +139,9 @@ def getparams():
         maximgsize.insert(0,param["imgsize"])
 
     tk.Label(text="-"*50, width = 50).pack()
+
+    varfingers = tk.IntVar(value=param["track_fingers"])
+    tk.Checkbutton(text="Rastrear dedos (OSC requer avatar configurado)", variable=varfingers).pack()
 
     varfeet = tk.IntVar(value = param["feetrot"])
     rot_feet_check = tk.Checkbutton(text = "Enable experimental foot rotation", variable = varfeet)
@@ -293,6 +297,7 @@ def getparams():
     #param["camlatency"] = camera_latency
     param["feetrot"] = feet_rotation
     param["use_hands"] = use_hands
+    param["track_fingers"] = bool(varfingers.get())
     param["ignore_hip"] = ignore_hip
     
     param["camera_settings"] = camera_settings

@@ -22,6 +22,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import mediapipe as mp
+from finger_tracking import FingerTracking, draw_hands
 from body_observation import observe_body, draw_observation
 from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
@@ -50,6 +51,8 @@ def main():
     backend = backends[params.backend]()
     camera_thread = None
     pose = None
+    fingers = None
+    finger_frames = {}
     try:
         backend.connect(params)
         if params.exit_ready:
@@ -69,6 +72,10 @@ def main():
                             smooth_landmarks=params.smooth_landmarks,
                             static_image_mode=params.static_image)
 
+        if getattr(params, 'track_fingers', False):
+            # Mãos independentes da pose corporal: funcionam sem quadris/pernas.
+            fingers = FingerTracking(mp.solutions.hands.Hands(max_num_hands=2),
+                                     backend.client if params.backend == 2 else None)
         cv2.namedWindow("out")
 
         #Main program loop:
@@ -114,6 +121,8 @@ def main():
                     try:
                         camera_thread.restart()
                         pose.reset()
+                        if fingers is not None:
+                            fingers.reset()
                         backend.reset()
                         tracker_lifecycle.reset()
                         active_lighting_key = None
@@ -134,6 +143,8 @@ def main():
             if is_video:
                 params.input_status = camera_thread.status
             if frame is None:
+                if fingers is not None and is_video and camera_thread.state != 'running':
+                    fingers.suspend()
                 if is_video and camera_thread.state in ('completed', 'cancelled', 'error'):
                     if (tracker_lifecycle.timestamp is not None
                             or any(state != 'expired' for state in tracker_lifecycle.states.values())):
@@ -175,6 +186,8 @@ def main():
             params.lighting_status = f'{LABELS[settings.mode]} | PDI:{preprocess_ms:.2f}ms'
 
             if params.paused and not is_video:
+                if fingers is not None:
+                    fingers.suspend()
                 cv2.imshow("out", comparison_view(original, img, settings, preprocess_ms))
                 cv2.waitKey(1)
                 # Não mistura o tempo em pausa com as medições do rastreamento.
@@ -184,6 +197,8 @@ def main():
             key = settings.inference_key()
             if active_lighting_key is not None and key != active_lighting_key:
                 pose.reset()
+                if fingers is not None:
+                    fingers.reset()
                 backend.reset()
                 tracker_lifecycle.reset()
                 metrics = FrameMetrics()
@@ -201,10 +216,16 @@ def main():
             img.flags.writeable = False
             try:
                 results = pose.process(img)
+                if fingers is not None:
+                    finger_frames = fingers.process(img, mirrored=params.mirror)
+                    params.finger_frames = finger_frames
+                    params.finger_timestamp_ms = params.frame_timestamp_ms
             except Exception as exc:
                 if not is_video:
                     raise
-                camera_thread.fail('Falha na análise da pose: ' + str(exc))
+                if fingers is not None:
+                    fingers.suspend()
+                camera_thread.fail('Falha na análise da pose/maos: ' + str(exc))
                 params.input_status = camera_thread.status
                 preview = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 preview_original = original.copy()
@@ -250,6 +271,9 @@ def main():
             tracker_seconds = time.perf_counter() - tracker_start
 
             img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)       #convert back to bgr and draw the pose
+            if fingers is not None:
+                draw_hands(img, finger_frames)
+                cv2.putText(img, fingers.status, (10, 156), cv2.FONT_HERSHEY_SIMPLEX, .4, (255, 255, 0), 1)
             draw_observation(img, image_landmarks, params.body_observation, mp_pose.POSE_CONNECTIONS)
             cv2.putText(img, params.body_status, (10, 134), cv2.FONT_HERSHEY_SIMPLEX, .4, (255, 255, 0), 1)
             # Exibe a janela anterior: o ciclo atual só termina após imshow/waitKey.
@@ -291,6 +315,11 @@ def main():
     finally:
         if camera_thread is not None and hasattr(camera_thread, 'close'):
             camera_thread.close()
+        if fingers is not None:
+            try:
+                fingers.close()
+            except Exception as exc:
+                print('WARNING: Falha ao finalizar maos: ' + str(exc))
         if pose is not None:
             pose.close()
         backend.disconnect()
@@ -303,7 +332,10 @@ if __name__ == "__main__":
         with mp.solutions.pose.Pose(model_complexity=1) as detector:
             result = detector.process(np.zeros((120, 160, 3), dtype=np.uint8))
             assert result.pose_world_landmarks is None
-        print('Runtime OK: OpenCV, MediaPipe Pose e modelos disponíveis')
+        with mp.solutions.hands.Hands(max_num_hands=2) as detector:
+            result = detector.process(np.zeros((120, 160, 3), dtype=np.uint8))
+            assert not result.multi_hand_landmarks
+        print('Runtime OK: OpenCV, MediaPipe Pose, Hands e modelos disponíveis')
     else:
         main()
 

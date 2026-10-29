@@ -73,7 +73,7 @@ class CameraTests(unittest.TestCase):
         self.assertIsNone(camera.read_latest())
 
 
-def run_one_frame(module, with_pose, existing_calibration=False):
+def run_one_frame(module, with_pose, existing_calibration=False, parameter_overrides=None):
     """Executa o laço real; apenas hardware, GUI e inferência são substituídos."""
     original = np.zeros((120, 160, 3), np.uint8)
     original[:, :, 2] = 255  # Vermelho em BGR: deve chegar como [255, 0, 0] ao detector.
@@ -88,6 +88,8 @@ def run_one_frame(module, with_pose, existing_calibration=False):
                              paused=False, global_rot_z=Rotation.identity(),
                              global_rot_x=Rotation.identity(), global_rot_y=Rotation.identity(),
                              feet_rotation=False, use_hands=False, log_frametime=True)
+    if parameter_overrides:
+        vars(params).update(parameter_overrides)
     backend = Mock()
     backend.test_params = params
     if existing_calibration:

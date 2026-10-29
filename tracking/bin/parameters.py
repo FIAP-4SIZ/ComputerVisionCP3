@@ -45,6 +45,7 @@ class Parameters():
         self.additional_smoothing_2 = 0.9
         self.feet_rotation = param["feetrot"]
         self.use_hands = param["use_hands"]
+        self.track_fingers = param.get("track_fingers", False)
         self.ignore_hip = param["ignore_hip"]
         
         self.camera_settings = param["camera_settings"]
