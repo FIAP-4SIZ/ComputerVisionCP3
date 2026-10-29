@@ -52,6 +52,7 @@ class DesktopTests(unittest.TestCase):
     def test_main_routes_image_without_body_trackers(self):
         b=run_one_frame(app,False,parameter_overrides={'backend':3})
         b.process_image.assert_called_once()
+        b.updatepose.assert_not_called()
         b.disconnect.assert_called_once()
 
     def test_real_udp_probe_uses_integer_button_and_releases(self):

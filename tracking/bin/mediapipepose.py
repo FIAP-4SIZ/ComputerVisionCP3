@@ -254,7 +254,7 @@ def main():
             tracking = None
             valid = dict.fromkeys(tracker_lifecycle.names, False)
             tracker_start = time.perf_counter()
-            if results.pose_world_landmarks:
+            if results.pose_world_landmarks and params.backend != 3:
                 try:
                     tracking = prepare_trackers(results.pose_world_landmarks.landmark, params, image_landmarks=image_landmarks)
                     valid = tracking.valid
@@ -263,7 +263,8 @@ def main():
             expired = tracker_lifecycle.update(valid, params.frame_timestamp_ms / 1000,
                                                getattr(params, 'tracker_timeout', 0.))
             backend.expire_trackers(expired)
-            params.tracker_status = tracker_lifecycle.summary()
+            params.tracker_status = ('Desktop: sem envio de trackers corporais' if params.backend == 3
+                                     else tracker_lifecycle.summary())
             calibration = None
             if tracking is not None and any(valid.values()):
                 options = {} if getattr(params, 'preview_skeleton', False) else {'valid_trackers': valid}
@@ -293,7 +294,9 @@ def main():
             first_line, second_line = summary.split(' | idade:', 1) if ' | idade:' in summary else (summary, '')
             for row, text in enumerate((first_line, 'idade:' + second_line if second_line else '')):
                 cv2.putText(img, text, (10, 22 + row * 22), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 1, cv2.LINE_AA)
-            if params.pose_status != 'Pose válida':
+            if params.backend == 3:
+                cv2.putText(img, 'Controle desktop por OSC (sem calibracao VR)', (10, 66), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 0), 1)
+            elif params.pose_status != 'Pose válida':
                 cv2.putText(img, params.pose_status, (10, 66), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 1, cv2.LINE_AA)
             else:
                 landmarks = results.pose_world_landmarks.landmark
