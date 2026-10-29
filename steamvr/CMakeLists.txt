@@ -34,6 +34,12 @@ add_test(NAME receiver COMMAND receiver_tests)
 add_executable(factory_tests tests/factory_tests.cpp)
 target_include_directories(factory_tests SYSTEM PRIVATE third_party/openvr)
 target_link_libraries(factory_tests PRIVATE driver_mediapipe_hands)
+if(WIN32)
+  # O loader Windows não usa o RPATH do Linux. O teste precisa encontrar a
+  # DLL ao lado do executável, sem mudar PATH/configuração global da máquina.
+  add_custom_command(TARGET factory_tests POST_BUILD COMMAND "${CMAKE_COMMAND}"
+    -E copy_if_different "$<TARGET_FILE:driver_mediapipe_hands>" "$<TARGET_FILE_DIR:factory_tests>")
+endif()
 add_test(NAME factory COMMAND factory_tests)
 add_executable(wire_probe tests/wire_probe.cpp)
 add_test(NAME python_native_wire COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/wire_integration.py" "$<TARGET_FILE:wire_probe>")
