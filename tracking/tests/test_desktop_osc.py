@@ -63,7 +63,9 @@ class DesktopTests(unittest.TestCase):
         from vrchat_desktop_check import send_jump
         with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as receiver:
             receiver.bind(('127.0.0.1',0));receiver.settimeout(2)
-            send_jump(SimpleUDPClient(*receiver.getsockname()),sleep=lambda seconds:None)
+            client=SimpleUDPClient(*receiver.getsockname())
+            self.addCleanup(client.close)
+            send_jump(client,sleep=lambda seconds:None)
             for expected in (0,1,0):
                 message=OscPacket(receiver.recv(4096)).messages[0].message
                 self.assertEqual(message.address,'/input/Jump')

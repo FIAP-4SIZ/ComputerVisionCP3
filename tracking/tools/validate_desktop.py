@@ -18,6 +18,7 @@ from inference_gui import InferenceWindow
 from lighting import DEFAULT_LIGHTING
 import cv2
 import numpy as np
+from osc_hands import default_profile
 
 
 def widgets(parent):
@@ -43,6 +44,8 @@ def isolated_settings():
 
 def main():
     with isolated_settings():
+        profile_path = Path.cwd() / 'perfil.json'
+        profile_path.write_text(json.dumps(default_profile()), encoding='utf-8')
         original_loop = tk.Tk.mainloop
         def automated_loop(root, *args, **kwargs):
             root.after(5000, root.quit)
@@ -51,6 +54,11 @@ def main():
                 finger_toggle = next(w for w in widgets(root) if isinstance(w, tk.Checkbutton)
                                      and w.cget('text').startswith('Rastrear dedos'))
                 finger_toggle.invoke()
+                full_body = next(w for w in widgets(root) if isinstance(w, tk.Checkbutton)
+                                 and w.cget('text').startswith('OSC: incluir'))
+                full_body.invoke()
+                with patch.object(init_gui.filedialog, 'askopenfilename', return_value=str(profile_path)):
+                    button(root, 'Selecionar perfil de mãos...').invoke()
                 button(root, 'Salvar e continuar').invoke()
             root.after(100, save)
             original_loop(root, *args, **kwargs)
@@ -58,10 +66,14 @@ def main():
             initial = init_gui.getparams()
         assert initial['backend'] == 0
         assert initial['track_fingers'] is True
+        assert initial['osc_full_body'] is True
+        assert initial['osc_hand_profile'] == str(profile_path)
         initial['input_mode'] = 'video'
         initial['video_path'] = 'sample.avi'
         with patch('parameters.getparams', return_value=initial), patch.object(Parameters, 'load_params'):
             params = Parameters()
+        assert params.osc_full_body is True
+        assert params.osc_hand_profile == str(profile_path)
         root = tk.Tk()
         try:
             window = InferenceWindow(root, params)

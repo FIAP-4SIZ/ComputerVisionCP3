@@ -128,6 +128,7 @@ class FingerTests(unittest.TestCase):
             receiver.bind(('127.0.0.1',0))
             receiver.settimeout(2)
             tracker = self.make(client=UDPClient(*receiver.getsockname()))
+            self.addCleanup(tracker.client.close)
             tracker.process(np.zeros((16,16,3),np.uint8))
             values = {m.message.address:m.message.params[0] for m in OscPacket(receiver.recv(65535)).messages}
             self.assertTrue(values['/avatar/parameters/MP_Left_Tracked'])
