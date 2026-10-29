@@ -57,3 +57,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/vrchat-osc-body-hands`: remetente OSC ampliado (trackers corporais opcionais e parâmetros configuráveis dos dedos), dependente da auditoria; validação de IK/Animator no cliente continua obrigatória.
 
 - `feature/camera-rotation-default`: corrige a rotação involuntária de 90° na primeira execução, preservando escolhas salvas; dependente da saída OSC ampliada.
+
+- `feature/steamvr-hand-driver`: driver próprio OpenVR de mãos, protocolo local e expiração no receptor; base para conectar os keypoints MediaPipe ao Skeletal Input, sem identificação falsa de controladores.
