@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [Análise do exemplo leapmotion-osc e requisitos do avatar](guides/LEAPMOTION_OSC_ANALYSIS.md).
+
 - [Auditoria oficial: OSC corporal, dedos e Selfie Expression](guides/VRCHAT_OFFICIAL_RESEARCH.md).
 
 - [SteamVR: diagnóstico para corpo/dedos e HMD virtual](guides/STEAMVR_FULL_TRACKING.md).
