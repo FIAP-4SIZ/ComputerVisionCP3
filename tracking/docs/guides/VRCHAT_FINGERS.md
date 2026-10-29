@@ -1,5 +1,7 @@
 # Mãos e dedos para avatar VRChat
 
+> Atualização: veja a [auditoria oficial](VRCHAT_OFFICIAL_RESEARCH.md). OSC Trackers corporal não exige avatar customizado; Selfie Expression oferece mãos/dedos nativos no desktop. Nossos parâmetros MP_* são outra interface. Não generalizar suas limitações para todo o VRChat.
+
 ## Escopo e uso
 
 Ative **Rastrear dedos (OSC requer avatar configurado)** na configuração inicial. A opção é independente de `DEV: Spawn trackers for hands`, que continua significando trackers rígidos do SteamVR. Desligada por padrão, não cria outro detector nem muda o envio corporal. Sem dependências novas: usa `mp.solutions.hands.Hands` do MediaPipe 0.10.21 já instalado.

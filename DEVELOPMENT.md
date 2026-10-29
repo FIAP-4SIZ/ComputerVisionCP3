@@ -51,3 +51,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/invalid-tracking-guard`: libera ações sem quadros recentes, bloqueia rearme após perda e valida a publicação de dedos; dependente do ciclo de captura.
 
 - `feature/steamvr-readiness`: diagnóstico somente de leitura e plano de integração corporal/esquelética com HMD virtual; não fornece driver completo.
+
+- `feature/vrchat-documentation-audit`: pesquisa no índice completo oficial, correção das conclusões de compatibilidade e instruções do Selfie Expression; sem alegar nova integração funcional.

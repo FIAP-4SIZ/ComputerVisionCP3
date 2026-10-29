@@ -1,5 +1,7 @@
 # Avatar público no desktop: escopo confirmado
 
+> Atualização: veja a [auditoria oficial](VRCHAT_OFFICIAL_RESEARCH.md). OSC Trackers corporal não exige avatar customizado; Selfie Expression oferece mãos/dedos nativos no desktop. Nossos parâmetros MP_* são outra interface. Não generalizar suas limitações para todo o VRChat.
+
 O usuário confirmou pulo por gesto no VRChat Steam Windows, sem headset, após ativar OSC. A escolha é continuar com avatar público, sem Unity. Nesse cenário, o aplicativo pode enviar comandos de jogo suportados, como `/input/Jump`. Não pode instalar animações no avatar público, animar livremente cada osso/dedo ou esconder sua malha quando a câmera perde um ponto. Um tracker OSC ou parâmetro customizado de dedos não converte automaticamente um avatar público em full body tracking desktop.
 
 A regra solicitada de não mostrar posições inválidas é aplicada ao envio: não comandar o jogo com dados rejeitados. Não significa fazer um membro do avatar desaparecer. Um avatar próprio pode respeitar `Tracked=false` para retornar às suas animações ou alternar objetos; um avatar público sem acesso ao projeto não pode receber essa configuração do aplicativo Python.

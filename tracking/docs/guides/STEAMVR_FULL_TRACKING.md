@@ -1,5 +1,7 @@
 # SteamVR: corpo e dedos sem headset físico — diagnóstico
 
+> Atualização: veja a [auditoria oficial](VRCHAT_OFFICIAL_RESEARCH.md). OSC Trackers corporal não exige avatar customizado; Selfie Expression oferece mãos/dedos nativos no desktop. Nossos parâmetros MP_* são outra interface. Não generalizar suas limitações para todo o VRChat.
+
 Alvo escolhido pelo usuário: SteamVR e VRChat, com investigação de HMD virtual de desenvolvimento. O pulo OSC desktop já foi confirmado; não é evidência de full body tracking ou dedos via SteamVR. Não há suporte completo implementado nesta etapa.
 
 ## O que existe e o que falta

@@ -1,5 +1,7 @@
 # VRChat Steam no Windows, sem headset
 
+> Atualização: veja a [auditoria oficial](VRCHAT_OFFICIAL_RESEARCH.md). OSC Trackers corporal não exige avatar customizado; Selfie Expression oferece mãos/dedos nativos no desktop. Nossos parâmetros MP_* são outra interface. Não generalizar suas limitações para todo o VRChat.
+
 Este modo controla uma ação do jogo: levantar os dois braços envia um pulo por OSC. Não precisa Unity, avatar próprio ou headset. Não transforma a webcam em full body tracking nem anima automaticamente cada dedo. O mundo precisa permitir pulo. A tecla Espaço deve funcionar no mesmo mundo antes do teste.
 
 ## 1. Abrir o VRChat

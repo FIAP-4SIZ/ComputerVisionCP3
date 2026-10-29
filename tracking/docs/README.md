@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [Auditoria oficial: OSC corporal, dedos e Selfie Expression](guides/VRCHAT_OFFICIAL_RESEARCH.md).
+
 - [SteamVR: diagnóstico para corpo/dedos e HMD virtual](guides/STEAMVR_FULL_TRACKING.md).
 
 - [Limites do avatar público e bloqueio de detecções inválidas](guides/PUBLIC_AVATAR_LIMITS.md).

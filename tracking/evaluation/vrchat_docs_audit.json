@@ -1,0 +1,1702 @@
+{
+  "retrieved_at_utc": "2026-10-29T19:59:54.338505+00:00",
+  "index": "https://docs.vrchat.com/llms.txt",
+  "indexed_pages": 282,
+  "retrieved_pages": 282,
+  "retrieval_errors": 0,
+  "method": "Busca textual em todas as páginas indexadas e leitura integral dos guias relevantes; não leitura integral de todas as notas históricas.",
+  "pages": [
+    {
+      "url": "https://docs.vrchat.com/docs/202421.md",
+      "bytes": 8792,
+      "sha256": "aac5d69c337da16744b974b28038a8d6b3ac91fa5955028ae0a41d14b1f340b4",
+      "updatedAt": "2025-11-13T00:20:55.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/202422.md",
+      "bytes": 4656,
+      "sha256": "35b5a5db999a5b97b916a3fb924d113960fabc1fa93f53f9a82ac859cbafe6af",
+      "updatedAt": "2025-11-13T00:20:52.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/action-menu.md",
+      "bytes": 6600,
+      "sha256": "60ecce75a32b866e16c2d69646d1b47c14384d3abef0724c63aa9277c0250906",
+      "updatedAt": "2025-11-13T00:14:42.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/additional-options.md",
+      "bytes": 364,
+      "sha256": "7d2ca7915c8a17f1c1b0cf93c7358ddd2ebcc5d8068245e322d200e2bd402013",
+      "updatedAt": "2025-11-13T00:14:43.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/adjusting-your-avatars-height.md",
+      "bytes": 1170,
+      "sha256": "0c2cb2c7191c72f60afdb48c3539b3eecb944694c17202ca6700cec88fafe288",
+      "updatedAt": "2025-11-13T00:14:53.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/archived.md",
+      "bytes": 302,
+      "sha256": "a45773ce8c1ea3993f70bca74f1bf0c7e6c76cf25d6ed740b1adc26ebec796c8",
+      "updatedAt": "2025-11-13T00:22:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/avatar-dynamic-bone-limits.md",
+      "bytes": 6381,
+      "sha256": "b7ae88b29ee6e21df8113016b271ad5a9243e12d4074d2eb88913640128f68ca",
+      "updatedAt": "2025-11-13T00:15:04.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/avatar-fallback-system.md",
+      "bytes": 15339,
+      "sha256": "205e7f05ffea77cba3f35e3adf018ad66d29a8f671c7606dd22834c411e45e69",
+      "updatedAt": "2026-10-26T09:19:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/avatar-particle-system-limits.md",
+      "bytes": 5256,
+      "sha256": "d227aee74d451eb55c5b65643aa911811252dad3df1922939d7cf2817b68247f",
+      "updatedAt": "2025-11-13T00:15:06.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/configuration-file.md",
+      "bytes": 8844,
+      "sha256": "7cd961daab19d6ef2867ce04cd2756bb4946866ff7aa262a45be0cf7e7bd3548",
+      "updatedAt": "2025-11-13T00:14:46.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/controls.md",
+      "bytes": 2786,
+      "sha256": "35d464dfdc938739d66d123847e8f26226f0b2a12b272166d96b78f61408ec5b",
+      "updatedAt": "2025-11-13T00:14:33.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/copy-of-vrchat-202611.md",
+      "bytes": 1536,
+      "sha256": "475fedd73951fbbd3a2fca759c9288d54bbc1c378a4f4726dd3577becb86f95a",
+      "updatedAt": "2026-02-24T22:42:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/frequently-asked-questions.md",
+      "bytes": 3884,
+      "sha256": "c750949a70bda61e32b088bddbb58287d303eb4e3de4c143d548093304685252",
+      "updatedAt": "2025-11-13T00:14:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/full-body-tracking.md",
+      "bytes": 12779,
+      "sha256": "61eebaf8e65172c6831e24d713464588e5e2b6bd7ec98f3e124f3a06150e3bec",
+      "updatedAt": "2025-11-13T00:15:11.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/gamepad.md",
+      "bytes": 465,
+      "sha256": "a8a63af164d367c412d1eaa611eef85a72967cb512fe7ad9aa51f2e832580983",
+      "updatedAt": "2025-11-13T00:14:40.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/gesture-toggle.md",
+      "bytes": 1355,
+      "sha256": "46914d1f70fa2ddeb5721cd43a3609f644b1ca6f1a3d7061ee6fd70e42268b7d",
+      "updatedAt": "2025-11-13T00:14:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/getting-started.md",
+      "bytes": 1586,
+      "sha256": "928ca15619332b18f4ff20992ac1bc661936de3d0a9e1ef4e670b7c33f3ca159",
+      "updatedAt": "2025-11-13T00:14:30.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/ik-20-features-and-options.md",
+      "bytes": 4913,
+      "sha256": "0f88553352376d753d5754e85d08b51cb40f6513707524bf67dff364cbec5ebd",
+      "updatedAt": "2025-11-13T00:15:12.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/input-20-faq.md",
+      "bytes": 4029,
+      "sha256": "0d45bdc1f860dcfb4348d0238bf9a78b0c8a21fe2a56e02e94b7f8227d4246a2",
+      "updatedAt": "2025-11-13T00:14:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/keyboard-and-mouse.md",
+      "bytes": 8808,
+      "sha256": "c16b8e360dbcccc7685532a48e8606b661fb1869dabddabd93b285b554264dc2",
+      "updatedAt": "2026-01-20T17:58:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/launch-options.md",
+      "bytes": 10830,
+      "sha256": "3d037780553bb4e764ed06cfb7c2ce9d77cc93781fe6893125cd4bcfae19594e",
+      "updatedAt": "2026-04-23T16:59:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/local-vrchat-storage.md",
+      "bytes": 4461,
+      "sha256": "69529c1324fb442415ff6817f9df3eb7e2902aa35f63b69b3a2810e0a9ef78b8",
+      "updatedAt": "2025-11-13T00:14:48.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-as-input-controller.md",
+      "bytes": 4619,
+      "sha256": "e1f7e5f7685af582683ed1108af53faa3e0394a2b7a5d6ccb3bf816afbcc8b58",
+      "updatedAt": "2025-11-13T00:15:21.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-avatar-parameters.md",
+      "bytes": 4379,
+      "sha256": "8db719bdf93a6a501b19e940deec567198f28627a75167174ee21139345ba181",
+      "updatedAt": "2025-11-13T00:15:18.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-avatar-scaling.md",
+      "bytes": 1620,
+      "sha256": "7a32513f669e23c8c3448de3ede49ef8a69456cc3fc6b32a2db219218abca6af",
+      "updatedAt": "2026-04-27T23:40:21.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-debugging.md",
+      "bytes": 603,
+      "sha256": "306d793ec024d6fdd33320264b984f285a7660fd84bb6c524290274fbb130574",
+      "updatedAt": "2025-11-13T00:15:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-diy.md",
+      "bytes": 2548,
+      "sha256": "cb697ecfcb62bff4447b77300cbd39b8160aeb53538e4731474d943b97dffc19",
+      "updatedAt": "2025-11-13T00:15:20.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-eye-tracking.md",
+      "bytes": 3966,
+      "sha256": "295cbdc0af7f86f7e38fc231cda405d9232fca7b8461a7a5d7733e2b941880fd",
+      "updatedAt": "2025-11-13T00:15:24.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-overview.md",
+      "bytes": 3203,
+      "sha256": "a1a1a74e04e5ae9716221bfe3bb3b5a60534b9ceab98d029046d36641f433ac4",
+      "updatedAt": "2025-11-13T00:15:17.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-resources.md",
+      "bytes": 6405,
+      "sha256": "b2c8040446031a8f01a3d39e5229b56e5f2058d68fbc7b37df1d9c55ca4fde34",
+      "updatedAt": "2025-11-13T00:15:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/osc-trackers.md",
+      "bytes": 6259,
+      "sha256": "1312e715404cc9b6816e641896de6bcef863d510598ffbed08c1064871be0d87",
+      "updatedAt": "2025-11-13T00:15:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/oscquery.md",
+      "bytes": 831,
+      "sha256": "e164e074ec9071dd3b258c04c36051ab08c0642a679587fd52aff662319dd534",
+      "updatedAt": "2025-11-13T00:15:26.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/patch-notes-2018.md",
+      "bytes": 45934,
+      "sha256": "0410a569b79493ee01f124fb9974b9459962659419b13ba91c8fcf45f74028be",
+      "updatedAt": "2025-11-13T00:23:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/patch-notes-2019.md",
+      "bytes": 45870,
+      "sha256": "b96c2a9602701c558ccb799c1638e7847ee30ce9de2470d8f428a60c1d8f14b0",
+      "updatedAt": "2025-11-13T00:23:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/patch-notes-2020.md",
+      "bytes": 63334,
+      "sha256": "442294f922e7ffaa4e199062491e3edef65112052aca6925d844bd37dc4cd793",
+      "updatedAt": "2025-11-13T00:23:41.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/patch-notes-pre-2018.md",
+      "bytes": 23885,
+      "sha256": "15279c6a0f148afc68e8b4c16a53f62dc2ecb3a8c421be1996a5593fe4e083d8",
+      "updatedAt": "2025-11-13T00:23:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/permissions-and-settings.md",
+      "bytes": 2411,
+      "sha256": "fb2d9dbb54b7d9de1579debaa2b474de1ce9ad06cab7f60c953f102310730872",
+      "updatedAt": "2025-11-13T00:15:05.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/public-avatar-cloning.md",
+      "bytes": 1922,
+      "sha256": "cd84210285a03b35480859c57537977e1f0c309d0280f49edaefa0dafc4f53e4",
+      "updatedAt": "2025-11-13T00:15:09.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/recent-releases.md",
+      "bytes": 206,
+      "sha256": "7039678ca7f6100b88dceb34c1c231198e1667ac51fb35760d9bde5d2da63454",
+      "updatedAt": "2025-11-13T00:19:20.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/setup-2fa.md",
+      "bytes": 11557,
+      "sha256": "8a6a6ead35ec5b36c6106bcb4296260dd1b7c228128255a5019cc918eb36da8a",
+      "updatedAt": "2025-11-13T00:14:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/steamvr-input-20.md",
+      "bytes": 12960,
+      "sha256": "ee67b42da476ce91de12498b1711724f98fc247b618945b2a740a1bcff120be0",
+      "updatedAt": "2025-11-13T00:14:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/suggesting-localization-changes.md",
+      "bytes": 7974,
+      "sha256": "ad3a8d0f6cb662671ed692e84161d9e224eccc0c8be56e5011bac4fac6f762a1",
+      "updatedAt": "2026-08-05T20:52:37.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/touch.md",
+      "bytes": 3421,
+      "sha256": "3dcabc75a025f0d05ffede67651949a74d0024def0c0f053b0ee4e4191653bed",
+      "updatedAt": "2025-11-13T00:14:37.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/using-vrchat-in-a-virtual-machine.md",
+      "bytes": 10284,
+      "sha256": "e498d954fa5e295f884c575c7bd3e5585e21a8e4eee49941a29527f2646df3df",
+      "updatedAt": "2025-11-13T00:14:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/valve-index.md",
+      "bytes": 7202,
+      "sha256": "7b5d9e1371d468d75d69a77771bdbd8618bd262ad59711b6d52d242e579f7500",
+      "updatedAt": "2025-11-13T00:14:38.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vive.md",
+      "bytes": 334,
+      "sha256": "d82dd9dd09cfeb4da00830c933c196943ab3fa36aafd1d6c244c197096f4f58a",
+      "updatedAt": "2025-11-13T00:14:36.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202111.md",
+      "bytes": 5743,
+      "sha256": "adfa14476ff7294422ae42903e7474609bcd264a6436b17d8cb8e4af2e065e56",
+      "updatedAt": "2025-11-13T00:23:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202111p1.md",
+      "bytes": 268,
+      "sha256": "d6579ff2f01ddf5ace015f115c88e33733d378b5b13364a41fd2dd688feadc02",
+      "updatedAt": "2025-11-13T00:23:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202112.md",
+      "bytes": 6344,
+      "sha256": "f95850865f97122492d024ae2101b0f62a02b42d7b5d7e14fd79b0d6be74b212",
+      "updatedAt": "2025-11-13T00:23:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202112p1.md",
+      "bytes": 1489,
+      "sha256": "f2f81d9001c41339b3bf498617db815c44e9e34144def20e7b927c9441e7472e",
+      "updatedAt": "2025-11-13T00:23:29.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202113.md",
+      "bytes": 1748,
+      "sha256": "98d6bedadd9a5368a6f0e2ce116ae76b7f4778cc43640b841dd08153916d739b",
+      "updatedAt": "2025-11-13T00:23:27.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202113p1.md",
+      "bytes": 455,
+      "sha256": "bd7260cda4c5fc1115b79c9b7694c9840f57ffae861fa45f15f99b929564d20e",
+      "updatedAt": "2025-11-13T00:23:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202113p2.md",
+      "bytes": 342,
+      "sha256": "4fe2f20f671ce4acb329e0700688a26281d37e4f6bb918ee892c6ad3fe38ba00",
+      "updatedAt": "2025-11-13T00:23:23.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202114.md",
+      "bytes": 2063,
+      "sha256": "d3818ead36c9cea8d764e89841556406f02e255ac4ef88ce5f1f8656a1ad9ecd",
+      "updatedAt": "2025-11-13T00:23:21.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202114p1.md",
+      "bytes": 291,
+      "sha256": "9702fcbb51faf2996f739377604543ecc8ab0d7305149ce6d46d389351d4f5d6",
+      "updatedAt": "2025-11-13T00:23:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202115.md",
+      "bytes": 5568,
+      "sha256": "309f61d9b326bdd713aa72f4d48e9d0140b0617d16ab5e485437bfae9fd12626",
+      "updatedAt": "2025-11-13T00:23:18.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202115p1.md",
+      "bytes": 823,
+      "sha256": "d11a32b04c129ef26d60bcabacf89b612d45f903cb4bdbc2bcf0f45af353dd24",
+      "updatedAt": "2025-11-13T00:23:16.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202115p2.md",
+      "bytes": 294,
+      "sha256": "0d6ff33bd1664c63bcb10a7c84a3b6d8b8bd083d89ec56b2ad7f1a2fc738b163",
+      "updatedAt": "2025-11-13T00:23:14.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202121.md",
+      "bytes": 3437,
+      "sha256": "c2aa853d3e5480d038338b4b266db330c3b18c9e603f2e57a0462fb48bd336cc",
+      "updatedAt": "2025-11-13T00:23:12.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202122.md",
+      "bytes": 3829,
+      "sha256": "789bf088102610a97444105d7664eb542529a717fc6776593043f793af2ed0aa",
+      "updatedAt": "2025-11-13T00:23:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202122p1.md",
+      "bytes": 797,
+      "sha256": "e70e2ad7c0a0a8754edae34d96e80c1025dc40b576837a370e5b4bbfef5651bb",
+      "updatedAt": "2025-11-13T00:23:09.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202123.md",
+      "bytes": 6673,
+      "sha256": "39212fe6b030e2ed64f9304dc02aab70a4f75ace8d33a451e8ea98c083fd908b",
+      "updatedAt": "2025-11-13T00:23:05.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202123p1.md",
+      "bytes": 1004,
+      "sha256": "a0e9934d70e04018665869e29795df8beb549e62041de7877603767529354ffc",
+      "updatedAt": "2025-11-13T00:23:03.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202124.md",
+      "bytes": 3538,
+      "sha256": "09c6fd3478a5864d1c9b1a32d214a6f554c377a495a50de9c1dc2bcb30b9a9b6",
+      "updatedAt": "2025-11-13T00:23:02.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202124p1.md",
+      "bytes": 936,
+      "sha256": "33a14a544050131a64d2cdc21d9a9425a00925e1e599bc1a63f6a580987aced4",
+      "updatedAt": "2025-11-13T00:23:00.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202124p2.md",
+      "bytes": 341,
+      "sha256": "0eff9c9ffad1d1dd53fbe3ee7b508e369cf86c316ec6d1adb14d6c9ae11b4abd",
+      "updatedAt": "2025-11-13T00:22:58.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202124p3.md",
+      "bytes": 599,
+      "sha256": "37bd5b17fd2023e9de6128ac701653e11db292de7c5e727947a84b7f87efda7d",
+      "updatedAt": "2025-11-13T00:22:57.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202131.md",
+      "bytes": 3009,
+      "sha256": "3731767fe93ead4c801cda1da422cdc2d52c81e0549e702f2d0a2ccd035272e4",
+      "updatedAt": "2025-11-13T00:22:56.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202131p1.md",
+      "bytes": 345,
+      "sha256": "426df06019b43f56934bcb4cbc2bea2c659056ff4037f3b891b21c6ea8dfba26",
+      "updatedAt": "2025-11-13T00:22:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202132.md",
+      "bytes": 4431,
+      "sha256": "334b35f348beeaa8becfcdc52b62463476c0f2e0096a98db538346286dd02b60",
+      "updatedAt": "2025-11-13T00:22:52.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202132p1.md",
+      "bytes": 1495,
+      "sha256": "210362af754f7c614f67cda8bb76abb8702c91485cfa541eda38da9459f068ed",
+      "updatedAt": "2025-11-13T00:22:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202133.md",
+      "bytes": 962,
+      "sha256": "48ae4a897d28be31dc78bc747357289f5376517bea4677a74cac68e46502d265",
+      "updatedAt": "2025-11-13T00:22:49.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202133p1.md",
+      "bytes": 264,
+      "sha256": "abc2c621c8856edb71f43fb9f983010f7722b4c58c69d469230afbc607a927f9",
+      "updatedAt": "2025-11-13T00:22:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202133p2.md",
+      "bytes": 365,
+      "sha256": "43daa7255b5d2cbbbbefbbafb0bf140d902f3450d59f215f45912429539d43aa",
+      "updatedAt": "2025-11-13T00:22:46.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202134.md",
+      "bytes": 3966,
+      "sha256": "47dab72488f6470c0aa9ada3a1b6b7149157aa2f13934477a0777a9bc5f1ecd5",
+      "updatedAt": "2025-11-13T00:22:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202134p1.md",
+      "bytes": 206,
+      "sha256": "8786b4521c2509e58b231670d0f567c7319e8881698c6bad138248694dce3719",
+      "updatedAt": "2025-11-13T00:22:43.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202134p2.md",
+      "bytes": 1127,
+      "sha256": "3713d7aaa815e21a3fe966c6fa49ea4e9040a13bd7fe4338d20373c330d593d9",
+      "updatedAt": "2025-11-13T00:22:42.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202134p3.md",
+      "bytes": 275,
+      "sha256": "7e5d5fe29e1c58568b84c8f198a26ecc3b00307474e6d1ebdb1d1ac59daf2ff6",
+      "updatedAt": "2025-11-13T00:22:40.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202141.md",
+      "bytes": 10452,
+      "sha256": "7ae32bc55803c3790c99a29f207248bd961826b04e3f935a1d30c59401f29c52",
+      "updatedAt": "2025-11-13T00:22:39.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202141p1.md",
+      "bytes": 459,
+      "sha256": "899bdf2680d612f646522fe5e201aa9ee21db583ef4a2436577e43321ee7f5de",
+      "updatedAt": "2025-11-13T00:22:38.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202142.md",
+      "bytes": 8057,
+      "sha256": "001b15b77b11366d3433f9a3161f9d1f5efe841318c9580b6e6adf3b3aba949b",
+      "updatedAt": "2025-11-13T00:22:37.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202142p1.md",
+      "bytes": 699,
+      "sha256": "257e3b958445667581ad10564e46d6bf54e15ee70f6d175a636cb485fae2e350",
+      "updatedAt": "2025-11-13T00:22:36.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202142p2.md",
+      "bytes": 283,
+      "sha256": "a03bc6a604d1b6d50b9856250ca7adc04c49b58b9c1d63244e940a3ab9d0e4b2",
+      "updatedAt": "2025-11-13T00:22:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202142p3.md",
+      "bytes": 309,
+      "sha256": "b1217530143f59c18bfa4e798fbbc90f122c90c2a715df0b326055b20d540c6a",
+      "updatedAt": "2025-11-13T00:22:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202142p4.md",
+      "bytes": 323,
+      "sha256": "017e3684bd364055000fd9e99df9b6ad3061e479c990d23e32e3e3de476f5a9c",
+      "updatedAt": "2025-11-13T00:22:33.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202211.md",
+      "bytes": 3661,
+      "sha256": "a5c9acb6c7e2e680e043c61dcaadc98b8d3e2e21e1ea52b7c4eb6d6259f24f9b",
+      "updatedAt": "2025-11-13T00:22:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202211p1.md",
+      "bytes": 268,
+      "sha256": "6f80ce2892a7e26ee3bfb39ad0f49a4e72343c39afaefa76560273ea6a49e1d3",
+      "updatedAt": "2025-11-13T00:22:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202211p2.md",
+      "bytes": 634,
+      "sha256": "18dbec56a5cbd00f8aaa437b070388182832cb35191ecec9c43cacf9a2483df5",
+      "updatedAt": "2025-11-13T00:22:30.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202211p3.md",
+      "bytes": 265,
+      "sha256": "c2ed1ffd00d67506efbc68ac3d6e6e5cb2d48ad42c199362f79c2e4438f54025",
+      "updatedAt": "2025-11-13T00:22:29.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202211p4.md",
+      "bytes": 308,
+      "sha256": "c8e24e9d01819b806f4c804f3abc0e752a229ac579acb9de1827a66c8b3741dc",
+      "updatedAt": "2025-11-13T00:22:28.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202211p5.md",
+      "bytes": 437,
+      "sha256": "a4aa827d356007b8e6653ff0ccbabc1cf9c3361c1daa70195d8fc18c998346bb",
+      "updatedAt": "2025-11-13T00:22:27.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202212.md",
+      "bytes": 10092,
+      "sha256": "506777345991296ca3f6a30a0b31c5011354fce627461d3a50c93303ab74308b",
+      "updatedAt": "2025-11-13T00:22:26.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202212p1.md",
+      "bytes": 368,
+      "sha256": "99c4481f1a68bb36c853d551ce6f27eb12a474bff894b35ba66cd3b02e109f0a",
+      "updatedAt": "2025-11-13T00:22:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202212p2.md",
+      "bytes": 244,
+      "sha256": "c4ef43dc212ea425ded58983ce8961f7442698e252da1b8b2046af93704fa437",
+      "updatedAt": "2025-11-13T00:22:24.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202212p3.md",
+      "bytes": 747,
+      "sha256": "dee403b581faa01c2b18229925f0097ecfde8b62e3103f9013a94650839b6c91",
+      "updatedAt": "2025-11-13T00:22:23.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202212p4.md",
+      "bytes": 1999,
+      "sha256": "ee6441b34fba9486d3192e7de3a69257ac1ec49fc3b520909423294eaad563e1",
+      "updatedAt": "2025-11-13T00:22:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221.md",
+      "bytes": 12014,
+      "sha256": "cc7288b24e65e35dcd77b837d5e71a8572c3f5fa940e6e4536a1ab6c2a4a97fd",
+      "updatedAt": "2025-11-13T00:22:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221p1.md",
+      "bytes": 1141,
+      "sha256": "d89cc6e00bbc99b7fbde2699fa9973aae8fb87b9324a98c980bb3d6680751452",
+      "updatedAt": "2025-11-13T00:22:18.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221p2.md",
+      "bytes": 1332,
+      "sha256": "da13e288766ef1414db605cfcf1af40e5ff2ca3be36193644e72edaa2a79fad2",
+      "updatedAt": "2025-11-13T00:22:17.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221p3.md",
+      "bytes": 752,
+      "sha256": "517c5fd705f98746fa85d9c18e203d4342f618105903a56655967779a06edb38",
+      "updatedAt": "2025-11-13T00:22:16.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221p4.md",
+      "bytes": 2493,
+      "sha256": "966c374c8f30133cd4d38817af80035eaa698440e7a59f41ed308d4f718e2e52",
+      "updatedAt": "2025-11-13T00:22:15.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221p5.md",
+      "bytes": 1204,
+      "sha256": "75b39f19d780c0acf70df00e0ce578951eefa4afd8fc5d283e41c84f82b2dae9",
+      "updatedAt": "2025-11-13T00:22:14.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202221p6.md",
+      "bytes": 321,
+      "sha256": "1a9fe55524580af5f60d23a30d938c37ede1b03ab543838a33f45b98741407d9",
+      "updatedAt": "2025-11-13T00:22:13.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222.md",
+      "bytes": 7051,
+      "sha256": "9b88d914c63c2b8bdcf28fb7f9d16e054d8a0fccf58c3b76b4e7807fdb8ff560",
+      "updatedAt": "2025-11-13T00:22:12.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p1.md",
+      "bytes": 353,
+      "sha256": "ed2ae7b58aa696f668002ee2ba40d9da1a6526dc94c7049b04db74bb27bc8898",
+      "updatedAt": "2025-11-13T00:22:11.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p1b.md",
+      "bytes": 371,
+      "sha256": "949f801ab809920e668ab66c4d9bde056f283258c9dd36acbfe20ec763bc9cdd",
+      "updatedAt": "2025-11-13T00:22:10.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p2.md",
+      "bytes": 2951,
+      "sha256": "5e5b9c58831e6b20eadf35b2abe0bd20f100e07ed2982849553899b33976b22d",
+      "updatedAt": "2025-11-13T00:22:09.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p2b.md",
+      "bytes": 295,
+      "sha256": "1159f13f22e46eede36d89c36de759fd4881e8ae05788c2ee27937df30c42942",
+      "updatedAt": "2025-11-13T00:22:08.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p2c.md",
+      "bytes": 291,
+      "sha256": "9fe362a67c04deb75a67c078dd5858054c9a9b8f6993701ab3087e27d591e2f4",
+      "updatedAt": "2025-11-13T00:22:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p3.md",
+      "bytes": 7876,
+      "sha256": "6b2249848873c9c2f4685512fe12557f407237ba9fbc4c51b78592ee0341afca",
+      "updatedAt": "2025-11-13T00:22:06.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p4.md",
+      "bytes": 356,
+      "sha256": "5a84e04f86f965a36fbee51a57846c6111e8869c7ad5d550ceefe2b077cbc702",
+      "updatedAt": "2025-11-13T00:22:05.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202222p5.md",
+      "bytes": 249,
+      "sha256": "3807c6371dc19b6a7c756ded0cd97a98d570d15bdff043ff09c8f8cf9caf01d3",
+      "updatedAt": "2025-11-13T00:22:04.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202231.md",
+      "bytes": 14681,
+      "sha256": "853cdf6efd01cb55e30258ab2319cc5f7deea5eb27889c17eb9d37046920eccc",
+      "updatedAt": "2025-11-13T00:22:03.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202231p1.md",
+      "bytes": 810,
+      "sha256": "efb06069b37f49bbf316cf87f3853a4b041276bc1636e06ec5de0ce580b767a1",
+      "updatedAt": "2025-11-13T00:22:02.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202231p2.md",
+      "bytes": 3088,
+      "sha256": "18078f0368b1e2dc347b347c1117be9604c83ce970549c98e00b435995c727c8",
+      "updatedAt": "2025-11-13T00:22:01.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202241.md",
+      "bytes": 17514,
+      "sha256": "36a44a8bb4cbcf53bec1b2a2266aaac233b96e4c4e9d731dc2d364b4be3adb56",
+      "updatedAt": "2025-11-13T00:21:59.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202241p1.md",
+      "bytes": 272,
+      "sha256": "11f11f67c9973bd77e777a0f62d0c777c214dee9cd58febeecea27edfd73149f",
+      "updatedAt": "2025-11-13T00:21:58.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202241p2.md",
+      "bytes": 3003,
+      "sha256": "c5b97804248d40b250793261ab1767d762f16117241ce6c0c2d8ba4ce67c27d0",
+      "updatedAt": "2025-11-13T00:21:57.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202241p3.md",
+      "bytes": 4867,
+      "sha256": "b5ee25dda5bc0f5a07d073bb30aeec37d031e1f4f4642583992b0a078fdaee5d",
+      "updatedAt": "2025-11-13T00:21:56.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202242.md",
+      "bytes": 6231,
+      "sha256": "b20f5d1f985ccc2bc9b39dfc9238ba48ceb0649987b863119774f6297e87093e",
+      "updatedAt": "2025-11-13T00:21:55.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202242p1.md",
+      "bytes": 600,
+      "sha256": "9f6db3edd7a7a08112fdff12005f0146737f91f5f77c25f694654cf9b55578b0",
+      "updatedAt": "2025-11-13T00:21:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202311.md",
+      "bytes": 7136,
+      "sha256": "6e8c5178f504037f8f4c530b62e97de98db79c49def83dd13bd14d5b23900232",
+      "updatedAt": "2025-11-13T00:21:53.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202311p1.md",
+      "bytes": 694,
+      "sha256": "b48d78667057eb4b59142f97c27ed2aaefa0c4495bac5b80623e308e1dc956ec",
+      "updatedAt": "2025-11-13T00:21:52.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202311p2.md",
+      "bytes": 1387,
+      "sha256": "041ef5c6eac31b508c2c75a2fef326ea69be0ff3694e9a5ad65e692f9fc1a0d0",
+      "updatedAt": "2025-11-13T00:21:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202312.md",
+      "bytes": 7102,
+      "sha256": "cbfc76a0accd19832e33d44b02bba6293b90abd0c16ea386a75c804bdd2aee95",
+      "updatedAt": "2025-11-13T00:21:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202312p1.md",
+      "bytes": 899,
+      "sha256": "3d34ee6e56bbe50e134308da531739d6a1281a9c879ad89b83150de6c79867e9",
+      "updatedAt": "2025-11-13T00:21:49.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202312p2.md",
+      "bytes": 1463,
+      "sha256": "180ef7caa3114d425f5bb85706f652819c9790a7005a3fb24fc4a0cd492d3719",
+      "updatedAt": "2025-11-13T00:21:48.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202312p3.md",
+      "bytes": 553,
+      "sha256": "30cd7ce34c70e15b46ebf5f784287765f420988408e744ee7a354cfc01a9b276",
+      "updatedAt": "2025-11-13T00:21:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202312p4.md",
+      "bytes": 677,
+      "sha256": "1f47867c59e055a0f2717555160eb324fcc18b68b8749a1660cb259af933a952",
+      "updatedAt": "2025-11-13T00:21:46.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202321.md",
+      "bytes": 6643,
+      "sha256": "698ae68d6e83835386f09ed4c98dd2c33940090d9bc29959f206420746feaf2f",
+      "updatedAt": "2025-11-13T00:21:45.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202321p1.md",
+      "bytes": 839,
+      "sha256": "ec25eb7eae22be5bda4370786a1d585fa6f420e142c359c36cd0ff68810f1304",
+      "updatedAt": "2025-11-13T00:21:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202321p2.md",
+      "bytes": 914,
+      "sha256": "832684967f0086d8330b3efa1e7d5d89d217474c0613891a007837c8a9a708f0",
+      "updatedAt": "2025-11-13T00:21:43.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202322.md",
+      "bytes": 10144,
+      "sha256": "1a09638160e08203c59febafa3717e6380845594a282137062ef0cc0bf87a653",
+      "updatedAt": "2025-11-13T00:21:42.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202322p1.md",
+      "bytes": 542,
+      "sha256": "8338242766a817f930a3dcf69b2d5e8615c76b1b8d9c78e10ebf4795dbbcda59",
+      "updatedAt": "2025-11-13T00:21:41.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202323.md",
+      "bytes": 6543,
+      "sha256": "00208dcb4c7f71f79fa51e724ef5ba1a753b0b3b643cf3a0c272280e3db4c15f",
+      "updatedAt": "2025-11-13T00:21:40.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202324.md",
+      "bytes": 8299,
+      "sha256": "0b345f6ced85cdf51390f574d50974c9437bb08870bbfe02ce4c2448a0004f8d",
+      "updatedAt": "2025-11-13T00:21:39.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202331.md",
+      "bytes": 5895,
+      "sha256": "dd2bbe32e32616e7bbe665b8984f1fb2189a87afe048afbd033233d4ca943cd2",
+      "updatedAt": "2025-11-13T00:21:37.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202331m.md",
+      "bytes": 3280,
+      "sha256": "c63ca6b06855ea5a590e49120e5f00e2cbcd6813bfd86c617ef995ef3a8b3457",
+      "updatedAt": "2025-11-13T00:21:33.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202331p1.md",
+      "bytes": 453,
+      "sha256": "575a8ce7b2167cb294ef62abea6fb78fedd9e835be0e55bae861d57fc2bcdf8a",
+      "updatedAt": "2025-11-13T00:21:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202331p2.md",
+      "bytes": 853,
+      "sha256": "35befb770eed5e46c30638c76c844b2ebad61e6ee06594202d64c0fb9d0691ce",
+      "updatedAt": "2025-11-13T00:21:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202332.md",
+      "bytes": 7024,
+      "sha256": "384064fc1f7c828bab157abb3a10d99426ed1be5eb728b8118e439352414a1a9",
+      "updatedAt": "2025-11-13T00:21:30.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202332m.md",
+      "bytes": 682,
+      "sha256": "5ea71af8fd7698df6ee41b268177a62ac528e6505c4c7955d326f109727af6b4",
+      "updatedAt": "2025-11-13T00:21:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202332p1.md",
+      "bytes": 550,
+      "sha256": "8ec6723d7fc1ec0748fbc248c1e1171957784c43e00918a40f8136cfd4adb6e0",
+      "updatedAt": "2025-11-13T00:21:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202332p1m.md",
+      "bytes": 1610,
+      "sha256": "03209e8462e8f66876734b387e7363844e3ff42578d0497b6ff186a41e7b4e19",
+      "updatedAt": "2025-11-13T00:21:29.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202333.md",
+      "bytes": 4973,
+      "sha256": "85806296e6c5386389969bbe84a968ac6d0af7ce3aff6fbf60bb7d991dd8a1ce",
+      "updatedAt": "2025-11-13T00:21:28.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202333p1.md",
+      "bytes": 567,
+      "sha256": "437b8ff8ff979c5c357c670fd1df747457ef7071a564116536b69efc2ac9a134",
+      "updatedAt": "2025-11-13T00:21:26.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202333p2.md",
+      "bytes": 433,
+      "sha256": "2ef4ef4f6e50631015edfa943737bb3aa5e6da667f8fa0630af43bc11db75c91",
+      "updatedAt": "2025-11-13T00:21:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202333p2m.md",
+      "bytes": 1764,
+      "sha256": "0f680de096d2896d8eb94c468488d276f0cc4f8acfd7276c2b1a85cac2c2df2f",
+      "updatedAt": "2025-11-13T00:21:24.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202333p3.md",
+      "bytes": 244,
+      "sha256": "a762207e02787a0eaa15c9219f43cd76b650346096eaf91d7f421f1d0ea9ab3c",
+      "updatedAt": "2025-11-13T00:21:23.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202341.md",
+      "bytes": 4146,
+      "sha256": "5a45df7016a6f03e5e061809cfa42794d4dc1a856586d9cca0fd917acfed09e4",
+      "updatedAt": "2025-11-13T00:21:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202341p1.md",
+      "bytes": 1763,
+      "sha256": "3ed3919e581226e19ae8a702d087941244d73bca916e74ccd024b62856871574",
+      "updatedAt": "2025-11-13T00:21:21.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202341p2.md",
+      "bytes": 1457,
+      "sha256": "653422ef159fcba7177ac830e1c47ff7c1bed2cb1fce678f19e4933c73aaddcc",
+      "updatedAt": "2025-11-13T00:21:21.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202341p3.md",
+      "bytes": 1125,
+      "sha256": "eb95d07f16e9c9f48fe77515eef91c994dcc2dd23621b4230ef2853d210cba9a",
+      "updatedAt": "2025-11-13T00:21:20.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202341p4.md",
+      "bytes": 642,
+      "sha256": "bd41a92b615d4c0c732a8a12c1bbd992e76a6d5d65c70f1fc3d5b5966d3f9c63",
+      "updatedAt": "2025-11-13T00:21:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342.md",
+      "bytes": 12414,
+      "sha256": "f2deee46b3f00811026eb1efcbad762e5870151a00d60b544635a2cfb8ec2a0e",
+      "updatedAt": "2025-11-13T00:21:18.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342p1.md",
+      "bytes": 522,
+      "sha256": "3a3667c9c8acfa371c3f4463ad6d9f357c8e3aa460c2787683e83e9472cdfa20",
+      "updatedAt": "2025-11-13T00:21:16.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342p2.md",
+      "bytes": 1872,
+      "sha256": "db2ae77dd8fea83a0f0142e6044630d013d7e7ea566f622e3e8a689bedb1ca18",
+      "updatedAt": "2025-11-13T00:21:15.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342p2m.md",
+      "bytes": 2376,
+      "sha256": "86d44a1e8020e5787db8edb7c3921f1627a2e671ed0319af98e37289eaf52223",
+      "updatedAt": "2025-11-13T00:21:17.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342p3.md",
+      "bytes": 307,
+      "sha256": "1b0599975905b2476450d4dafbf801333b7e5843d6dfd4e540814d82e71206e8",
+      "updatedAt": "2025-11-13T00:21:14.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342p4.md",
+      "bytes": 231,
+      "sha256": "b360296466c86435fa36390d5dfb70a42342ff08aa6c0784ee96be891893cc74",
+      "updatedAt": "2025-11-13T00:21:13.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202342p5.md",
+      "bytes": 216,
+      "sha256": "cb76d7e366c1d19bf28acac18a52e2738aee1452d4c4e230545bb81b7fda9e77",
+      "updatedAt": "2025-11-13T00:21:12.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202411.md",
+      "bytes": 9000,
+      "sha256": "9f5f3f2ee58766e5a394a2c678b5d89d952cbc18151822f837ebcbd0e3ea4e89",
+      "updatedAt": "2025-11-13T00:21:09.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-2024111.md",
+      "bytes": 474,
+      "sha256": "d844a96dfef27b3b86b614ca8a6f5c43f28c8b164d29404c869b1896faf6e1ce",
+      "updatedAt": "2025-11-13T00:21:11.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-2024111p2.md",
+      "bytes": 1232,
+      "sha256": "6217bc6fac66d76dbccbc486c874f21727c219e3a564431750a6eb7f2e942589",
+      "updatedAt": "2025-11-13T00:21:08.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202412-live.md",
+      "bytes": 15240,
+      "sha256": "62014519b9a45296c0a381c1e02dff3b34f82180c48b7cacafe06f0f6478a642",
+      "updatedAt": "2025-11-13T00:21:06.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202412p1.md",
+      "bytes": 1103,
+      "sha256": "70f27d026bca63685e7e5ff02ebdbc908946ed55b4d4158d980816ef47959c85",
+      "updatedAt": "2025-11-13T00:21:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202421p1.md",
+      "bytes": 863,
+      "sha256": "32ba4958f544e10a4d6d1ddeeb852d85fedaa677c08b60bb770c6de0afa32f9e",
+      "updatedAt": "2025-11-13T00:20:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202421p2.md",
+      "bytes": 240,
+      "sha256": "9821e3824a5ced720bcc0d639bb87074eabae390f702769d5fef446fa3d07669",
+      "updatedAt": "2025-11-13T00:20:53.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202421p3.md",
+      "bytes": 360,
+      "sha256": "d11f438383ac3d481f14f26dc9f6b539ac5edf7fbe20857f6c0f59943010c518",
+      "updatedAt": "2025-11-13T00:20:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202422p1.md",
+      "bytes": 1232,
+      "sha256": "689a71d47eb32b22b58ea9a1c5ad21e3fe3093852deb6b55ad8ed0605a16f45d",
+      "updatedAt": "2025-11-13T00:20:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202423.md",
+      "bytes": 7374,
+      "sha256": "60679dcc7b5c051fcdf4a6eb6a32ae0bbcafdeaf34c9fbd1f7f789003fbb31d1",
+      "updatedAt": "2025-11-13T00:20:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202423p1.md",
+      "bytes": 211,
+      "sha256": "c2ff76bd5f280091ace4bb8fe529f45640827e59a507de3fd60b652254fee27f",
+      "updatedAt": "2025-11-13T00:20:48.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202423p2.md",
+      "bytes": 607,
+      "sha256": "0b7589aa985915aa5b17769f253d5bc4a726bf21a76a14da4f7565ee7863545f",
+      "updatedAt": "2025-11-13T00:20:45.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431.md",
+      "bytes": 12032,
+      "sha256": "411a84cdf8240530ab577c2b969945ca3c71bf59e8b4a1613b969c36ccb9c9fc",
+      "updatedAt": "2025-11-13T00:20:37.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431beta.md",
+      "bytes": 19102,
+      "sha256": "6a4f6b368cdcfb9a62b170d652d8aeaae16c4d83490c913f7009698ef01abf67",
+      "updatedAt": "2025-11-13T00:20:46.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431p1.md",
+      "bytes": 2536,
+      "sha256": "4422268d5d07de4f5a3a04f2866bea43ab4c041b003b9811edeff28380bacb95",
+      "updatedAt": "2025-11-13T00:20:42.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431p2.md",
+      "bytes": 1148,
+      "sha256": "02de4be1cb5381288e7b62c569c42442e9abaaf1f46eb10f1f8b572e02743b4e",
+      "updatedAt": "2025-11-13T00:20:41.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431p3.md",
+      "bytes": 3234,
+      "sha256": "68a0e054acd56af8232fdeb2a5f7825e3a95f7304bec8e80d9420416ff48baea",
+      "updatedAt": "2025-11-13T00:20:40.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431p4.md",
+      "bytes": 211,
+      "sha256": "c77ec11f71149c659f02941c6c01655d7629366fa473482319450cb62b5e8ffd",
+      "updatedAt": "2025-11-13T00:20:39.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202431p5.md",
+      "bytes": 1248,
+      "sha256": "655221e6a82c82421d61e173e990d114002c4905156d7658efd2947ce5556f1d",
+      "updatedAt": "2025-11-13T00:20:38.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202432-openbeta.md",
+      "bytes": 10984,
+      "sha256": "4fcbf2629ad6e93b5bce1aa366311d3a8a52a11205ba68e43e807bc1615e732d",
+      "updatedAt": "2025-11-13T00:20:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202432.md",
+      "bytes": 12245,
+      "sha256": "59db80fb469030e9b003fa7e65a7f414c7d0bfe732ddbac8a44601ecc836a2a6",
+      "updatedAt": "2025-11-13T00:20:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202432p1.md",
+      "bytes": 761,
+      "sha256": "c26da657c04853e741e4bc0afc999f8d8c527c9daeacb2adf46a17f5e1b4c027",
+      "updatedAt": "2025-11-13T00:20:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202432p2.md",
+      "bytes": 1934,
+      "sha256": "5196c8b23c40ef208d36e08180c56c161d725bb71a9ec44baa5b698bb1c09ba6",
+      "updatedAt": "2025-11-13T00:20:33.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202433-openbeta.md",
+      "bytes": 18789,
+      "sha256": "012f32f5236ad5eb75021f6ff09e553f6e63b23e87d4d71cb050234b75a1c771",
+      "updatedAt": "2025-11-13T00:20:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202433.md",
+      "bytes": 15783,
+      "sha256": "c80bcae5746bf57a1ffd364cde68697af1c0c65a96b78b2d704a9607e86c3a22",
+      "updatedAt": "2025-11-13T00:20:28.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202433p1.md",
+      "bytes": 1400,
+      "sha256": "fbf8906886802c9d9e909ef4f0dd2fd7114519b52f37d05b7a8c1990d3296214",
+      "updatedAt": "2025-11-13T00:20:29.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441.md",
+      "bytes": 8903,
+      "sha256": "363ba3b505dd72a6f1d2cb3eb751102b486c06c5327c172576378a8f30d0e349",
+      "updatedAt": "2025-11-13T00:20:18.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441openbeta.md",
+      "bytes": 7554,
+      "sha256": "778ac607394468f1e31fe16462fea0b8d88377cfdccbdad3a57198687a4a287c",
+      "updatedAt": "2025-11-13T00:20:30.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441p1.md",
+      "bytes": 1102,
+      "sha256": "85351ac24beac5bc6f1ac6d2b6169251a8b2c7c382291c5f0b6ed58c365d910a",
+      "updatedAt": "2025-11-13T00:20:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441p2.md",
+      "bytes": 911,
+      "sha256": "a3ab3cf912bacce8ab71a7dc69880dbc07630d57a754b56c6b0424faa354e8d8",
+      "updatedAt": "2025-11-13T00:20:20.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441p3.md",
+      "bytes": 3505,
+      "sha256": "17d1d388fa1fc36ce7704d3591ea917bba50650dd7111cd79af430a0ff168fa5",
+      "updatedAt": "2025-11-13T00:20:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441p4.md",
+      "bytes": 537,
+      "sha256": "e0ea82409d1abeed69aa4b2034124d4ab5ab2f5aaf55ea541543625b9f0ad193",
+      "updatedAt": "2025-11-13T00:20:23.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202441p5.md",
+      "bytes": 545,
+      "sha256": "4547c3312127c7ee910025f4bdbb66f250f1e71bb1b09e62e84be18af1d5a0d2",
+      "updatedAt": "2025-11-13T00:20:24.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202442-open-beta.md",
+      "bytes": 9600,
+      "sha256": "2fafa83d7d52f226f4c574d958f459c46702530906b40b73b394506b8f2b82ea",
+      "updatedAt": "2025-11-13T00:20:26.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202442.md",
+      "bytes": 10159,
+      "sha256": "a4531d71a30a13ddbe74363f07ee74d5bba46c78ce11be444d2f90363ab0362b",
+      "updatedAt": "2025-11-13T00:20:11.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202442p1.md",
+      "bytes": 499,
+      "sha256": "8fa931d7b7762c2195b8fac2e4ed78a6e148a87051f6496af3d820bfa0cd8faa",
+      "updatedAt": "2025-11-13T00:20:12.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202442p2.md",
+      "bytes": 2729,
+      "sha256": "2a44c582cda4d43e1416f0edbf2ec9832083f8a96567fd68d088def32561127c",
+      "updatedAt": "2025-11-13T00:20:13.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202442p3.md",
+      "bytes": 371,
+      "sha256": "c1e5c8d021f25d05ebf442d027d4a82684797aa781d7ec085395b410c4997d51",
+      "updatedAt": "2025-11-13T00:20:14.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202511-openbeta.md",
+      "bytes": 5667,
+      "sha256": "7a66cb3e938f77749e94040dc618e3751ebfb3b66363c9fab26e9860a8da42ff",
+      "updatedAt": "2025-11-13T00:20:16.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202511.md",
+      "bytes": 6332,
+      "sha256": "8463137f1e6dce3ffc5bb3a0ad5810e2f7eafaacf564b3362d0a13d252ac056e",
+      "updatedAt": "2025-11-13T00:20:08.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202511p1.md",
+      "bytes": 540,
+      "sha256": "459b7d0b893edae684a2731c6cad4ca9ccdd6c59b7c9660e9258a31789bdb365",
+      "updatedAt": "2025-11-13T00:20:09.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202512-openbeta.md",
+      "bytes": 10930,
+      "sha256": "14d2bf3a77a8de2acc531cf11ebcf1e675d1c2f5fc6fe88a5748c441c72d3e16",
+      "updatedAt": "2025-11-13T00:20:05.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202512.md",
+      "bytes": 8420,
+      "sha256": "60796bf9df3c83f60ebba717719955a03b2253e02329bae6188f6c5a993b6d1c",
+      "updatedAt": "2025-11-13T00:20:03.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202513-openbeta.md",
+      "bytes": 20580,
+      "sha256": "627164e0619f043f1ed4275f615788686b95742c001c7e0a01210836f1d06278",
+      "updatedAt": "2025-11-13T00:20:02.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202513.md",
+      "bytes": 12090,
+      "sha256": "b240cc94722ea1b52a39a20b6f9d7da82d623faabac7a2655a78163cc49f7f50",
+      "updatedAt": "2025-11-13T00:19:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202513p1.md",
+      "bytes": 512,
+      "sha256": "decc68b49e0bb15feb84c7a2eee79d6e8289a297f807dd2c53205045663b642f",
+      "updatedAt": "2025-11-13T00:19:58.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202513p2.md",
+      "bytes": 1548,
+      "sha256": "15e3cff39f2178cf2a8271375ccf030f5497f71ed88f79223054af9d9e287aa8",
+      "updatedAt": "2025-11-13T00:19:57.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202513p3.md",
+      "bytes": 1079,
+      "sha256": "fb0e5e13c9dbb74661ed40af08b695d29f93079f48b4694cdb1c1f738e9d5619",
+      "updatedAt": "2025-11-13T00:19:56.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202513p4.md",
+      "bytes": 521,
+      "sha256": "98eaa60a0f76be67e3dbb5af99644b8e31c617ab6f2523aee409718f415f46a9",
+      "updatedAt": "2025-11-13T00:19:54.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202521-openbeta.md",
+      "bytes": 5457,
+      "sha256": "25aadc7ce7f466b7413ffab98898ad52952b58717bbda221ad51c4ba2462a751",
+      "updatedAt": "2025-11-13T00:19:52.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202521.md",
+      "bytes": 7524,
+      "sha256": "665ae18344f814dae93b72f8f65ff73b54fe7961166aa5eeffceaa32be76300f",
+      "updatedAt": "2025-11-13T00:19:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202521p1.md",
+      "bytes": 895,
+      "sha256": "b20e04c742332f31223eab7715b05338591ac3a19c33e8277157c9407b937447",
+      "updatedAt": "2025-11-13T00:19:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202521p2.md",
+      "bytes": 731,
+      "sha256": "5912b8886bce04597e9d492bd4a06906f74150c9ede4dafe4f567b607286fe89",
+      "updatedAt": "2025-11-13T00:19:48.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202521p3.md",
+      "bytes": 1239,
+      "sha256": "ab4d8adb8fc5535d5d250fdf37eb59b7b36905e1a28ed5337d38fccfb4cf1a83",
+      "updatedAt": "2025-11-13T00:19:49.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202522-openbeta.md",
+      "bytes": 7626,
+      "sha256": "2d5e815e7a5fdb77e9e42ec14a416acc5370701c6d1e8aa4ba2d38eed842580c",
+      "updatedAt": "2025-11-13T00:19:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202522.md",
+      "bytes": 6387,
+      "sha256": "788d8beff46269acf571e81994805b8baec0affa2adc677434665cd97b24b5f8",
+      "updatedAt": "2025-11-13T00:19:42.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202522p1.md",
+      "bytes": 1551,
+      "sha256": "06e07d1b0360823ad5b5b8aade16bef8b0ede8e6b973ea50d07e16351456e7a3",
+      "updatedAt": "2025-11-13T00:19:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202522p2.md",
+      "bytes": 368,
+      "sha256": "68fe7cec1a158a5b15d26f26e3278433515d120212b4f8ff7b0e33070bc670b4",
+      "updatedAt": "2025-11-13T00:19:45.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202523-openbeta.md",
+      "bytes": 6283,
+      "sha256": "16f78dc8abc29721572d16a5fd0f7188be71ce7d605a0395853f11cd8958a129",
+      "updatedAt": "2025-11-13T00:19:38.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202523.md",
+      "bytes": 6404,
+      "sha256": "6a184b9258409a9b80e0c33f8ba40e2492f276fa7f95daea762ce11ec643d0f9",
+      "updatedAt": "2025-11-13T00:19:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202531-openbeta.md",
+      "bytes": 9825,
+      "sha256": "49d0b9dc3ff40717462872dc2aa303ee4bc7b39116f5befaef58b2d91c46cbb8",
+      "updatedAt": "2025-11-13T00:19:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202531.md",
+      "bytes": 10658,
+      "sha256": "e17823da99e925abc08e0ba2f3799e1dc31dcfb696b2a048993412ff316dcb10",
+      "updatedAt": "2025-11-13T00:19:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202531openbeta.md",
+      "bytes": 11315,
+      "sha256": "3723fa1723c45d1f860fb73ac803781f076ec2179ea62e637d645bb2cf81618a",
+      "updatedAt": "2025-11-13T00:19:36.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202531p1.md",
+      "bytes": 625,
+      "sha256": "0e65cc49ee66bc1db738d6acdea294eb3228d053827b72fd5ce8c207fee9f729",
+      "updatedAt": "2025-11-13T00:19:33.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202532.md",
+      "bytes": 10094,
+      "sha256": "b724fd0e9f50665d5735907af55720564a3ccc3b80aa82a78b8a0076aff748d9",
+      "updatedAt": "2025-11-13T00:19:28.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202532p1.md",
+      "bytes": 906,
+      "sha256": "c3f8ff36b8c146895fef1b59d1467879a4a530f46d905c204cf0cdbf7420e031",
+      "updatedAt": "2025-11-13T00:19:29.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202533-openbeta.md",
+      "bytes": 8216,
+      "sha256": "c7417c3cf0cac20f441c764b1c20c888eefc8d4aa51f8d5cf99dbde2f0807fc1",
+      "updatedAt": "2025-11-13T00:19:30.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202533.md",
+      "bytes": 10777,
+      "sha256": "32131319f5636ce13a315a98440d76708d44384f2745bc29f61c0cc2cd709271",
+      "updatedAt": "2025-11-13T00:19:26.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202534-openbeta.md",
+      "bytes": 2721,
+      "sha256": "bdd6581230bf2d3d34808e74fbc645bea2341df15d80d95412c70c55be08b2b0",
+      "updatedAt": "2025-11-13T00:19:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202534.md",
+      "bytes": 3451,
+      "sha256": "fc56ac7a0b46c65ee1299f11478e2b7ee84c353541215a71065213eb7f4c3208",
+      "updatedAt": "2025-11-13T00:19:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202534p1.md",
+      "bytes": 938,
+      "sha256": "02b15c9304123c2cdf9b5d1abb7a4e7d8fd030b152a23ec656bcc24d5de4cc60",
+      "updatedAt": "2025-11-13T00:19:22.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202541-openbeta.md",
+      "bytes": 13864,
+      "sha256": "03466044d1ba8c2ff4bf2f3474f9e4a70c482877e5f9d5821ca3a00e83549e0f",
+      "updatedAt": "2025-11-13T00:19:24.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202541.md",
+      "bytes": 12166,
+      "sha256": "1801a9ec0798ed4b8db8924f78e4025c413144f970f3644b41b856e8e9b8a18d",
+      "updatedAt": "2025-12-10T23:16:53.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202541p1.md",
+      "bytes": 608,
+      "sha256": "629b0eab2d80c68d45f7d605516663587b21f462eedfc18bcee326bee0f7ad14",
+      "updatedAt": "2025-12-10T23:16:53.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202542-openbeta.md",
+      "bytes": 6042,
+      "sha256": "275ea44d32f97ea5c6e428302a146bbf08026e02c3c8ccc6b78837863d48d567",
+      "updatedAt": "2025-12-10T23:16:41.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202542.md",
+      "bytes": 9888,
+      "sha256": "c4a4a74e03257343a478d8e1058ebed99f94cfb04b4e21859aed9a366ddb0dcf",
+      "updatedAt": "2026-02-03T00:32:45.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202542p1.md",
+      "bytes": 4287,
+      "sha256": "997db4fe2f920ba46a16164f0dfb93024e2706d75761cbf2af5433725f2ad4f7",
+      "updatedAt": "2026-02-03T00:32:45.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202542p2.md",
+      "bytes": 224,
+      "sha256": "e1f79d386d54025fa273128775a09fbb94340076b06c47b20758c689e504a8f4",
+      "updatedAt": "2026-02-03T00:32:45.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202611-open-beta.md",
+      "bytes": 5986,
+      "sha256": "cfa589f6077cb4dd6f6bf3536e112ac363d907c514b4819223f730773ba3a40e",
+      "updatedAt": "2026-02-03T00:32:55.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202611.md",
+      "bytes": 5101,
+      "sha256": "18fb03a72aee70e517faa28abeda2ee2dc984651236cec20d655d796965d81d5",
+      "updatedAt": "2026-02-24T22:42:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202611p2.md",
+      "bytes": 391,
+      "sha256": "1cd6c0c5729c1f2e710c0cac0ca9999f482a0e831068fc2b302e450c1352bffe",
+      "updatedAt": "2026-02-24T22:42:19.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202612-open-beta.md",
+      "bytes": 9892,
+      "sha256": "fffe48dd48bcd5a80a80262fde17f7c9c0ca5ce519f295d0c28e7fa7c0711867",
+      "updatedAt": "2026-02-24T22:42:25.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202612.md",
+      "bytes": 8080,
+      "sha256": "d47ff478dcd0542861ee886d284168700c1aa09ecc56f13669b564271c243c04",
+      "updatedAt": "2026-04-08T21:11:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202612p1-1.md",
+      "bytes": 773,
+      "sha256": "ea9e3200b6b0dd8cceda647d0b6a634b8922cd857d9b491b0251a90c1776d4f1",
+      "updatedAt": "2026-04-08T21:11:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202612p1.md",
+      "bytes": 202,
+      "sha256": "905372de10aa8632853ef644130f6900ce5561a1b4e2e8ed9cbd2e762a524335",
+      "updatedAt": "2026-04-08T21:11:34.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202613-open-beta.md",
+      "bytes": 14043,
+      "sha256": "89f156428f86886a79534eb8411c3da239f2fb19a43a11f7aef1856d23116578",
+      "updatedAt": "2026-04-08T21:11:30.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202613.md",
+      "bytes": 7608,
+      "sha256": "8419b6ec17f17861e3e8b64253100909cff9cd8391cae6e1208827263e5fab8e",
+      "updatedAt": "2026-04-28T21:29:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202613p1-open-beta.md",
+      "bytes": 2037,
+      "sha256": "0b8720abb22fbb28f0ec9639ed6e0eec09d5b68a88a746f6265c8a0d5b4b8ac3",
+      "updatedAt": "2026-04-09T23:25:51.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202613p1.md",
+      "bytes": 930,
+      "sha256": "6cb5ebb502d7c402a305433235413a7e860196f3924196c14706fcadd252bc75",
+      "updatedAt": "2026-04-28T21:29:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202613p2.md",
+      "bytes": 636,
+      "sha256": "ad28da6687527af9cfc180f1eaf5a5d0b96a1743154c119479998894c22d7e4a",
+      "updatedAt": "2026-04-28T21:29:07.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202621-open-beta.md",
+      "bytes": 15144,
+      "sha256": "b1c0b2a36e0b98b6e59c75facf733f6aef37c8313078fcf613c1e52296b70930",
+      "updatedAt": "2026-04-28T21:26:40.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202621.md",
+      "bytes": 9010,
+      "sha256": "c7b6ff7c6ca609f194b8069484a7e37cf63300db2e06911231f42c658a3bc9f7",
+      "updatedAt": "2026-06-04T18:24:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202621p1.md",
+      "bytes": 1074,
+      "sha256": "0a0b4cd954aab5ac29842a09c4b25210c4ed8690bc63c8a6bf1026669922be8b",
+      "updatedAt": "2026-06-04T18:24:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202621p2.md",
+      "bytes": 421,
+      "sha256": "4c09198f8857bd8459a75bf8dc17ca38c18f8752c19515cf41f79d60c2a7ea72",
+      "updatedAt": "2026-06-04T18:24:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202621p3.md",
+      "bytes": 406,
+      "sha256": "484d211c65b20ee6d29797bfe3ca23faf31f9dae2ccda8d5166752cb4424962a",
+      "updatedAt": "2026-06-04T18:24:50.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202622-open-beta.md",
+      "bytes": 8887,
+      "sha256": "c21c66f85c1dcc6f1c3ca277ddf0ee224ab06ad30b0adb78ac8548a185e7c953",
+      "updatedAt": "2026-06-08T22:33:02.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202622.md",
+      "bytes": 8249,
+      "sha256": "317ec7c0721549c3925a03f2d1ebd41f6392ceafaecc16d7a01e0f5932bb2ae6",
+      "updatedAt": "2026-06-22T22:52:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202622p1.md",
+      "bytes": 1769,
+      "sha256": "64bc39a28aa09cdf57d5ae16736d7618d791b7a752917fef49aa41a8e9f828bc",
+      "updatedAt": "2026-06-22T22:52:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202622p2.md",
+      "bytes": 240,
+      "sha256": "0360bee47457c5e1a4249dbc1f83d253c3c08ba448ff90d5448bfc1af83420f0",
+      "updatedAt": "2026-06-22T22:52:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202623-open-beta.md",
+      "bytes": 13374,
+      "sha256": "7d6258b149a8cd2c45eae075af7a91d66ee31116847f5227a1780ef2007abf8d",
+      "updatedAt": "2026-06-22T22:51:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202623-openbeta.md",
+      "bytes": 21268,
+      "sha256": "7b102c4fcb16d1bd83e40426bc7103139e30e53486e2e921ce7c704026d1caa2",
+      "updatedAt": "2026-08-12T22:34:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202623.md",
+      "bytes": 11445,
+      "sha256": "60c0d116a1657aa8b58e4654c9fd9d3d82ed72614485b67564e1263e663aaae4",
+      "updatedAt": "2026-08-12T22:34:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202623p1.md",
+      "bytes": 1216,
+      "sha256": "38c1dfda69fce8b4e027d5f045f408280e276e4911f3e593fb37ce5decefc59c",
+      "updatedAt": "2026-08-12T22:34:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202623p2.md",
+      "bytes": 311,
+      "sha256": "ec3758c871f94b1836e062b620ab86acba08613e203709a8af499a453a499a22",
+      "updatedAt": "2026-08-12T22:34:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202623p3.md",
+      "bytes": 454,
+      "sha256": "ed220286374fbb09db46dc8d30f0cc920b388ca2b61f81f44f186edf7311e3d0",
+      "updatedAt": "2026-08-12T22:34:31.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202631.md",
+      "bytes": 6880,
+      "sha256": "e216b05efe46a70540bb2ddf4e01b0da5c6ece60e01540cb5944f6d99c849d33",
+      "updatedAt": "2026-09-01T20:45:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202631p1.md",
+      "bytes": 726,
+      "sha256": "e94924e13db45fc18f83621f8de028f74aa1e8d9d8d014c98f2ea86b85bdc41a",
+      "updatedAt": "2026-09-01T20:45:32.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202632-open-beta.md",
+      "bytes": 10032,
+      "sha256": "29fbac1169fe439f84cfb346d3bfe420840ff543712b3e932ee4141635867a09",
+      "updatedAt": "2026-09-01T20:45:35.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202632.md",
+      "bytes": 10679,
+      "sha256": "d9588dcfdf483c347bfa18d3ad46f0fa5158477f626e4d132f2c48ea6911de44",
+      "updatedAt": "2026-10-05T22:14:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202632p1.md",
+      "bytes": 397,
+      "sha256": "6d13561ea37a45dfddc8999069c64b1a4998a330a7bda645d8c76c38556aaed3",
+      "updatedAt": "2026-10-05T22:14:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202632p2.md",
+      "bytes": 408,
+      "sha256": "fb821b92141a1007d3bb9d5276827a68b9e2513aeb0b29fe2fe5f9c83bdd3d51",
+      "updatedAt": "2026-10-05T22:14:44.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202633-open-beta.md",
+      "bytes": 22440,
+      "sha256": "ec983b8b9d2c46322f0996309f50d6002b528a5001be5560714d9dbb441dd8d2",
+      "updatedAt": "2026-10-05T22:14:40.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202633.md",
+      "bytes": 11243,
+      "sha256": "c00ac6be55bf3ce1ab2c04397e9b0193a7270c45a809a4bf5d8354b5c783cd3b",
+      "updatedAt": "2026-10-05T22:15:41.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202633p1.md",
+      "bytes": 1040,
+      "sha256": "79960ecfeadbc9126db059d1eb326b679e1cbfbc63ce975f1cb8981880217518",
+      "updatedAt": "2026-10-05T22:15:41.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202633p2.md",
+      "bytes": 1238,
+      "sha256": "1b9654b0e5048c60e1c3f9b9bd93babfe446149d4f11048c35b24bf7c37900c1",
+      "updatedAt": "2026-10-09T17:06:23.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202641-open-beta.md",
+      "bytes": 11516,
+      "sha256": "e122c241f7b7f1830fffc160a775239d4a2c30e115035268e7707d35f8f862b7",
+      "updatedAt": "2026-10-28T18:10:39.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-202641.md",
+      "bytes": 10508,
+      "sha256": "a91d3b64af589cca99018821cf96cd68e1f015ef26e1012e49d78a3c5ebdf07f",
+      "updatedAt": "2026-10-28T22:49:46.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-community-labs.md",
+      "bytes": 9393,
+      "sha256": "2a34ae389ac7784e867f7db3df1586999709007343375246997bd035168b72cc",
+      "updatedAt": "2025-11-13T00:15:02.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-configuration-window.md",
+      "bytes": 7732,
+      "sha256": "a06d0e0dcab12ff0505773194320e9d7e780625fc4b89d8d725af6c14ada7fc7",
+      "updatedAt": "2025-11-13T00:14:47.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/vrchat-safety-and-trust-system.md",
+      "bytes": 16451,
+      "sha256": "82a8daeeb782680510646af3d3da8b1edf96137de9b1a1db9033271f6db8de63",
+      "updatedAt": "2025-11-13T00:15:03.000Z"
+    },
+    {
+      "url": "https://docs.vrchat.com/docs/welcome-to-vrchat.md",
+      "bytes": 865,
+      "sha256": "d84f4c50dda11d1d4e16d234fb4ae517bb65dd66a4b0399ab6060f458f9ad4af",
+      "updatedAt": "2025-11-13T00:14:30.000Z"
+    }
+  ]
+}
