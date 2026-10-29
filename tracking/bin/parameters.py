@@ -3,6 +3,8 @@ from scipy.spatial.transform import Rotation as R
 import cv2
 import json
 import math
+from dataclasses import asdict
+from lighting import DEFAULT_LIGHTING, LightingSettings
 
 class Parameters():
     def __init__(self) -> None:
@@ -20,6 +22,8 @@ class Parameters():
         self.pose_status = ''
         self.tracker_status = ''
         self.tracker_timeout = 0.0
+        self.lighting = DEFAULT_LIGHTING
+        self.lighting_status = 'Original; ajustes desligados'
         
         self.model = param["model_complexity"]
         self.smooth_landmarks = param["smooth_landmarks"]
@@ -120,6 +124,16 @@ class Parameters():
         self.tracker_timeout = value
         return True
 
+    def set_lighting(self, mode='off', contrast=1., brightness=0., compare=False):
+        try:
+            if isinstance(contrast, bool) or isinstance(brightness, bool):
+                raise ValueError
+            settings = LightingSettings(mode, float(contrast), float(brightness), compare)
+        except (ValueError, TypeError, OverflowError):
+            return False
+        self.lighting = settings  # Snapshot imutável, trocado de uma vez pela GUI.
+        return True
+
 
     def rot_change_y(self, value):                                  #callback functions. Whenever the value on sliders are changed, they are called
         print(f"INFO: Changed y rotation value to {value}")
@@ -192,6 +206,7 @@ class Parameters():
         param = {}
         param['min_visibility'] = self.min_visibility
         param['tracker_timeout'] = self.tracker_timeout
+        param['lighting'] = asdict(self.lighting)
         param["rotate"] = self.img_rot_dict_rev[self.rotate_image] 
         param["smooth1"] = self.smoothing_1
         param["smooth2"] = self.smoothing_2
@@ -229,6 +244,12 @@ class Parameters():
                 param = json.load(f)
             self.set_min_visibility(param.get('min_visibility', .5))
             self.set_tracker_timeout(param.get('tracker_timeout', 0.))
+            lighting = param.get('lighting', {})
+            if isinstance(lighting, dict):
+                try:
+                    self.set_lighting(**lighting)
+                except TypeError:
+                    pass  # Configuração desconhecida não impede carregar os demais parâmetros.
 
             #print(param["roty"])
 

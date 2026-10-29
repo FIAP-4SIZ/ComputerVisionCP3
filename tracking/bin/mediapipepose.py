@@ -26,6 +26,7 @@ from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
 from pose_validation import InvalidPose
 from independent_trackers import prepare_trackers, enabled_names, TrackerLifecycle
+from lighting import DEFAULT_LIGHTING, LABELS, apply_lighting, comparison_view, resize_for_pose
 
 
 def main():
@@ -79,6 +80,10 @@ def main():
         metrics = FrameMetrics()
         cycle_start = time.perf_counter()
         preview = None
+        preview_original = None
+        preview_settings = DEFAULT_LIGHTING
+        preview_preprocess_ms = 0.
+        active_lighting_key = None
         tracker_lifecycle = TrackerLifecycle(enabled_names(params))
         params.tracker_status = tracker_lifecycle.summary()
         if is_video:
@@ -110,6 +115,7 @@ def main():
                         pose.reset()
                         backend.reset()
                         tracker_lifecycle.reset()
+                        active_lighting_key = None
                         if hasattr(params, 'pose3d_og'):
                             del params.pose3d_og
                         metrics = FrameMetrics()
@@ -139,7 +145,7 @@ def main():
                     cv2.rectangle(view, (0, 97), (view.shape[1], 118), (0, 0, 0), -1)
                     cv2.putText(view, params.tracker_status, (10, 112), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                     cv2.putText(view, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
-                    cv2.imshow('out', view)
+                    cv2.imshow('out', comparison_view(preview_original, view, preview_settings, preview_preprocess_ms))
                     if cv2.waitKey(1) == 27:
                         shutdown(params)
                 if is_video and camera_thread.state != 'running':
@@ -160,16 +166,28 @@ def main():
                 img = cv2.flip(img,1)
 
             #if set, ensure image does not exceed the given size.
-            if max(img.shape) > params.maximgsize:
-                ratio = max(img.shape)/params.maximgsize
-                img = cv2.resize(img, (int(img.shape[1]/ratio),int(img.shape[0]/ratio)))
+            original = resize_for_pose(img, params.maximgsize)
+            settings = getattr(params, 'lighting', DEFAULT_LIGHTING)
+            preprocessing_start = time.perf_counter()
+            img = apply_lighting(original, settings)
+            preprocess_ms = (time.perf_counter() - preprocessing_start) * 1000
+            params.lighting_status = f'{LABELS[settings.mode]} | PDI:{preprocess_ms:.2f}ms'
 
             if params.paused and not is_video:
-                cv2.imshow("out", img)
+                cv2.imshow("out", comparison_view(original, img, settings, preprocess_ms))
                 cv2.waitKey(1)
                 # Não mistura o tempo em pausa com as medições do rastreamento.
                 cycle_start = time.perf_counter()
                 continue
+
+            key = settings.inference_key()
+            if active_lighting_key is not None and key != active_lighting_key:
+                pose.reset()
+                backend.reset()
+                tracker_lifecycle.reset()
+                if hasattr(params, 'pose3d_og'):
+                    del params.pose3d_og
+            active_lighting_key = key
 
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -187,6 +205,9 @@ def main():
                 camera_thread.fail('Falha na análise da pose: ' + str(exc))
                 params.input_status = camera_thread.status
                 preview = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                preview_original = original.copy()
+                preview_settings = settings
+                preview_preprocess_ms = preprocess_ms
                 continue
             pose_seconds = time.perf_counter() - t0
             img.flags.writeable = True
@@ -242,14 +263,17 @@ def main():
             if is_video:
                 cv2.putText(img, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                 preview = img.copy()
+                preview_original = original.copy()
+                preview_settings = settings
+                preview_preprocess_ms = preprocess_ms
 
-            cv2.imshow("out", img)           #show image, exit program if we press esc
+            cv2.imshow("out", comparison_view(original, img, settings, preprocess_ms))
             key = cv2.waitKey(1)
             cycle_end = time.perf_counter()
             metrics.add(capture=capture_seconds, age=frame_age, pose=pose_seconds,
                         trackers=tracker_seconds, cycle=cycle_end - cycle_start)
             if params.log_frametime:
-                print('INFO: ' + metrics.summary())
+                print('INFO: ' + metrics.summary() + ' | ' + params.lighting_status)
             # Inclui o custo do log no próximo ciclo.
             cycle_start = cycle_end
             if key == 27:

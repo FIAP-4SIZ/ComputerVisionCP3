@@ -3,6 +3,7 @@ from tkinter import ttk
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 from helpers import shutdown, sendToSteamVR
+from lighting import DEFAULT_LIGHTING
 
 #use_steamvr = True
 
@@ -13,6 +14,7 @@ class InferenceWindow(tk.Frame):
         self.params = params
         params.gui = self       #uhh is this a good idea?
         self.root = root
+        self.make_lighting_controls()
 
         # calibrate rotation
         self.calib_rot_var = tk.BooleanVar(value=self.params.calib_rot)
@@ -142,6 +144,46 @@ class InferenceWindow(tk.Frame):
         #self.root.after(0, self.set_rot_y_var)
         #self.root.after(0, self.set_rot_x_var)
           
+    def make_lighting_controls(self):
+        frame = tk.LabelFrame(self.root, text='Iluminacao opcional (original preservado)')
+        frame.pack(fill='x')
+        settings = getattr(self.params, 'lighting', DEFAULT_LIGHTING)
+        selector_row = tk.Frame(frame)
+        selector_row.pack(fill='x')
+        input_row = tk.Frame(frame)
+        input_row.pack(fill='x')
+        labels = {'Original': 'off', 'Brilho e contraste': 'manual', 'Equalizar luminancia': 'equalize'}
+        mode = tk.StringVar(value=next(label for label, value in labels.items() if value == settings.mode))
+        ttk.Combobox(selector_row, textvariable=mode, values=list(labels), state='readonly', width=23).pack(side='left')
+        tk.Label(input_row, text='Contraste (0.1-3)').pack(side='left')
+        contrast = tk.Entry(input_row, width=5)
+        contrast.insert(0, str(settings.contrast))
+        contrast.pack(side='left')
+        tk.Label(input_row, text='Brilho (-100 a 100)').pack(side='left')
+        brightness = tk.Entry(input_row, width=5)
+        brightness.insert(0, str(settings.brightness))
+        brightness.pack(side='left')
+        compare = tk.BooleanVar(value=settings.compare)
+        tk.Checkbutton(selector_row, text='Lado a lado', variable=compare).pack(side='left')
+        feedback = tk.StringVar(value='Manual ou equalizacao, sem combinar. Novos quadros usam o ajuste.')
+        def apply():
+            if self.params.set_lighting(labels.get(mode.get()), contrast.get(), brightness.get(), compare.get()):
+                feedback.set('Aplicado. Para comparar deteccoes, reinicie o video ou use a ferramenta offline.')
+            else:
+                feedback.set('Valores invalidos: contraste 0.1-3, brilho -100 a 100.')
+        def restore():
+            self.params.set_lighting()
+            mode.set('Original')
+            contrast.delete(0, tk.END)
+            contrast.insert(0, '1.0')
+            brightness.delete(0, tk.END)
+            brightness.insert(0, '0')
+            compare.set(False)
+            feedback.set('Original restaurado; ajustes desligados.')
+        tk.Button(input_row, text='Aplicar iluminacao', command=apply).pack(side='left')
+        tk.Button(input_row, text='Restaurar original', command=restore).pack(side='left')
+        tk.Label(self.root, textvariable=feedback, wraplength=700).pack()
+
     def change_neck_offset_frame(self,frame):
         tk.Label(frame, text="HMD to neck offset:", width = 20).pack(side='left')
         

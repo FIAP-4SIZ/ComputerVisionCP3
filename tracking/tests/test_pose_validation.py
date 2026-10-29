@@ -2,6 +2,7 @@ import copy
 import sys
 import tempfile
 import builtins
+import json
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -15,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'bin'))
 from pose_validation import InvalidPose, prepare_pose, valid_tracker_data
 from backends import VRChatOSCBackend, SteamVRBackend
 from parameters import Parameters
+from lighting import DEFAULT_LIGHTING, LightingSettings
 from inference_gui import InferenceWindow
 import mediapipepose as app
 from test_first_improvement import run_one_frame
@@ -45,8 +47,19 @@ class LandmarkValidationTests(unittest.TestCase):
                 params = Parameters()
                 params.set_min_visibility(.7)
                 params.set_tracker_timeout(.2)
+                params.set_lighting('manual', 1.2, 10, True)
                 params.save_params()
                 restored = Parameters()
+                self.assertEqual(restored.lighting, LightingSettings('manual', 1.2, 10, True))
+                stored_path = Path(directory) / 'saved_params.json'
+                stored = json.loads(stored_path.read_text())
+                for value in (None, {'contrast': 'nan'}, {'unknown': True}):
+                    stored['lighting'] = value
+                    stored_path.write_text(json.dumps(stored))
+                    self.assertEqual(Parameters().lighting, DEFAULT_LIGHTING)
+                del stored['lighting']
+                stored_path.write_text(json.dumps(stored))
+                self.assertEqual(Parameters().lighting, DEFAULT_LIGHTING)
         self.assertEqual(restored.min_visibility, .7)
         self.assertEqual(restored.tracker_timeout, .2)
 
