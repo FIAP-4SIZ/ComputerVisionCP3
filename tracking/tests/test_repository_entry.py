@@ -69,3 +69,11 @@ class RepositoryEntryTests(unittest.TestCase):
         # Reproduz a causa da falha na CI Windows sem exigir esse sistema aqui.
         with patch('io.text_encoding', side_effect=lambda encoding=None, stacklevel=2: encoding or 'cp1252'):
             self.test_current_markdown_local_links_exist()
+
+    def test_validation_history_is_distinct_from_review_index(self):
+        reports=TRACKING/'docs/reports'
+        validation=(reports/'VALIDATION_REPORT.md').read_text(encoding='utf-8')
+        review=(reports/'REVIEW_STATUS.md').read_text(encoding='utf-8')
+        self.assertNotEqual(validation,review)
+        for heading in ('# Relatório de validação e integração','## Feature de vídeo','## Peitoral e dedos'):
+            self.assertIn(heading,validation)
