@@ -142,7 +142,11 @@ class OriginalComparisonTests(unittest.TestCase):
         original = types.ModuleType('original_app')
         with patch.dict(sys.modules, original_app=original):
             exec(compile(source, 'original/mediapipepose.py', 'exec'), original.__dict__)
-            before = run_one_frame(original, True).updatepose.call_args.args
+            # A comparação é de geometria, não benchmark. Em Windows time.time
+            # pode dar o mesmo instante duas vezes, e o FPS legado divide por zero.
+            # Não alteramos a fixture original: tornamos seu relógio determinístico.
+            with patch.object(original.time, 'time', side_effect=[1., 1.01]):
+                before = run_one_frame(original, True).updatepose.call_args.args
         after = run_one_frame(app, True).updatepose.call_args.args
         np.testing.assert_array_equal(before[1], after[1])
         for old_rotation, new_rotation in zip(before[2], after[2]):

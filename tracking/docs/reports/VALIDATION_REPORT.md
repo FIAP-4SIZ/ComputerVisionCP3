@@ -202,3 +202,6 @@ As comparações de confiabilidade nos guias são cenários controlados, não me
 ### Correção de compatibilidade encontrada pela CI
 
 A primeira execução da organização, commit `29b8234`, falhou no Windows ao ler um documento UTF-8 com a codificação padrão CP1252 no novo teste de links. A execução Linux foi cancelada pelo fail-fast dessa matriz; não é aprovada. Corrigida a leitura para declarar UTF-8 e adicionado caso de regressão simulando padrão ANSI Windows. A matriz agora executa ambos os sistemas mesmo se um falhar, para preservar os diagnósticos. Nova suíte local: **155 testes**. O build e runtime Linux da organização já passaram localmente; a nova CI precisa confirmar o commit da correção.
+
+
+A execução de push `40908598862`, no commit `9900270`, também revelou uma falha intermitente preexistente na comparação com a fixture original: em Windows, duas leituras de `time.time()` podem ser iguais, levando o cálculo de FPS legado a dividir por zero. A execução de PR do mesmo commit passou, mas isso não foi usado para ignorar a falha. O teste de geometria agora usa dois instantes determinísticos somente ao executar a fixture; o código original preservado e as comparações exatas de posições/rotações permanecem intactos. A suíte de 155 testes foi repetida após a correção; a nova CI deve confirmar o commit final.
