@@ -102,3 +102,39 @@ Commits desta melhoria:
 - O commit documental seguinte registra decisões e resultados finais.
 
 **Sem merge para `develop` ou `main` e sem aprovação de integração.** Não foram medidos precisão, jitter ou FPS real; a comparação de oclusões usa entradas controladas. Após os testes com equipamento e a CI Windows, a próxima melhoria da lista é a comparação opcional de pré-processamento de iluminação, usando o mesmo vídeo e conservando a imagem original.
+
+## Comparação opcional de iluminação
+
+Branch `feature/lighting-comparison`, baseada em `feature/per-tracker-validation`, no repositório `FIAP-4SIZ/ComputerVisionCP3`. A etapa implementa a próxima melhoria já definida, com especificação, instruções e explicação acadêmica em `LIGHTING_COMPARISON.md`.
+
+Escopo: original como padrão, brilho/contraste manual ou equalização de luminância sem combinação automática, preservação do BGR anterior ao ajuste, comparação visual e comparação offline dos mesmos quadros/timestamps. Não há nova dependência, filtro de ruído ou migração de API. A aplicação executa o MediaPipe apenas na entrada ativa; o painel original é explicitamente rotulado sem inferência. Ao mudar o ajuste efetivo, detector, históricos locais e janela de FPS são reiniciados; trocar só a visualização não provoca reset.
+
+Arquivos principais: `bin/lighting.py`, `bin/mediapipepose.py`, `bin/parameters.py`, `bin/inference_gui.py`, `bin/video_source.py`, `tools/compare_lighting.py`, `tests/test_lighting.py`, `tests/test_lighting_comparison.py` e testes de persistência existentes. O relatório real do ensaio está em `evaluation/lighting_jeff_60.json`.
+
+| Verificação | Resultado |
+|---|---|
+| Suíte anterior sem alterações | 83 aprovados |
+| Suíte final | 109 aprovados, zero falhas e zero skips; 26 novos testes |
+| Modo desligado | Pixels e conversão BGR/RGB preservados; regressões anteriores continuam aprovadas |
+| Fórmula e histograma | Identidade, clipping, ausência de valor absoluto, equalização só de Y e não combinação de modos cobertos |
+| GUI/configuração | Aplicação, erros, restauração, persistência e leitura de opções antigas/inválidas cobertas com widgets substituídos |
+| Pipeline | Original intacto, uma inferência por quadro, pausa e reset de históricos/métricas quando necessário |
+| Comparação offline | AVI real, detectores independentes, hashes de quadros/timestamps, EOF/prefixo, saída sem sobrescrita e falhas com liberação de recursos |
+| MediaPipe real | Executado nos testes gerados e no vídeo da aula |
+| Dependências/sintaxe/diff | `pip check`, `compileall` e `git diff --check` aprovados |
+| Linux | Build PyInstaller e smoke do binário com inferência real aprovados na revisão final |
+| Windows, GUI real, câmera e VR | Pendentes; sem aprovação de integração |
+| Lint/tipagem | Não configurados; não contabilizados como aprovados |
+
+Ensaio com os mesmos 60 quadros de `Jeff.mp4`, da referência acadêmica: SHA-256 do arquivo preservado e fingerprints dos quadros/timestamps idênticos. Brilho/contraste 1,2/+20 elevou os pixels com algum canal em 255 de 1,48% para 50,68%. Os três casos retornaram pose em 60/60 quadros, mas não produziram trackers válidos neste recorte sem pés enquadrados. A equalização também não demonstrou ganho de precisão; pequenas diferenças de visibilidade/FPS não são prova disso. Os tempos medidos e as limitações estão no relatório detalhado.
+
+Commits de implementação:
+
+- `f7b52a8`: controles, pré-processamento, original preservado e testes.
+- `0e69c2b`: ferramenta de comparação, leitura sequencial sem espera e proteção dos arquivos.
+- `a9a6c98`: reinicia a janela de métricas ao trocar a entrada de iluminação, sem reset ao mudar só a visualização.
+- O commit documental final inclui o relatório experimental e os limites da integração.
+
+**Integração bloqueada; nenhum merge para `develop` ou `main`.** Não há dispositivo de câmera, display ou Xvfb neste ambiente. A API do GitHub retornou `Forbidden` ao consultar Actions; não se inferiu aprovação da CI pelo push. O experimento manual de SteamVR continua não executado e não foi descrito como aprovado.
+
+Próxima recomendação: obter vídeos de corpo inteiro com iluminação normal/escura/contraluz e referência anotada, repetindo o ensaio. Adotar um ajuste, ou acrescentar outra técnica, só depois de observar benefício medido para esse cenário.

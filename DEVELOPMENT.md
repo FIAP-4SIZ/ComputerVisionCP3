@@ -5,6 +5,7 @@ Na inspeção inicial havia somente `origin/main`, três commits descritivos em 
 - `feature/video-input`: importação da base necessária e entrada por vídeo.
 - `feature/pose-validation`: validação das poses, dependente da funcionalidade de vídeo.
 - `feature/per-tracker-validation`: seleção e expiração locais por tracker, dependente da validação de poses.
+- `feature/lighting-comparison`: ajustes opcionais de iluminação e comparação do mesmo vídeo, dependente dos trackers independentes.
 - Commits pequenos, descritivos em inglês; sem push para o repositório de referência.
 - `develop` só será criada/atualizada e receberá merge quando todas as verificações obrigatórias estiverem aprovadas. Ausência de infraestrutura não conta como aprovação.
 - Não editar diretamente `main` ou `develop`; não publicar merges com testes pendentes.

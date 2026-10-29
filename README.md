@@ -84,6 +84,7 @@ A implementação está em [`tracking/`](tracking/), derivada do projeto MIT de 
 - [Instalação, câmera e arquivo de vídeo](tracking/VIDEO_INPUT.md).
 - [Validação de landmarks e limites da confiança](tracking/POSE_VALIDATION.md).
 - [Validação e expiração independentes por tracker](tracking/PER_TRACKER_VALIDATION.md).
+- [Comparação opcional de iluminação, preservando o vídeo original](tracking/LIGHTING_COMPARISON.md).
 - [Resultados e pendências de integração](tracking/VALIDATION_REPORT.md).
 - [Arquitetura e estudo de PDI](tracking/ESTUDO_PDI.md).
 - [Branches e verificações de integração](DEVELOPMENT.md).

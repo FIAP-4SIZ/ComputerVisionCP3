@@ -1,5 +1,7 @@
 # Validação independente dos trackers
 
+> A etapa seguinte de comparação opcional de iluminação está documentada em `LIGHTING_COMPARISON.md`. Os 83 testes e resultados abaixo registram a etapa dos trackers independentes.
+
 ## Problema e escopo
 
 Esta é a próxima melhoria definida em `POSE_VALIDATION.md`: a validação anterior rejeitava a pose inteira quando um tornozelo falhava. Agora quadril, pés e mãos são avaliados por suas dependências, usando os mesmos landmarks world do MediaPipe e o mesmo alinhamento do projeto. Nenhuma rede, dependência ou filtro novo foi adicionado.

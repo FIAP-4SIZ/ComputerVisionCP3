@@ -1,0 +1,128 @@
+{
+  "input_sha256": "22bafdcee9c7851e15610f59fad0da0ba8e19aba7438bcaa84ff87ea78f29d88",
+  "max_frames": 60,
+  "max_size": 640,
+  "image_transform": {
+    "rotation_degrees": 0,
+    "mirror": false
+  },
+  "detector": {
+    "api": "mp.solutions.pose",
+    "mediapipe": "0.10.21",
+    "model_complexity": 1,
+    "min_detection_confidence": 0.5,
+    "min_tracking_confidence": 0.5,
+    "smooth_landmarks": true,
+    "static_image_mode": false,
+    "min_visibility": 0.5
+  },
+  "note": "Ensaio offline; visibilidade/deteccao nao medem precisao. FPS exclui hashes, estatisticas, abertura do modelo e GUI.",
+  "cases": [
+    {
+      "settings": {
+        "mode": "off",
+        "contrast": 1.0,
+        "brightness": 0.0,
+        "compare": false
+      },
+      "frames": 60,
+      "reached_eof": false,
+      "decoded_frames_sha256": "18919c3ab085e516fb3aaa04a918898ff6a3f52709303ddf5464637778077196",
+      "first_timestamp_ms": 0.0,
+      "last_timestamp_ms": 2360.0,
+      "mean_decode_ms": 1.7261446477884117,
+      "mean_preprocess_ms": 0.38243385157935944,
+      "mean_pose_ms": 41.09043405333068,
+      "mean_cycle_ms": 45.758181244309526,
+      "approximate_offline_fps": 21.854015452687158,
+      "frames_with_pose": 60,
+      "mean_relevant_visibility": 0.2515707689125672,
+      "valid_tracker_frames": {
+        "hip": 0,
+        "right_foot": 0,
+        "left_foot": 0
+      },
+      "original_image": {
+        "mean_luminance": 151.2237170862269,
+        "fraction_any_channel_zero": 0.00039207175925925916,
+        "fraction_any_channel_255": 0.014797164351851851
+      },
+      "adjusted_image": {
+        "mean_luminance": 151.2237170862269,
+        "fraction_any_channel_zero": 0.00039207175925925916,
+        "fraction_any_channel_255": 0.014797164351851851
+      }
+    },
+    {
+      "settings": {
+        "mode": "manual",
+        "contrast": 1.2,
+        "brightness": 20,
+        "compare": false
+      },
+      "frames": 60,
+      "reached_eof": false,
+      "decoded_frames_sha256": "18919c3ab085e516fb3aaa04a918898ff6a3f52709303ddf5464637778077196",
+      "first_timestamp_ms": 0.0,
+      "last_timestamp_ms": 2360.0,
+      "mean_decode_ms": 1.967139700233626,
+      "mean_preprocess_ms": 2.683393432137867,
+      "mean_pose_ms": 43.75747640103024,
+      "mean_cycle_ms": 51.19732478245472,
+      "approximate_offline_fps": 19.532270567830512,
+      "frames_with_pose": 60,
+      "mean_relevant_visibility": 0.2522165543041562,
+      "valid_tracker_frames": {
+        "hip": 0,
+        "right_foot": 0,
+        "left_foot": 0
+      },
+      "original_image": {
+        "mean_luminance": 151.2237170862269,
+        "fraction_any_channel_zero": 0.00039207175925925916,
+        "fraction_any_channel_255": 0.014797164351851851
+      },
+      "adjusted_image": {
+        "mean_luminance": 191.76345160590276,
+        "fraction_any_channel_zero": 0.0,
+        "fraction_any_channel_255": 0.5068200954861113
+      }
+    },
+    {
+      "settings": {
+        "mode": "equalize",
+        "contrast": 1.0,
+        "brightness": 0.0,
+        "compare": false
+      },
+      "frames": 60,
+      "reached_eof": false,
+      "decoded_frames_sha256": "18919c3ab085e516fb3aaa04a918898ff6a3f52709303ddf5464637778077196",
+      "first_timestamp_ms": 0.0,
+      "last_timestamp_ms": 2360.0,
+      "mean_decode_ms": 1.5232824021950364,
+      "mean_preprocess_ms": 1.3711815020845581,
+      "mean_pose_ms": 39.00894943265788,
+      "mean_cycle_ms": 44.57712906926948,
+      "approximate_offline_fps": 22.4330283461296,
+      "frames_with_pose": 60,
+      "mean_relevant_visibility": 0.25184772400497574,
+      "valid_tracker_frames": {
+        "hip": 0,
+        "right_foot": 0,
+        "left_foot": 0
+      },
+      "original_image": {
+        "mean_luminance": 151.2237170862269,
+        "fraction_any_channel_zero": 0.00039207175925925916,
+        "fraction_any_channel_255": 0.014797164351851851
+      },
+      "adjusted_image": {
+        "mean_luminance": 130.2348458478009,
+        "fraction_any_channel_zero": 0.02153088831018519,
+        "fraction_any_channel_255": 0.049640697337962954
+      }
+    }
+  ],
+  "input_unchanged": true
+}
