@@ -1,0 +1,13 @@
+{
+  "jsonid": "input_profile",
+  "controller_type": "fiap_mediapipe_hand",
+  "input_bindingui_mode": "controller_handed",
+  "input_source": {
+    "/pose/raw": {"type": "pose"},
+    "/input/trigger": {"type": "trigger", "order": 1},
+    "/input/system": {"type": "button", "order": 2},
+    "/input/skeleton/left": {"type": "skeleton", "skeleton": "/skeleton/hand/left", "side": "left"},
+    "/input/skeleton/right": {"type": "skeleton", "skeleton": "/skeleton/hand/right", "side": "right"}
+  },
+  "default_bindings": []
+}

@@ -1,0 +1,7 @@
+{
+  "alwaysActivate": true,
+  "name": "mediapipe_hands",
+  "directory": "",
+  "resourceOnly": false,
+  "hmd_presence": []
+}
