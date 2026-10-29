@@ -21,7 +21,7 @@ def main(argv=None):
     args=parser.parse_args(argv)
     if not 1 <= args.port <= 65535: parser.error('Porta deve estar entre 1 e 65535')
     if not args.send:
-        print('Prévia: /input/Jump 0 → 1 → 0. Use --send com VRChat aberto e OSC ligado.')
+        print('Prévia: /input/Jump 0 -> 1 -> 0. Use --send com VRChat aberto e OSC ligado.')
         return
     send_jump(SimpleUDPClient(args.ip,args.port))
     print('Pulo enviado. UDP não confirma recepção; observe o personagem no VRChat.')

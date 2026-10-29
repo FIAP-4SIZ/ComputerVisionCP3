@@ -83,3 +83,13 @@ class DesktopTests(unittest.TestCase):
         with self.assertRaises(KeyboardInterrupt):
             tool.send_jump(client,sleep=Mock(side_effect=KeyboardInterrupt))
         client.send_message.assert_called_with('/input/Jump',0)
+
+    def test_preview_supports_windows_cp1252_console(self):
+        import io
+        from contextlib import redirect_stdout
+        import vrchat_desktop_check as tool
+        buffer=io.BytesIO()
+        console=io.TextIOWrapper(buffer,encoding='cp1252')
+        with redirect_stdout(console): tool.main([])
+        console.flush()
+        self.assertIn('0 -> 1 -> 0',buffer.getvalue().decode('cp1252'))

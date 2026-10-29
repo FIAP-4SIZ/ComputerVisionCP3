@@ -52,3 +52,6 @@ Os dez parâmetros `MP_Left_*`/`MP_Right_*` dos dedos não são entradas univers
 Testes cobrem confirmação, pulso único, rearme, pontos ausentes/fora do quadro, pausa, integração com laço da câmera e pacotes UDP reais. **O VRChat não está instalado na nuvem: pulo observado no cliente ainda precisa ser confirmado pelo usuário.** Nenhum merge para develop até as verificações obrigatórias. Não há alegação de precisão.
 
 Referência oficial do comando e seu tipo: [OSC Input](https://github.com/vrchat-community/osc/blob/main/docs/Input.md). Referência das camadas de animação: [Playable Layers](https://github.com/vrchat-community/creator-docs/blob/main/Docs/docs/avatars/playable-layers.md). Consultadas pelo repositório oficial; o site de documentação retornou HTTP 403 nesta sessão.
+
+
+Validação da entrega: 164 testes locais (8 novos), pip check, compilação, GUI real em Xvfb 1280×720 e build/runtime Linux aprovados. A primeira CI Windows identificou um caractere de seta incompatível com console CP1252 na prévia do teste; substituído por `->`, com teste de regressão nessa codificação. Conferir a CI do commit final no PR #11. Não considerar essa correção como comprovação do pulo no cliente.
