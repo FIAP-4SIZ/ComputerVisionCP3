@@ -80,7 +80,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
     landmarks = [SimpleNamespace(x=i*.01, y=(i % 5)*.1, z=(i % 7)*.04, visibility=1.)
                  for i in range(33)]
     result = SimpleNamespace(pose_world_landmarks=SimpleNamespace(landmark=landmarks)
-                             if with_pose else None, pose_landmarks=None)
+                             if with_pose else None, pose_landmarks=SimpleNamespace(landmark=landmarks) if with_pose else None)
     params = SimpleNamespace(webui=False, backend=2, exit_ready=False, model=1,
                              min_tracking_confidence=.5, smooth_landmarks=True,
                              static_image=False, smoothing=0., additional_smoothing=.7,
@@ -106,6 +106,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
             ('CameraStream', {'return_value': camera}),
             ('threading.Thread', {}),
             ('mp.solutions.pose.Pose', {'return_value': detector}),
+            ('mp.solutions.drawing_utils.draw_landmarks', {}),
             ('cv2.namedWindow', {}), ('cv2.imshow', {}),
             ('cv2.waitKey', {'return_value': 27}),
             ('shutdown', {'side_effect': SystemExit}),

@@ -4,6 +4,7 @@ import cv2
 import json
 import math
 from dataclasses import asdict
+from hand_quality import HandQualitySettings
 from lighting import DEFAULT_LIGHTING, LightingSettings
 
 class Parameters():
@@ -22,6 +23,7 @@ class Parameters():
         self.pose_status = ''
         self.tracker_status = ''
         self.tracker_timeout = 0.0
+        self.hand_quality = HandQualitySettings()
         self.lighting = DEFAULT_LIGHTING
         self.lighting_status = 'Original; ajustes desligados'
         
@@ -125,6 +127,18 @@ class Parameters():
         self.tracker_timeout = value
         return True
 
+    def set_hand_quality(self, score, pixels, frames, step):
+        try:
+            if any(isinstance(value, bool) for value in (score, pixels, frames, step)):
+                raise ValueError
+            count = float(frames)
+            if not count.is_integer():
+                raise ValueError
+            self.hand_quality = HandQualitySettings(float(score), float(pixels), int(count), float(step))
+        except (TypeError, ValueError, OverflowError):
+            return False
+        return True
+
     def set_lighting(self, mode='off', contrast=1., brightness=0., compare=False):
         try:
             if isinstance(contrast, bool) or isinstance(brightness, bool):
@@ -208,6 +222,7 @@ class Parameters():
         param['min_visibility'] = self.min_visibility
         param['tracker_timeout'] = self.tracker_timeout
         param['lighting'] = asdict(self.lighting)
+        param['hand_quality'] = asdict(self.hand_quality)
         param["rotate"] = self.img_rot_dict_rev[self.rotate_image] 
         param["smooth1"] = self.smoothing_1
         param["smooth2"] = self.smoothing_2
@@ -245,6 +260,12 @@ class Parameters():
                 param = json.load(f)
             self.set_min_visibility(param.get('min_visibility', .5))
             self.set_tracker_timeout(param.get('tracker_timeout', 0.))
+            quality = param.get('hand_quality', {})
+            if isinstance(quality, dict):
+                try:
+                    self.hand_quality = HandQualitySettings(**quality)
+                except (TypeError, ValueError):
+                    pass
             lighting = param.get('lighting', {})
             if isinstance(lighting, dict):
                 try:

@@ -134,9 +134,9 @@ class PartialValidationTests(unittest.TestCase):
 
     def test_camera_loop_emits_partial_mask_and_keeps_calibration_invalid(self):
         original = app.prepare_trackers
-        def hide_left(landmarks, params):
+        def hide_left(landmarks, params, **options):
             landmarks[27].visibility = 0
-            return original(landmarks, params)
+            return original(landmarks, params, **options)
         with patch.object(app, 'prepare_trackers', side_effect=hide_left):
             backend = run_one_frame(app, True, existing_calibration=True)
         self.assertEqual(backend.updatepose.call_args.kwargs['valid_trackers'],
@@ -368,7 +368,8 @@ class RecordedOcclusionIntegrationTests(unittest.TestCase):
         missing[27].visibility = 0
         recovered = copy.deepcopy(landmarks)
         recovered[27].x += .1
-        results = [SimpleNamespace(pose_world_landmarks=SimpleNamespace(landmark=points), pose_landmarks=None)
+        results = [SimpleNamespace(pose_world_landmarks=SimpleNamespace(landmark=points),
+                   pose_landmarks=SimpleNamespace(landmark=[SimpleNamespace(x=.5,y=.5,z=0,visibility=p.visibility) for p in points]))
                    for points in (landmarks, missing, recovered)]
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'occlusion.avi'

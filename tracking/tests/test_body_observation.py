@@ -44,7 +44,7 @@ class BodyObservationTests(unittest.TestCase):
         self.assertEqual(observe_body(None).framing, 'none')
         p = points()
         p[11].visibility = 0
-        self.assertEqual(observe_body(p).framing, 'partial')
+        self.assertEqual(observe_body(p).framing, 'lower_body')
         p[11].visibility = 1
         self.assertEqual(observe_body(p).framing, 'full')
 

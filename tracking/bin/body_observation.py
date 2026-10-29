@@ -4,6 +4,8 @@ from dataclasses import dataclass
 import math
 
 GROUPS = {
+    'head': (0, 7, 8),
+    'left_leg': (23, 25, 27), 'right_leg': (24, 26, 28),
     'shoulders': (11, 12), 'hips': (23, 24),
     'knees': (25, 26), 'ankles': (27, 28), 'feet': (29, 30, 31, 32),
     'left_arm': (11, 13, 15), 'right_arm': (12, 14, 16),
@@ -20,7 +22,9 @@ class BodyObservation:
     @property
     def status(self):
         labels = {'none': 'Sem pontos visiveis', 'partial': 'Enquadramento parcial',
-                  'chest': 'Peitoral visivel', 'full': 'Corpo completo visivel'}
+                  'chest': 'Peitoral visivel', 'full': 'Corpo completo visivel',
+                  'trunk': 'Tronco visivel', 'lower_body': 'Pernas/quadris visiveis',
+                  'arms': 'Bracos visiveis', 'head': 'Cabeca visivel'}
         arms = sum(name in self.groups for name in ('left_arm', 'right_arm'))
         return f'{labels[self.framing]} | bracos:{arms}/2'
 
@@ -50,7 +54,20 @@ def observe_body(landmarks, threshold=.5):
             continue
     groups = frozenset(name for name, indices in GROUPS.items() if set(indices) <= visible)
     full = {'shoulders', 'hips', 'knees', 'ankles', 'feet'} <= groups
-    framing = 'full' if full else 'chest' if 'shoulders' in groups else 'partial' if visible else 'none'
+    if full:
+        framing = 'full'
+    elif {'shoulders', 'hips'} <= groups:
+        framing = 'trunk'
+    elif 'shoulders' in groups:
+        framing = 'chest'
+    elif 'hips' in groups and ('left_leg' in groups or 'right_leg' in groups):
+        framing = 'lower_body'
+    elif 'left_arm' in groups or 'right_arm' in groups:
+        framing = 'arms'
+    elif 'head' in groups:
+        framing = 'head'
+    else:
+        framing = 'partial' if visible else 'none'
     angle = None
     if 'shoulders' in groups:
         a, b = landmarks[11], landmarks[12]

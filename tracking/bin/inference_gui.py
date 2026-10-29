@@ -15,6 +15,8 @@ class InferenceWindow(tk.Frame):
         params.gui = self       #uhh is this a good idea?
         self.root = root
         self.make_lighting_controls()
+        if getattr(params, "track_fingers", False):
+            self.make_hand_quality_controls()
 
         # calibrate rotation
         self.calib_rot_var = tk.BooleanVar(value=self.params.calib_rot)
@@ -144,6 +146,30 @@ class InferenceWindow(tk.Frame):
         #self.root.after(0, self.set_rot_y_var)
         #self.root.after(0, self.set_rot_x_var)
           
+    def make_hand_quality_controls(self):
+        from hand_quality import HandQualitySettings
+        settings = getattr(self.params, 'hand_quality', HandQualitySettings())
+        frame = tk.LabelFrame(self.root, text='Validação das mãos (reduz estimativas sem suporte)')
+        frame.pack(fill='x')
+        entries = []
+        for label, value in zip(('Pontuação esquerda/direita', 'Palma mínima (pixels)',
+                                  'Quadros de confirmação', 'Salto máximo (palmas/quadro)'),
+                                 (settings.min_handedness, settings.min_palm_pixels,
+                                  settings.confirmation_frames, settings.max_step_palms)):
+            row = tk.Frame(frame)
+            row.pack(fill='x')
+            tk.Label(row, text=label, width=30, anchor='w').pack(side='left')
+            entry = tk.Entry(row, width=8)
+            entry.insert(0, str(value))
+            entry.pack(side='left')
+            entries.append(entry)
+        feedback = tk.StringVar(value='Mais confirmação reduz falsos positivos e aumenta o atraso.')
+        def apply():
+            success = self.params.set_hand_quality(*(entry.get() for entry in entries))
+            feedback.set('Aplicado; confirmação reiniciada.' if success else 'Valores inválidos; consulte o guia de confiabilidade.')
+        tk.Button(frame, text='Aplicar validação das mãos', command=apply).pack()
+        tk.Label(frame, textvariable=feedback, wraplength=500).pack()
+
     def make_lighting_controls(self):
         frame = tk.LabelFrame(self.root, text='Iluminacao opcional (original preservado)')
         frame.pack(fill='x')

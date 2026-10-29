@@ -1,5 +1,6 @@
 """MediaPipe Hands opcional e flexão por dedo para parâmetros OSC de avatar."""
 from dataclasses import dataclass
+from hand_quality import HandQualitySettings, plausible_hand
 import math
 import numpy as np
 from pythonosc.osc_bundle_builder import OscBundleBuilder, IMMEDIATELY
@@ -40,27 +41,42 @@ class HandFrame:
 
 
 class FingerTracking:
-    def __init__(self, detector, client=None):
+    def __init__(self, detector, client=None, settings=HandQualitySettings()):
         self.detector = detector
         self.client = client
+        self.settings = settings
+        self._settings_used = settings
+        self._previous = {}
+        self._counts = {}
+        self._mirrored = None
         self.status = 'Maos: sem dados'
         self._suspended = False
 
     def process(self, rgb, mirrored=False):
         # Hands espera imagem selfie. Pose e os backends corporais não mudam.
+        if self.settings != self._settings_used or (self._mirrored is not None and mirrored != self._mirrored):
+            self.reset()
+        self._settings_used = self.settings
+        self._mirrored = mirrored
         source = rgb if mirrored else np.ascontiguousarray(rgb[:, ::-1])
         result = self.detector.process(source)
         frames = {}
         image_hands = result.multi_hand_landmarks or []
         world_hands = result.multi_hand_world_landmarks or []
         labels = result.multi_handedness or []
+        duplicates = set()
         for image, world, handedness in zip(image_hands, world_hands, labels):
             if not handedness.classification:
                 continue
-            classification = handedness.classification[0]
-            side, score = classification.label, float(classification.score)
-            if side not in SIDES or not math.isfinite(score) or not .5 <= score <= 1:
+            try:
+                classification = handedness.classification[0]
+                side, score = classification.label, float(classification.score)
+            except (AttributeError, TypeError, ValueError, OverflowError):
                 continue
+            if side not in SIDES or not math.isfinite(score) or not self.settings.min_handedness <= score <= 1:
+                continue
+            if side in frames:
+                duplicates.add(side)
             try:
                 curls = finger_curls(world.landmark)
                 points = np.array([[p.x, p.y, p.z] for p in image.landmark], dtype=float)
@@ -70,10 +86,27 @@ class FingerTracking:
                     points[:, 0] = 1 - points[:, 0]
                 if np.any((points[:, :2] < 0) | (points[:, :2] > 1)):
                     continue
+                spatial = np.array([[p.x,p.y,p.z] for p in world.landmark], dtype=float)
+                if not plausible_hand(points, spatial, rgb.shape, self.settings):
+                    continue
             except (AttributeError, TypeError, ValueError):
                 continue
             if side not in frames or score > frames[side].score:
                 frames[side] = HandFrame(side, score, points, curls)
+        for side in duplicates:
+            frames.pop(side, None)  # Lateralidade ambígua não deve animar duas mãos.
+        previous, counts, accepted = {}, {}, {}
+        for side, frame in frames.items():
+            pixels = frame.points[:, :2] * [rgb.shape[1], rgb.shape[0]]
+            palm = np.linalg.norm(pixels[5] - pixels[17])
+            old = self._previous.get(side)
+            close = old is not None and np.linalg.norm(pixels[0] - old[0]) <= self.settings.max_step_palms * min(palm, old[1])
+            counts[side] = self._counts.get(side, 0) + 1 if close else 1
+            previous[side] = (pixels[0].copy(), palm)
+            if counts[side] >= self.settings.confirmation_frames:
+                accepted[side] = frame
+        self._previous, self._counts = previous, counts
+        frames = accepted
         self._suspended = False
         self.publish(frames)
         self.status = ' | '.join(f'{side}: ' + ('ok' if side in frames else 'ausente') for side in SIDES)
@@ -95,12 +128,16 @@ class FingerTracking:
         self.client.send(bundle.build())
 
     def suspend(self):
+        self._previous.clear()
+        self._counts.clear()
         if not self._suspended:
             self.publish({})
             self._suspended = True
             self.status = 'Maos: pausadas/sem entrada'
 
     def reset(self):
+        self._previous.clear()
+        self._counts.clear()
         self.publish({})
         self.detector.reset()
 

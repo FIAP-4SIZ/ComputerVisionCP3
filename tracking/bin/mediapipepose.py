@@ -22,6 +22,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import mediapipe as mp
+from hand_quality import HandQualitySettings
 from finger_tracking import FingerTracking, draw_hands
 from body_observation import observe_body, draw_observation
 from frame_metrics import FrameMetrics
@@ -75,7 +76,8 @@ def main():
         if getattr(params, 'track_fingers', False):
             # Mãos independentes da pose corporal: funcionam sem quadris/pernas.
             fingers = FingerTracking(mp.solutions.hands.Hands(max_num_hands=2),
-                                     backend.client if params.backend == 2 else None)
+                                     backend.client if params.backend == 2 else None,
+                                     getattr(params, 'hand_quality', HandQualitySettings()))
         cv2.namedWindow("out")
 
         #Main program loop:
@@ -217,6 +219,7 @@ def main():
             try:
                 results = pose.process(img)
                 if fingers is not None:
+                    fingers.settings = getattr(params, 'hand_quality', fingers.settings)
                     finger_frames = fingers.process(img, mirrored=params.mirror)
                     params.finger_frames = finger_frames
                     params.finger_timestamp_ms = params.frame_timestamp_ms
@@ -245,7 +248,7 @@ def main():
             tracker_start = time.perf_counter()
             if results.pose_world_landmarks:
                 try:
-                    tracking = prepare_trackers(results.pose_world_landmarks.landmark, params)
+                    tracking = prepare_trackers(results.pose_world_landmarks.landmark, params, image_landmarks=image_landmarks)
                     valid = tracking.valid
                 except InvalidPose as exc:
                     params.pose_status = str(exc)

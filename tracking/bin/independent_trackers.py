@@ -7,6 +7,7 @@ import numpy as np
 
 from helpers import mediapipeTo3dpose
 from pose_validation import InvalidPose, prepare_pose
+from body_observation import observe_body
 from tracker_math import hip_rotation, leg_rotation, foot_rotation, hand_rotation
 
 
@@ -43,7 +44,22 @@ class TrackerFrame:
     calibration: object = None
 
 
-def prepare_trackers(landmarks, params):
+_IMAGE_NOT_SUPPLIED = object()
+
+
+def prepare_trackers(landmarks, params, image_landmarks=_IMAGE_NOT_SUPPLIED):
+    # Compatibilidade para chamadas matemáticas antigas sem imagem. O laço real
+    # sempre fornece os pontos normalizados, inclusive None quando não há pose.
+    if image_landmarks is not _IMAGE_NOT_SUPPLIED:
+        try:
+            observation = observe_body(image_landmarks, getattr(params, 'min_visibility', .5))
+            landmarks = [SimpleNamespace(x=p.x if i in observation.visible else math.nan,
+                                         y=p.y, z=p.z,
+                                         visibility=min(float(p.visibility), float(image_landmarks[i].visibility))
+                                         if i in observation.visible else 0.)
+                         for i, p in enumerate(landmarks)] if landmarks is not None else None
+        except (AttributeError, TypeError, ValueError, IndexError) as exc:
+            raise InvalidPose('Pontos de imagem ou espaciais inválidos') from exc
     names = enabled_names(params)
     valid = dict.fromkeys(names, False)
     reasons = {}

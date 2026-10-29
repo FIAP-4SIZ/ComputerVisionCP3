@@ -48,8 +48,11 @@ class LandmarkValidationTests(unittest.TestCase):
                 params.set_min_visibility(.7)
                 params.set_tracker_timeout(.2)
                 params.set_lighting('manual', 1.2, 10, True)
+                params.set_hand_quality(.8, 15, 3, 2)
                 params.save_params()
                 restored = Parameters()
+                self.assertEqual(restored.hand_quality.confirmation_frames, 3)
+                self.assertEqual(restored.hand_quality.min_palm_pixels, 15)
                 self.assertEqual(restored.lighting, LightingSettings('manual', 1.2, 10, True))
                 stored_path = Path(directory) / 'saved_params.json'
                 stored = json.loads(stored_path.read_text())

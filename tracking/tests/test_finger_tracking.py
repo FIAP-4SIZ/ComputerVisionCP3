@@ -12,16 +12,17 @@ from pythonosc.udp_client import UDPClient
 from pythonosc.osc_packet import OscPacket
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'bin'))
 from finger_tracking import FingerTracking, FINGERS, finger_curls, draw_hands
+from hand_quality import HandQualitySettings
 from test_first_improvement import run_one_frame
 import mediapipepose as app
 
 
 def landmarks(bent=False):
-    p = [NS(x=.1,y=.1,z=0.) for _ in range(21)]
+    p = [NS(x=.35,y=.65,z=0.) for _ in range(21)]
     for index, chain in enumerate(FINGERS.values()):
         xy = [(0,0),(1,0),(1,1),(0,1)] if bent else [(0,0),(1,0),(2,0),(3,0)]
         for key, (x,y) in zip(chain, xy):
-            p[key] = NS(x=x*.03+.1, y=y*.03+.1+index*.1, z=0.)
+            p[key] = NS(x=y*.03+.15+index*.1, y=-x*.03+.45, z=0.)
     return p
 
 
@@ -65,7 +66,7 @@ class FingerTests(unittest.TestCase):
     def make(self, result=None, client=None):
         detector = Mock()
         detector.process.return_value = result if result is not None else detection()
-        return FingerTracking(detector, client)
+        return FingerTracking(detector, client, HandQualitySettings(min_handedness=.5, min_palm_pixels=0, confirmation_frames=1))
 
     def test_mirroring_and_original_preserved(self):
         rgb = np.arange(6*8*3,dtype=np.uint8).reshape((6,8,3))
@@ -76,7 +77,7 @@ class FingerTests(unittest.TestCase):
             self.assertIn('Left', frames)
             expected = rgb if mirrored else rgb[:,::-1]
             np.testing.assert_array_equal(tracker.detector.process.call_args.args[0], expected)
-            self.assertAlmostEqual(frames['Left'].points[0,0], .1 if mirrored else .9)
+            self.assertAlmostEqual(frames['Left'].points[0,0], .35 if mirrored else .65)
         np.testing.assert_array_equal(rgb,original)
 
     def test_bad_confidence_label_and_coordinates(self):
@@ -149,7 +150,7 @@ class FingerTests(unittest.TestCase):
         detector = Mock()
         detector.process.return_value = detection()
         with patch.object(app.mp.solutions.hands,'Hands',return_value=detector):
-            backend = run_one_frame(app,False,parameter_overrides={'track_fingers':True})
+            backend = run_one_frame(app,False,parameter_overrides={'track_fingers':True, 'hand_quality':HandQualitySettings(min_palm_pixels=0,confirmation_frames=1)})
         backend.updatepose.assert_not_called()
         self.assertIn('Left',backend.test_params.finger_frames)
         self.assertGreater(backend.test_params.finger_timestamp_ms,0)
@@ -172,15 +173,14 @@ class FingerTests(unittest.TestCase):
         result.multi_handedness[1].classification[0].label = 'Left'
         result.multi_handedness[1].classification[0].score = .99
         frames = self.make(result).process(np.zeros((16,16,3),np.uint8))
-        self.assertEqual(set(frames), {'Left'})
-        self.assertAlmostEqual(frames['Left'].score, .99)
+        self.assertEqual(frames, {})  # Duas mãos com mesmo lado: ambiguidade rejeitada.
 
     def test_processing_error_releases_real_pipeline_resources(self):
         detector = Mock()
         detector.process.side_effect = RuntimeError('inference failed')
         with patch.object(app.mp.solutions.hands,'Hands',return_value=detector):
             with self.assertRaisesRegex(RuntimeError, 'inference failed'):
-                run_one_frame(app,False,parameter_overrides={'track_fingers':True})
+                run_one_frame(app,False,parameter_overrides={'track_fingers':True, 'hand_quality':HandQualitySettings(min_palm_pixels=0,confirmation_frames=1)})
         detector.close.assert_called_once()
 
     def test_disabled_does_not_construct_hands(self):
