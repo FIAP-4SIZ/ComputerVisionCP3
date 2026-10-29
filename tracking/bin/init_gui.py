@@ -1,6 +1,7 @@
 import tkinter as tk
 import sys
 import pickle
+from scrollable_panel import ScrollablePanel
 from tkinter import filedialog
 
 from sys import platform
@@ -77,6 +78,8 @@ def getparams():
     param.setdefault('video_path', '')
        
     window = tk.Tk()
+    window.title('Configuração do rastreamento corporal')
+    content = ScrollablePanel(window).content
 
     def on_close():
         window.destroy()
@@ -85,11 +88,11 @@ def getparams():
     window.protocol("WM_DELETE_WINDOW", on_close)
 
     input_mode = tk.StringVar(value=param['input_mode'])
-    tk.Label(text='Entrada para análise de movimento:').pack()
-    tk.Radiobutton(text='Câmera ao vivo', variable=input_mode, value='camera').pack()
-    tk.Radiobutton(text='Arquivo de vídeo', variable=input_mode, value='video').pack()
+    tk.Label(content, text='Entrada para análise de movimento:').pack()
+    tk.Radiobutton(content, text='Câmera ao vivo', variable=input_mode, value='camera').pack()
+    tk.Radiobutton(content, text='Arquivo de vídeo', variable=input_mode, value='video').pack()
     video_path = tk.StringVar(value=param['video_path'])
-    tk.Entry(textvariable=video_path, width=50).pack()
+    tk.Entry(content, textvariable=video_path, width=50).pack()
 
     def select_video():
         path = filedialog.askopenfilename(title='Selecionar vídeo', filetypes=[
@@ -100,95 +103,95 @@ def getparams():
             varbackend.set(0)
             show_hide_backend_options()
 
-    tk.Button(text='Selecionar vídeo...', command=select_video).pack()
+    tk.Button(content, text='Selecionar vídeo...', command=select_video).pack()
 
     if not param["advanced"]:
-        tk.Label(text="The format http://<ip-here>:8080/video is for use with\n the IP Webcam android application.\n If using something else, such as a regular USB Webcam,\n just try 0,1,2... until the correct camera opens.", width = 50).pack()
+        tk.Label(content, text='Para IP Webcam no Android, use http://<ip>:8080/video.\nPara uma webcam USB, tente 0, 1 ou 2 até abrir a câmera.', width = 50).pack()
 
-    tk.Label(text="Camera IP or ID:", width = 50).pack()
-    camid = tk.Entry(width = 50)
+    tk.Label(content, text='IP ou número da câmera:', width = 50).pack()
+    camid = tk.Entry(content, width = 50)
     camid.pack()
     camid.insert(0,param["camid"])
     
     if not param["advanced"]:
-        tk.Label(text="NOTE: Increasing resolution may decrease performance.\n Unless you have problems with opening camera, leave it as default.", width = 50).pack()
+        tk.Label(content, text='Resoluções maiores podem reduzir o desempenho.\nMantenha o padrão, salvo se houver problemas na captura.', width = 50).pack()
 
-    tk.Label(text="Camera width:", width = 50).pack()
-    camwidth = tk.Entry(width = 20)
+    tk.Label(content, text='Largura da câmera:', width = 50).pack()
+    camwidth = tk.Entry(content, width = 20)
     camwidth.pack()
     camwidth.insert(0,param["camera_width"])
     
-    tk.Label(text="Camera height:", width = 50).pack()
-    camheight = tk.Entry(width = 20)
+    tk.Label(content, text='Altura da câmera:', width = 50).pack()
+    camheight = tk.Entry(content, width = 20)
     camheight.pack()
     camheight.insert(0,param["camera_height"])
     
     if platform == "win32":
         if not param["advanced"]:
-            tk.Label(text="NOTE: Opening camera settings may change camera behaviour. \nSome cameras may only work with this enabled, some only with this \ndisabled, and it may change which camera ID you have to use.", width = 55).pack()
+            tk.Label(content, text='Abrir as configurações pode alterar o comportamento da câmera.\nSe houver problemas, teste esta opção ligada e desligada\ne confira o número da câmera.', width = 55).pack()
     
     varcamsettings = tk.IntVar(value = param["camera_settings"])
-    cam_settings_check = tk.Checkbutton(text = "Attempt to open camera settings", variable = varcamsettings)
+    cam_settings_check = tk.Checkbutton(content, text = 'Abrir configurações da câmera', variable = varcamsettings)
     if platform == "win32":
         cam_settings_check.pack()
 
     if param["advanced"]:
-        tk.Label(text="Maximum image size:", width = 50).pack()
-        maximgsize = tk.Entry(width = 20)
+        tk.Label(content, text='Tamanho máximo da imagem:', width = 50).pack()
+        maximgsize = tk.Entry(content, width = 20)
         maximgsize.pack()
         maximgsize.insert(0,param["imgsize"])
 
-    tk.Label(text="-"*50, width = 50).pack()
+    tk.Label(content, text="-"*50, width = 50).pack()
 
     varfingers = tk.IntVar(value=param["track_fingers"])
-    tk.Checkbutton(text="Rastrear dedos (OSC requer avatar configurado)", variable=varfingers).pack()
+    tk.Checkbutton(content, text="Rastrear dedos (OSC requer avatar configurado)", variable=varfingers).pack()
 
     varfeet = tk.IntVar(value = param["feetrot"])
-    rot_feet_check = tk.Checkbutton(text = "Enable experimental foot rotation", variable = varfeet)
+    rot_feet_check = tk.Checkbutton(content, text = 'Ativar rotação experimental dos pés', variable = varfeet)
     rot_feet_check.pack()
     
     if not param["advanced"]:
-        tk.Label(text="NOTE: VRChat works better with a hip tracker. Only disable it if you \nuse another software for hip tracking, such as owoTrack.", width = 55).pack()
+        tk.Label(content, text='Desative o quadril somente se outro programa,\ncomo owoTrack, já fornecer esse rastreador.', width = 55).pack()
     
     varhip = tk.IntVar(value = param["ignore_hip"])
-    hip_check = tk.Checkbutton(text = "Disable hip tracker", variable = varhip)
+    hip_check = tk.Checkbutton(content, text = 'Desativar rastreador do quadril', variable = varhip)
     hip_check.pack()
     
-    tk.Label(text="-"*50, width = 50).pack()
+    tk.Label(content, text="-"*50, width = 50).pack()
     
     if param["advanced"]:
         
         varhand = tk.IntVar(value = param["use_hands"])
-        hand_check = tk.Checkbutton(text = "DEV: Spawn trackers for hands", variable = varhand)
+        hand_check = tk.Checkbutton(content, text = 'Experimental: criar rastreadores dos punhos', variable = varhand)
         hand_check.pack()
         
         varskel = tk.IntVar(value = param["prevskel"])
-        skeleton_check = tk.Checkbutton(text = "DEV: Preview skeleton in VR", variable = varskel)
+        skeleton_check = tk.Checkbutton(content, text = 'Experimental: visualizar esqueleto em VR', variable = varskel)
         skeleton_check.pack()
 
-        tk.Label(text="-"*50, width = 50).pack()
+        tk.Label(content, text="-"*50, width = 50).pack()
 
-        tk.Label(text="[ADVANCED] MediaPipe estimator parameters:", width = 50).pack()
+        tk.Label(content, text='[AVANÇADO] Parâmetros do MediaPipe:', width = 50).pack()
 
-        tk.Label(text="Model complexity:", width = 50).pack()
-        modelc = tk.Entry(width = 20)
+        tk.Label(content, text='Complexidade do modelo:', width = 50).pack()
+        modelc = tk.Entry(content, width = 20)
         modelc.pack()
         modelc.insert(0,param["model_complexity"])
         
         varmsmooth = tk.IntVar(value = param["smooth_landmarks"])
-        msmooth_check = tk.Checkbutton(text = "Smooth landmarks", variable = varmsmooth)
+        msmooth_check = tk.Checkbutton(content, text = 'Suavizar pontos corporais', variable = varmsmooth)
         msmooth_check.pack()
         
-        tk.Label(text="Min tracking confidence:", width = 50).pack()
-        trackc = tk.Entry(width = 20)
+        tk.Label(content, text='Confiança mínima do rastreamento:', width = 50).pack()
+        trackc = tk.Entry(content, width = 20)
         trackc.pack()
         trackc.insert(0,param["min_tracking_confidence"])
         
         varstatic = tk.IntVar(value = param["static_image"])
-        static_check = tk.Checkbutton(text = "Static image mode", variable = varstatic)
+        static_check = tk.Checkbutton(content, text = 'Modo de imagem estática', variable = varstatic)
         static_check.pack()
 
-    backend_frame = tk.Frame(window)
+    backend_frame = tk.Frame(content)
     backend_selection_frame = tk.Frame(backend_frame)
     backend_options_frame = tk.Frame(backend_frame)
 
@@ -200,13 +203,13 @@ def getparams():
         else:
             backend_options_frame.pack_forget()
 
-    tk.Label(backend_selection_frame, text="Backend: ").pack(side = tk.LEFT)
+    tk.Label(backend_selection_frame, text='Destino: ').pack(side = tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text='Somente análise', variable=varbackend, value=0, command=show_hide_backend_options).pack(side=tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text="SteamVR", variable = varbackend, value = 1, command = show_hide_backend_options).pack(side = tk.LEFT)
-    tk.Radiobutton(backend_selection_frame, text="VRChatOSC",  variable = varbackend, value = 2, command = show_hide_backend_options).pack(side = tk.LEFT)
+    tk.Radiobutton(backend_selection_frame, text='VRChat OSC',  variable = varbackend, value = 2, command = show_hide_backend_options).pack(side = tk.LEFT)
     backend_selection_frame.pack(side = tk.TOP)
 
-    tk.Label(backend_options_frame, text="IP/port:").pack(side = tk.LEFT)
+    tk.Label(backend_options_frame, text='IP/porta:').pack(side = tk.LEFT)
     backend_ip = tk.Entry(backend_options_frame, width = 15)
     backend_ip.insert(0, param["backend_ip"])
     backend_ip.pack(side = tk.LEFT)
@@ -217,20 +220,20 @@ def getparams():
     show_hide_backend_options()
     backend_frame.pack()
 
-    tk.Label(text="-"*50, width = 50).pack()
+    tk.Label(content, text="-"*50, width = 50).pack()
 
     varwebui = tk.IntVar(value = param["webui"])
-    webui_check = tk.Checkbutton(text = "Enable webui to control parameters from another device", variable = varwebui)
+    webui_check = tk.Checkbutton(content, text = 'Ativar interface web para controle por outro dispositivo', variable = varwebui)
     webui_check.pack()
     
     param["switch_advanced"] = False
     if param["advanced"]:
-        tk.Label(text="-"*50, width = 50).pack()
-        tk.Button(text='Disable advanced mode', command=lambda *args: set_advanced(window,param)).pack()
+        tk.Label(content, text="-"*50, width = 50).pack()
+        tk.Button(content, text='Desativar modo avançado', command=lambda *args: set_advanced(window,param)).pack()
     else:
-        tk.Button(text='Enable advanced mode', command=lambda *args: set_advanced(window,param)).pack()
+        tk.Button(content, text='Ativar modo avançado', command=lambda *args: set_advanced(window,param)).pack()
 
-    tk.Button(text='Save and Continue', command=window.quit).pack()
+    tk.Button(content, text='Salvar e continuar', command=window.quit).pack()
 
     window.mainloop()
 

@@ -40,6 +40,7 @@ class InputControlTests(unittest.TestCase):
             for name in ('Label', 'Frame', 'Radiobutton', 'Checkbutton'):
                 stack.enter_context(patch.object(init_gui.tk, name, return_value=Mock()))
             stack.enter_context(patch.object(init_gui.tk, 'Tk', return_value=root))
+            stack.enter_context(patch.object(init_gui, 'ScrollablePanel'))
             stack.enter_context(patch.object(init_gui.tk, 'IntVar', Var))
             stack.enter_context(patch.object(init_gui.tk, 'StringVar', Var))
             stack.enter_context(patch.object(init_gui.tk, 'Entry', side_effect=entry))

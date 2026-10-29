@@ -1,4 +1,4 @@
-print("Importing libraries...")
+print("Carregando bibliotecas...")
 
 import os
 import sys
@@ -38,7 +38,7 @@ def main():
 
     use_steamvr = True
 
-    print("INFO: Reading parameters...")
+    print("INFO: Lendo configurações...")
 
     params = parameters.Parameters()
 
@@ -46,7 +46,7 @@ def main():
         webui_thread = threading.Thread(target=webui.start_webui, args=(params,), daemon=True)
         webui_thread.start()
     else:
-        print("INFO: WebUI disabled in parameters")
+        print("INFO: Interface web desativada nas configurações")
 
     backends = { 0: DummyBackend, 1: SteamVRBackend, 2: VRChatOSCBackend }
     backend = backends[params.backend]()
@@ -64,7 +64,7 @@ def main():
         gui_thread = threading.Thread(target=inference_gui.make_inference_gui, args=(params,), daemon=True)
         gui_thread.start()
 
-        print("INFO: Starting pose detector...")
+        print("INFO: Iniciando detector de pose...")
 
         #create our detector. These are default parameters as used in the tutorial.
         pose = mp_pose.Pose(model_complexity=params.model,
@@ -78,7 +78,7 @@ def main():
             fingers = FingerTracking(mp.solutions.hands.Hands(max_num_hands=2),
                                      backend.client if params.backend == 2 else None,
                                      getattr(params, 'hand_quality', HandQualitySettings()))
-        cv2.namedWindow("out")
+        cv2.namedWindow("Análise de movimento")
 
         #Main program loop:
 
@@ -159,7 +159,7 @@ def main():
                     cv2.rectangle(view, (0, 97), (view.shape[1], 118), (0, 0, 0), -1)
                     cv2.putText(view, params.tracker_status, (10, 112), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
                     cv2.putText(view, camera_thread.status, (10, 90), cv2.FONT_HERSHEY_SIMPLEX, .4, (0, 255, 255), 1)
-                    cv2.imshow('out', comparison_view(preview_original, view, preview_settings, preview_preprocess_ms))
+                    cv2.imshow("Análise de movimento", comparison_view(preview_original, view, preview_settings, preview_preprocess_ms))
                     if cv2.waitKey(1) == 27:
                         shutdown(params)
                 if is_video and camera_thread.state != 'running':
@@ -190,7 +190,7 @@ def main():
             if params.paused and not is_video:
                 if fingers is not None:
                     fingers.suspend()
-                cv2.imshow("out", comparison_view(original, img, settings, preprocess_ms))
+                cv2.imshow("Análise de movimento", comparison_view(original, img, settings, preprocess_ms))
                 cv2.waitKey(1)
                 # Não mistura o tempo em pausa com as medições do rastreamento.
                 cycle_start = time.perf_counter()
@@ -261,7 +261,7 @@ def main():
                 options = {} if getattr(params, 'preview_skeleton', False) else {'valid_trackers': valid}
                 updated = backend.updatepose(params, tracking.pose, tracking.rotations, tracking.hands, **options)
                 if updated is False:
-                    params.pose_status = 'Backend rejeitou pose: sem nova atualizacao'
+                    params.pose_status = 'Destino rejeitou pose: sem nova atualizacao'
                 else:
                     params.pose_status = 'Pose válida' if all(valid.values()) else 'Rastreamento parcial'
                     calibration = tracking.calibration
@@ -299,7 +299,7 @@ def main():
                 preview_settings = settings
                 preview_preprocess_ms = preprocess_ms
 
-            cv2.imshow("out", comparison_view(original, img, settings, preprocess_ms))
+            cv2.imshow("Análise de movimento", comparison_view(original, img, settings, preprocess_ms))
             key = cv2.waitKey(1)
             cycle_end = time.perf_counter()
             metrics.add(capture=capture_seconds, age=frame_age, pose=pose_seconds,

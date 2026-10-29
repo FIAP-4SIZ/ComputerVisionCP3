@@ -26,7 +26,7 @@ class MetricsTests(unittest.TestCase):
         text = metrics.summary()
         self.assertIn('FPS:25.0', text)  # 1 / 0,04; a fórmula antiga daria ~66,7.
         self.assertIn('pose:10.0ms', text)
-        self.assertIn('trackers:5.0ms', text)
+        self.assertIn('rastreadores:5.0ms', text)
 
     def test_rolling_fps_is_frames_divided_by_elapsed_time(self):
         metrics = FrameMetrics(window=2)

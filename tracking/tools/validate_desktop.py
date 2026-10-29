@@ -51,7 +51,7 @@ def main():
                 finger_toggle = next(w for w in widgets(root) if isinstance(w, tk.Checkbutton)
                                      and w.cget('text').startswith('Rastrear dedos'))
                 finger_toggle.invoke()
-                button(root, 'Save and Continue').invoke()
+                button(root, 'Salvar e continuar').invoke()
             root.after(100, save)
             original_loop(root, *args, **kwargs)
         with patch.object(tk.Tk, 'mainloop', automated_loop):
@@ -67,7 +67,7 @@ def main():
             window = InferenceWindow(root, params)
             window.pack(side="top", fill="both", expand=True)
             root.update()
-            pause = button(root, 'Pause/Unpause tracking')
+            pause = button(root, 'Pausar / retomar rastreamento')
             pause.invoke()
             assert params.paused
             button(root, 'Iniciar / retomar vídeo').invoke()
@@ -82,12 +82,12 @@ def main():
             for entry, value in zip(entries, ('1.2', '20')):
                 entry.delete(0, 'end')
                 entry.insert(0, value)
-            button(root, 'Aplicar iluminacao').invoke()
+            button(root, 'Aplicar iluminação').invoke()
             assert params.lighting.mode == 'manual'
             assert params.lighting.contrast == 1.2 and params.lighting.brightness == 20
             entries[0].delete(0, 'end')
             entries[0].insert(0, 'nan')
-            button(root, 'Aplicar iluminacao').invoke()
+            button(root, 'Aplicar iluminação').invoke()
             assert params.lighting.contrast == 1.2
             button(root, 'Restaurar original').invoke()
             assert params.lighting == DEFAULT_LIGHTING
@@ -95,6 +95,19 @@ def main():
             result = dict(real_widgets=True, controls='passed',
                 required_size=[root.winfo_reqwidth(), root.winfo_reqheight()],
                 screen=[root.winfo_screenwidth(), root.winfo_screenheight()])
+            # Valida acesso ao último controle numa janela pequena de verdade.
+            root.geometry('640x480')
+            root.update()
+            window.viewport.canvas.yview_moveto(1.)
+            root.update()
+            exit_button = button(root, 'Sair')
+            assert exit_button.winfo_rooty() >= root.winfo_rooty()
+            assert exit_button.winfo_rooty() + exit_button.winfo_height() <= root.winfo_rooty() + root.winfo_height()
+            window.viewport.canvas.yview_moveto(0.)
+            window.viewport._wheel(type('Wheel', (), {'delta': -120})())
+            root.update()
+            assert window.viewport.canvas.yview()[0] > 0
+            result['small_window_scroll'] = 'passed'
             result['fits_screen'] = all(a <= b for a, b in zip(result['required_size'], result['screen']))
         finally:
             root.destroy()
@@ -104,10 +117,10 @@ def main():
     settings = LightingSettings('manual', 1.2, 20, True)
     view = comparison_view(original, apply_lighting(original, settings), settings)
     try:
-        cv2.namedWindow('Desktop validation')
-        cv2.imshow('Desktop validation', view)
+        cv2.namedWindow('Validação da interface')
+        cv2.imshow('Validação da interface', view)
         cv2.waitKey(100)
-        assert cv2.getWindowProperty('Desktop validation', cv2.WND_PROP_VISIBLE) >= 1
+        assert cv2.getWindowProperty('Validação da interface', cv2.WND_PROP_VISIBLE) >= 1
         result['opencv_window'] = 'passed'
     finally:
         cv2.destroyAllWindows()

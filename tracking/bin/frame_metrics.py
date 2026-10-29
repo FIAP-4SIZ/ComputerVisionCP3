@@ -21,4 +21,4 @@ class FrameMetrics:
         fps = 1 / cycle if cycle > 0 else 0.0
         return (f'FPS:{fps:.1f} | ciclo:{cycle * 1000:.1f}ms | '
                 f'captura:{capture * 1000:.1f}ms | idade:{age * 1000:.1f}ms | '
-                f'pose:{pose * 1000:.1f}ms | trackers:{trackers * 1000:.1f}ms')
+                f'pose:{pose * 1000:.1f}ms | rastreadores:{trackers * 1000:.1f}ms')

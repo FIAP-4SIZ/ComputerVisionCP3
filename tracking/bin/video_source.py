@@ -133,6 +133,8 @@ class VideoFileSource:
     def status(self):
         total = str(self.total) if self.total is not None else '?'
         progress = f' ({min(100, (self.index + 1) * 100 / self.total):.1f}%)' if self.total else ''
-        return (f'{self.state}: quadro {self.index + 1}/{total}{progress} | '
+        label = {'ready':'Pronto', 'running':'Em andamento', 'paused':'Pausado',
+                 'completed':'Concluido', 'cancelled':'Cancelado', 'error':'Erro'}[self.state]
+        return (f'{label}: quadro {self.index + 1}/{total}{progress} | '
                 f'{self.timestamp_ms / 1000:.2f}s' + (' (estimado por FPS)' if self.timestamp_estimated else '')
                 + (f' | {self.error}' if self.error else ''))

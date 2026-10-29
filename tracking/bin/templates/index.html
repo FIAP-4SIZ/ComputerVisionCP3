@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>FlaskApp</title>
+    <title>Controle do rastreamento corporal</title>
 </head>
 <style>
   
@@ -25,8 +25,8 @@
   
 </style>
 <body>
-    <h1>Hello {{name}}!</h1>
-    <h2>Update rotation Y</h2>
+    <h1>Controle do rastreamento corporal</h1>
+    <h2>Ajustar rotação Y</h2>
 		<form action = "/roty" method = "post" class="form-inline">
 			
 			<p><input class="form-button" type = "submit" name = "action" value = "<<" /></p>
@@ -34,7 +34,7 @@
 			<p><input class="form-button" type = "submit" name = "action" value = ">" /></p>
 			<p><input class="form-button" type = "submit" name = "action" value = ">>" /></p>
 		</form>
-	<h2>Update rotation X</h2>
+	<h2>Ajustar rotação X</h2>
 		<form action = "/rotx" method = "post" class="form-inline">
 			
 			<p><input class="form-button" type = "submit" name = "action" value = "<<" /></p>
@@ -42,7 +42,7 @@
 			<p><input class="form-button" type = "submit" name = "action" value = ">" /></p>
 			<p><input class="form-button" type = "submit" name = "action" value = ">>" /></p>
 		</form>
-	<h2>Update rotation Z</h2>
+	<h2>Ajustar rotação Z</h2>
 		<form action = "/rotz" method = "post" class="form-inline">
 			
 			<p><input class="form-button" type = "submit" name = "action" value = "<<" /></p>
@@ -50,7 +50,7 @@
 			<p><input class="form-button" type = "submit" name = "action" value = ">" /></p>
 			<p><input class="form-button" type = "submit" name = "action" value = ">>" /></p>
 		</form>
-	<h2>Update Scale</h2>
+	<h2>Ajustar escala</h2>
 		<form action = "/scale" method = "post" class="form-inline">
 			
 			<p><input class="form-button" type = "submit" name = "action" value = "<<" /></p>
@@ -60,14 +60,14 @@
 		</form>
 	
 		<form action = "/autocalib" method = "post" class="form-inline">
-			<p><input class="wide-button" type = "submit" value = "Autocalibrate" /></p>	
+			<p><input class="wide-button" type = "submit" value = "Recalibrar" /></p>
 		</form>
 		
-	<h2>Update Smoothing</h2>	
+	<h2>Ajustar suavização</h2>
 		<form action = "/smoothing" method = "post" class="form-inline">
-			 <p>Additional smoothing:</p>
-			 <p><input type = "text" name = "value" value="{{smooth}}" class="form-button" /></p>
-			 <p><input type = "submit" value = "Update" class="form-button" name = "action" /></p>
+			 <label for="suavizacao">Suavização adicional (0 a 1):</label>
+			 <p><input id="suavizacao" type = "text" name = "value" value="{{smooth}}" class="form-button" /></p>
+			 <p><input type = "submit" value = "Atualizar" class="form-button" name = "action" /></p>
 			 <p><input class="form-button" type = "submit" name = "action" value = "<" /></p>
 			 <p><input class="form-button" type = "submit" name = "action" value = ">" /></p>
 		 </form>

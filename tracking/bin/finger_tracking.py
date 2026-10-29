@@ -109,7 +109,7 @@ class FingerTracking:
         frames = accepted
         self._suspended = False
         self.publish(frames)
-        self.status = ' | '.join(f'{side}: ' + ('ok' if side in frames else 'ausente') for side in SIDES)
+        self.status = ' | '.join(f"{'Esquerda' if side == 'Left' else 'Direita'}: " + ('ok' if side in frames else 'ausente') for side in SIDES)
         return frames
 
     def publish(self, frames):
@@ -160,5 +160,7 @@ def draw_hands(image, frames):
         for point in pixels:
             cv2.circle(image, tuple(point), 2, (255, 255, 0), -1)
         x, y = pixels[0]
-        text = frame.side + ' ' + ' '.join(f'{k[0]}:{v:.2f}' for k, v in frame.curls.items())
+        side = 'Esquerda' if frame.side == 'Left' else 'Direita'
+        labels = dict(zip(FINGERS, ('P','I','M','A','N')))
+        text = side + ' ' + ' '.join(f'{labels[k]}:{v:.2f}' for k, v in frame.curls.items())
         cv2.putText(image, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, .35, (255, 255, 0), 1)

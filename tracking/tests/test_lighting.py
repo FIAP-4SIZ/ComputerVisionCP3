@@ -156,12 +156,12 @@ class LightingControlTests(unittest.TestCase):
             strings[0].set('Brilho e contraste')
             entries[0][0], entries[1][0] = '1.2', '10'
             booleans[0].set(True)
-            buttons['Aplicar iluminacao']()
+            buttons['Aplicar iluminação']()
             self.assertEqual(params.lighting, LightingSettings('manual', 1.2, 10, True))
             entries[0][0] = 'nan'
-            buttons['Aplicar iluminacao']()
+            buttons['Aplicar iluminação']()
             self.assertEqual(params.lighting, LightingSettings('manual', 1.2, 10, True))
-            self.assertIn('invalidos', strings[1].get())
+            self.assertIn('inválidos', strings[1].get())
             buttons['Restaurar original']()
             self.assertEqual(params.lighting, DEFAULT_LIGHTING)
 
