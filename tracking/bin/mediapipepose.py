@@ -185,6 +185,7 @@ def main():
                 pose.reset()
                 backend.reset()
                 tracker_lifecycle.reset()
+                metrics = FrameMetrics()
                 if hasattr(params, 'pose3d_og'):
                     del params.pose3d_og
             active_lighting_key = key

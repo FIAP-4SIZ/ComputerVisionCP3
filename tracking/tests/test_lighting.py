@@ -200,6 +200,7 @@ class MainLightingTests(unittest.TestCase):
                 params.exit_ready = True
             return 27 if paused or calls[0] == len(choices) else -1
         with ExitStack() as stack:
+            metrics_factory = stack.enter_context(patch.object(app, 'FrameMetrics', wraps=app.FrameMetrics))
             for target, kwargs in (
                 ('parameters.Parameters', {'return_value': params}), ('DummyBackend', {'return_value': backend}),
                 ('CameraStream', {'return_value': camera}), ('threading.Thread', {}),
@@ -217,12 +218,14 @@ class MainLightingTests(unittest.TestCase):
         np.testing.assert_array_equal(pair[28:, :160], saved)
         if paused:
             detector.process.assert_not_called()
+            self.assertEqual(metrics_factory.call_count, 1)
         else:
             self.assertEqual(detector.process.call_count, 3)
             np.testing.assert_array_equal(detector.process.call_args_list[0].args[0][0, 0], [255, 0, 0])
             np.testing.assert_array_equal(detector.process.call_args_list[1].args[0][0, 0], [255, 20, 20])
             detector.reset.assert_called_once()
             backend.reset.assert_called_once()
+            self.assertEqual(metrics_factory.call_count, 2)
         camera.close.assert_called_once()
         detector.close.assert_called_once()
 
