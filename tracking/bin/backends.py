@@ -9,6 +9,7 @@ from pythonosc import udp_client
 from helpers import shutdown
 from pose_validation import valid_tracker_data, valid_alignment
 from independent_trackers import NAMES, JOINTS, enabled_names, tracker_mask
+from osc_body import EXTRA_IDS
 import numpy as np
 
 class Backend(ABC):
@@ -204,7 +205,7 @@ class VRChatOSCBackend(Backend):
         else:
             self.client = udp_client.UDPClient('127.0.0.1', 9000)
 
-    def updatepose(self, params, pose3d, rots, hand_rots, valid_trackers=None):
+    def updatepose(self, params, pose3d, rots, hand_rots, valid_trackers=None, extra_trackers=None):
         if not valid_tracker_data(pose3d, rots, hand_rots) or not valid_alignment(params):
             return False
         try:
@@ -215,16 +216,33 @@ class VRChatOSCBackend(Backend):
         if not np.isfinite(weight) or not 0 <= weight <= 1:
             return False
         if params.recalibrate or params.preview_skeleton:
-            return True  # Preview e mãos continuam não suportados pelo OSC.
+            return True  # Preview rígido não é parte da API OSC Trackers.
         pose = np.asarray(pose3d, dtype=float)
         scale = float(params.posescale)
         neckoffset = np.asarray(params.hmd_to_neck_offset, dtype=float)
         trackers = [{'name': 'head', 'position': [0, 0, 0]}]
         next_history = {}
+        candidates = []
         for index, name in enumerate(NAMES[:3]):
             if not mask.get(name, False):
                 continue
-            pair = pose[[JOINTS[name], 7]].copy()
+            candidates.append((name, str(index + 1), pose[[JOINTS[name], 7]].copy(), rots[index]))
+        if extra_trackers is not None:
+            if not isinstance(extra_trackers, dict) or set(extra_trackers) - set(EXTRA_IDS):
+                return False
+            for name in set(EXTRA_IDS) - set(extra_trackers):
+                self.history.pop(name, None)
+            try:
+                for name, (pair, quaternion) in extra_trackers.items():
+                    pair, quaternion = np.asarray(pair, dtype=float), np.asarray(quaternion, dtype=float)
+                    if (pair.shape != (2, 3) or not np.isfinite(pair).all()
+                            or quaternion.shape != (4,) or not np.isfinite(quaternion).all()
+                            or not np.isclose(np.linalg.norm(quaternion), 1)):
+                        return False
+                    candidates.append((name, EXTRA_IDS[name], pair, quaternion))
+            except (TypeError, ValueError):
+                return False
+        for name, tracker_id, pair, quaternion in candidates:
             if name in self.history:
                 pair = self.history[name] * weight + pair * (1 - weight)
             scaled = pair * scale
@@ -233,9 +251,9 @@ class VRChatOSCBackend(Backend):
                     or np.any(np.abs(position) > np.finfo(np.float32).max)):
                 return False
             position[2] *= -1
-            rotation = R.from_quat(rots[index]).as_euler('zxy', degrees=True)
+            rotation = R.from_quat(quaternion).as_euler('zxy', degrees=True)
             rotation = [-rotation[1], -rotation[2], rotation[0]]
-            trackers.append({'name': str(index + 1), 'position': position, 'rotation': rotation})
+            trackers.append({'name': tracker_id, 'position': position, 'rotation': rotation})
             next_history[name] = pair
         if len(trackers) > 1:
             self.client.send(osc_build_bundle(trackers))
@@ -243,4 +261,8 @@ class VRChatOSCBackend(Backend):
         return True
 
     def disconnect(self):
-        pass
+        client = getattr(self, 'client', None)
+        if client is not None:
+            client.close()
+            self.client = None
+        self.reset()

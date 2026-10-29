@@ -386,6 +386,7 @@ class RecordedOcclusionIntegrationTests(unittest.TestCase):
             self.addCleanup(source.close)
             backend = VRChatOSCBackend()
             backend.client = Mock()
+            client = backend.client  # O backend fecha e remove sua referência ao sair.
             detector = Mock()
             detector.process.side_effect = results
             states = []
@@ -414,9 +415,9 @@ class RecordedOcclusionIntegrationTests(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     app.main()
             self.assertEqual(detector.process.call_count, 3)
-            self.assertEqual(backend.client.send.call_count, 3)
+            self.assertEqual(client.send.call_count, 3)
             packets = [{entry.message.address: entry.message.params for entry in OscPacket(call.args[0].dgram).messages}
-                       for call in backend.client.send.call_args_list]
+                       for call in client.send.call_args_list]
             self.assertNotIn('/tracking/trackers/3/position', packets[1])
             self.assertIn('/tracking/trackers/1/position', packets[1])
             self.assertIn('/tracking/trackers/2/position', packets[1])
@@ -428,6 +429,8 @@ class RecordedOcclusionIntegrationTests(unittest.TestCase):
             self.assertIn('Q:ok', states[1])
             self.assertIn('PD:ok', states[1])
             self.assertEqual(backend.history, {})
+            client.close.assert_called_once()
+            self.assertIsNone(backend.client)
             self.assertIsNone(source.cap)
             detector.close.assert_called_once()
 
