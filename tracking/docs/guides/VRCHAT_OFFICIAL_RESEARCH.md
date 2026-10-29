@@ -11,7 +11,7 @@ Também foi consultada a página Selfie Expression da wiki oficial e o guia ofic
 1. **OSC corporal não exige Unity ou avatar customizado.** A nota de lançamento declara “This works with any avatar” e distingue OSC Trackers dos parâmetros de avatar. O programa remetente pode ser Python; a página de trackers diz que Unity não é necessário.
 2. **Desktop com webcam e mãos/dedos existe nativamente.** Selfie Expression funciona em desktop e pode mover cabeça, braços, mãos e dedos em avatares compatíveis, sem preparar parâmetros MP_* no Unity. A restrição inicial VRC+ foi removida em setembro de 2025.
 3. **Não são a mesma interface.** Endpoints de trackers corporais, parâmetros customizados, Selfie Expression interno e esqueleto SteamVR são mecanismos distintos. Não se deve usar a limitação de um para negar a existência dos outros.
-4. **Desktop + corpo inteiro OSC permanece uma hipótese a testar no cliente.** As páginas consultadas não estabelecem explicitamente que enviar trackers a um cliente desktop comum cria, por si só, cabeça/mãos de VR e habilita a calibração FBT. Não transformar essa ausência em proibição absoluta nem afirmar suporte operacional sem teste.
+4. **A wiki Settings marca a calibração FBT como VR Only.** Na investigação posterior do teste do usuário, foi consultada também a [tabela Tracking & IK do menu rápido](https://wiki.vrchat.com/wiki/Settings#Tracking_.26_IK). O bloco que contém Allow FullBody Tracking FBT e Calibrate FBT tem o requisito explícito **[VR Only] [At least one full body tracker must be on]**. Isso corrige a hipótese inicial de que bastaria encontrar/calibrar esse botão no desktop comum. Recepção OSC e opções globais visíveis não ativam por si só esse fluxo. Não confundir com Selfie Expression, que possui suporte próprio para desktop.
 5. O guia de drivers cita **MediaPipe hand tracking** como exemplo possível de `VRSkeletalTracking_Full`. Esse enum descreve a fidelidade estrutural fornecida à interface; não é certificado de precisão nem medição real de profundidade. Cinco floats de flexão não equivalem ao esqueleto completo.
 
 ## Interfaces e dados realmente documentados
@@ -55,6 +55,8 @@ A wiki descreve o recurso para upper body; isso não é rastreamento confirmado 
 Não testar simultaneamente duas aplicações disputando a mesma webcam. Uma combinação de corpo do nosso MediaPipe com Selfie Expression não foi validada; deve investigar disponibilidade de captura e compatibilidade de IK antes de propor divisão de câmera ou instalar software adicional.
 
 ## Validação do nosso OSC corporal: próximo experimento
+
+Atualização do diagnóstico no desktop: o usuário encontrou modelos de tracker e espelho/configurações de calibração, não o botão que inicia FBT. A wiki Settings explicitamente restringe esse bloco ao modo VR. Portanto, não continuar pedindo tentativas nesse menu como se fosse apenas uma calibração esquecida. O remetente OSC ampliado não é uma integração de corpo inteiro validada para desktop sem headset. Avaliar modo VR com HMD real ou virtual exige uma etapa própria; o HMD virtual de desenvolvimento ainda não foi implementado/validado por este projeto.
 
 Sem alterar o cliente ou o avatar, usar OSC Debug para conferir recepção dos endereços corporais já emitidos pelo backend. Confirmar separadamente: recepção, modelos de trackers, disponibilização de Calibrate FBT, alinhamento, movimento do avatar e perda/recuperação. Registrar versão do cliente e modo desktop/VR em cada tentativa. Receber pacotes não prova que IK os aplicou.
 

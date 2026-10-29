@@ -8,6 +8,8 @@ Validação local: 223 testes aprovados, incluindo quatro regressões de primeir
 
 O relato inicial de que **Calibrate FBT aparece no desktop** foi corrigido pelo usuário: eram as opções de modelo de tracker. A captura posterior mostra configurações (incluindo confirmação e modelo Esfera), não comprova disponibilidade do comando para iniciar FBT nem aplicação do IK. Recepção de `MP_*` também não comprova suporte do Animator. Guia atualizado para separar rotação, enquadramento, calibração do remetente, calibração do cliente e suporte dos dedos. Nenhum merge nem declaração de funcionamento físico após calibração.
 
+Na continuação, o usuário encontrou **Espelho de calibração**, não o comando FBT. A wiki Settings foi consultada e marca explicitamente o bloco de Calibrate FBT como **[VR Only] [At least one full body tracker must be on]**. O diagnóstico passa de hipótese de botão não localizado a restrição documentada do fluxo de calibração no desktop comum. O caminho nativo de webcam no desktop é Selfie Expression, separado do remetente Python; modo VR com HMD virtual permanece não implementado/validado.
+
 ## OSC: corpo e mãos — feature/vrchat-osc-body-hands
 
 Validação local em 29/10/2026, Python 3.12, MediaPipe 0.10.21 e OpenCV 4.11.0. Novos testes e código nesta feature; resultados anteriores abaixo permanecem históricos.

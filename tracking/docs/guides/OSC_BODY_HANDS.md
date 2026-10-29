@@ -35,7 +35,7 @@ Na configuração:
 4. Comece com três trackers. Depois de validar alinhamento/calibração, marque **OSC: incluir peito, joelhos e cotovelos** para avaliar os adicionais.
 5. No VRChat, habilite OSC. Use OSC Debug para separar recepção de aplicação no avatar. Teste em mundo privado, diante do espelho, primeiro parado e depois com movimentos lentos.
 
-Para corpo, não é necessário editar o avatar no Unity. Verifique no seu cliente a disponibilidade de **Calibrate FBT**, a identificação dos trackers e o alinhamento. IDs não são papéis fixos impostos pelo protocolo: a associação é feita na calibração. Caso o desktop sem headset não apresente esse fluxo, não declare FBT funcionando só porque OSC Debug recebeu dados. Esse modo ainda precisa ser validado no cliente do usuário.
+Para corpo, não é necessário editar o avatar no Unity. IDs não são papéis fixos impostos pelo protocolo: a associação é feita na calibração. A [wiki Settings do VRChat](https://wiki.vrchat.com/wiki/Settings#Tracking_.26_IK) marca o bloco **Calibrate FBT** como **VR Only**, com pelo menos um tracker ativo. O remetente não habilita esse fluxo no desktop comum só por enviar OSC. Para corpo inteiro via esse caminho, é necessário investigar/testar o modo VR; não há HMD virtual pronto neste projeto.
 
 ### Recebo valores no OSC Debug, mas o avatar não se move
 
@@ -44,12 +44,14 @@ Recepção é uma etapa diferente da calibração/aplicação de IK. O relato in
 1. Confira **Rotação da imagem (horária)**. Pessoa e ambiente devem aparecer em pé. O padrão foi corrigido para `None` (sem rotação): `0` é a constante OpenCV para girar 90°. Instalações que já salvaram 90° conservam sua escolha; selecione explicitamente **0** na interface para corrigir, sem apagar outras configurações.
 2. Enquadre quadril e pés para começar com os três trackers recomendados. `PD:expirado`/`PE:expirado` indica ausência de atualização válida dos pés. Valores antigos no console não provam que o tracker está sendo atualizado agora.
 3. Ajuste escala/alinhamento no remetente quando necessário. **Recalibrar**, no aplicativo Python, não substitui a calibração do receptor.
-4. No VRChat, feche o OSC Debug, abra a página principal do menu rápido com Esc e procure **Calibrate FBT** (calibrar corpo inteiro), fora das configurações de Tracking & IK. Se disponível, inicie, confira as esferas e siga a confirmação exibida pelo cliente. A documentação oficial descreve confirmação com os dois botões Interact dos controles VR; não presumimos uma tecla equivalente no desktop sem verificar o que sua versão apresenta.
-5. Só então teste o movimento. Registre se a calibração concluiu e quais regiões respondem. Se o desktop não fornecer confirmação utilizável, isso é uma limitação operacional a investigar; não será corrigida enviando mais trackers ou trocando os nomes MP.
+4. **No modo VR**, Calibrate FBT inicia a calibração; confira as esferas e siga a confirmação exibida pelo cliente. A documentação descreve confirmação com os dois botões Interact dos controles VR. A wiki restringe o bloco de calibração ao modo VR; não há tecla desktop equivalente comprovada neste projeto. Não continuar procurando esse comando em todos os menus de um cliente desktop comum.
+5. Após calibração efetiva em ambiente compatível, teste o movimento. No desktop, receber valores e mostrar configurações/espelho não comprova aplicação de FBT. Enviar mais trackers ou trocar nomes MP não substitui o modo exigido pelo receptor.
 
 Para dedos, valores `MP_*` no console também não comprovam que o avatar possui os parâmetros/animações correspondentes. Corpo calibrado e parâmetros de dedos são contratos independentes.
 
 Na tela de configurações, **Enviar Dados OSC de Rastreio de RV da Cabeça e do Pulso** é saída do cliente, não habilitação do recebimento dos trackers Python. **Modelo dos Rastreadores FBT** escolhe visualização; **Confirmar Calibração** aparece como opção de configuração, não comprova início/conclusão da calibração. Não alterar esses interruptores aleatoriamente para tentar ativar IK.
+
+**Espelho de calibração** apenas exibe um espelho durante a calibração, conforme a mesma wiki. Para testar mãos/cabeça/braços com webcam e avatar público no desktop, use o [Selfie Expression nativo](VRCHAT_OFFICIAL_RESEARCH.md#testar-agora-no-windows-sem-headset-e-sem-unity), fechando nosso aplicativo para liberar a câmera. Isso não executa nosso pipeline Python e não comprova rastreamento de quadril/pernas.
 
 Para dedos, o avatar precisa **já possuir parâmetros e animações correspondentes**. Um avatar público preparado pode funcionar sem Unity do usuário. Um avatar público genérico não recebe novas animações por este programa. Na configuração OSC gerada pelo VRChat, confira os nomes/endereço de `input` e tipo `Float`/`Bool`; editar esse JSON não adiciona animações ao avatar. Selfie Expression é outra implementação, interna do VRChat, e pode disputar a webcam; feche-a durante este teste.
 
