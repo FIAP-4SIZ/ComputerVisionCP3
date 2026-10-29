@@ -156,3 +156,31 @@ Na tentativa Windows enviada pelo usuário, o ambiente foi criado com Python 3.1
 No log posterior fornecido pelo usuário, com Python 3.12.10: instalação concluída; 109 testes executados em 3,157 s com `OK`; `pip check` sem conflitos; build PyInstaller Windows concluído; executável com `--check-runtime` confirmou OpenCV, MediaPipe Pose e modelos disponíveis. Esses resultados substituem a pendência dos testes automatizados/build/runtime Windows, sem atribuir à nuvem sua execução.
 
 A execução normal tentou conectar ao SteamVR e encerrou após dez tentativas, antes da captura. Próximo teste: câmera 0 com backend **Somente análise**. Ainda não há comprovação de imagem/landmarks da webcam, controles da aplicação completa no Windows, reprodução manual de vídeo ou recepção em VR. Os testes de componentes reais em Xvfb permanecem aprovados; CI remota não confirmada por falta de acesso à API. **Nenhuma feature integrada à develop; integração permanece bloqueada pelas validações pendentes.**
+
+## Peitoral e dedos: nova validação incremental
+
+Branches publicados separadamente em FIAP-4SIZ/ComputerVisionCP3:
+
+- `feature/partial-body-analysis`, commit `eccddde`: enquadramento parcial e desenho de pontos observados, sem relaxar calibração/validação dos trackers VR. 118 testes aprovados, incluindo 9 novos. Detalhes em `PARTIAL_BODY.md`.
+- `feature/vrchat-fingers`, dependente do anterior, commit `a3b5ba8`: MediaPipe Hands opcional, 21 pontos por mão, cinco flexões por mão e parâmetros customizados de avatar OSC. Não implementa esqueleto de dedos no driver SteamVR nem controle individual de cada falange. Contrato e instruções em `VRCHAT_FINGERS.md`.
+
+| Verificação da versão com dedos | Resultado local |
+|---|---|
+| Suíte completa | 134 testes, OK, zero skips (16 novos sobre os 118) |
+| Cálculos | Cinco dedos, aberto/fechado, rotação/escala/translação, coordenadas inválidas/degeneradas |
+| Lados/ausência | Espelhamento, duas mãos, duplicata de lado, perda/recuperação e baixa pontuação |
+| Pipeline | Câmera sem pose corporal ainda processa dedos; desligado não cria Hands; erro libera detector |
+| Vídeo real + Hands real | AVI de três quadros sem pessoa; ordem 0/1/2 e timestamps 0/40/80 ms preservados |
+| Comunicação | UDP local real: bundles com Float por dedo e Bool Tracked; ausência/pausa envia false |
+| Inferência positiva real | Imagem de referência detectou uma mão com 21 pontos; não é medida de acurácia |
+| Widgets reais | Tk e OpenCV em Xvfb aprovados, incluindo checkbox de dedos |
+| Dependências, sintaxe, diff | pip check, compileall e git diff --check aprovados |
+| Build Linux | PyInstaller aprovado; --check-runtime confirmou Pose, Hands e modelos empacotados |
+| Windows nesta versão | Ainda não executado; aprovação da versão anterior não é transferida |
+| Webcam física / avatar VRChat | Pendentes, não comprovados por mocks ou UDP local |
+| CI remota | Sem nova confirmação; consulta anterior negada pela API |
+| Lint/tipagem | Não configurados |
+
+A inferência Hands acrescenta custo por quadro; não há medição de ganho de FPS/precisão. Original preservado; câmera e vídeo continuam compartilhando o pipeline. Medidas corporais estimadas não viram profundidade real. A análise do peitoral não infere pernas ocultas nem fornece calibração corporal completa.
+
+**Sem merge para develop ou main. Validação de integração bloqueada pelos novos testes Windows, câmera e avatar VRChat pendentes, além das verificações de hardware anteriores.** Próxima melhoria recomendada: calibrar flexão por usuário e medir jitter/latência em vídeos anotados, depois de confirmar o contrato no avatar.

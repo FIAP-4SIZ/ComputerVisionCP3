@@ -177,3 +177,5 @@ The movenet version has now been removed from the repo.
   
 Any needed libraries are listed in install_libraries.bat. The mediapipepose.bat should run through a local python installation, but it seems broken right now, so just use a global installation of python 3.9.
 
+
+Análise de enquadramentos parciais: [PARTIAL_BODY.md](PARTIAL_BODY.md). Dedos para avatar VRChat via OSC: [VRCHAT_FINGERS.md](VRCHAT_FINGERS.md).
