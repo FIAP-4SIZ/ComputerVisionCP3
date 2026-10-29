@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [SteamVR: diagnóstico para corpo/dedos e HMD virtual](guides/STEAMVR_FULL_TRACKING.md).
+
 - [Limites do avatar público e bloqueio de detecções inválidas](guides/PUBLIC_AVATAR_LIMITS.md).
 
 - [VRChat Steam no Windows, sem headset: configurar e testar](guides/VRCHAT_DESKTOP.md).

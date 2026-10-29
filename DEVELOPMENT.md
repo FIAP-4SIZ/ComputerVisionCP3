@@ -49,3 +49,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/desktop-capture-lifecycle`: primeiro quadro validado e ciclo de vida Tk na thread principal; dependente do modo desktop.
 
 - `feature/invalid-tracking-guard`: libera ações sem quadros recentes, bloqueia rearme após perda e valida a publicação de dedos; dependente do ciclo de captura.
+
+- `feature/steamvr-readiness`: diagnóstico somente de leitura e plano de integração corporal/esquelética com HMD virtual; não fornece driver completo.
