@@ -51,6 +51,13 @@ jobs:
       - name: Check Linux executable
         if: runner.os == 'Linux'
         run: ./dist/mediapipepose/mediapipepose --check-runtime
+      - name: Validar instalador e atalho CMD (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmd /c install_libraries.bat
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmd /c mediapipepose.bat --check-runtime
+          exit $LASTEXITCODE
       - name: Build Windows
         if: runner.os == 'Windows'
         run: pyinstaller --noconfirm bin/mediapipepose.spec

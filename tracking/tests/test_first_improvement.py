@@ -138,7 +138,7 @@ class MainLoopTests(unittest.TestCase):
 
 class OriginalComparisonTests(unittest.TestCase):
     def test_tracker_inputs_equal_original_for_identical_landmarks(self):
-        source = (Path(__file__).parent / 'fixtures/original_mediapipepose.py').read_text()
+        source = (Path(__file__).parent / 'fixtures/original_mediapipepose.py').read_text(encoding='utf-8')
         original = types.ModuleType('original_app')
         with patch.dict(sys.modules, original_app=original):
             exec(compile(source, 'original/mediapipepose.py', 'exec'), original.__dict__)
