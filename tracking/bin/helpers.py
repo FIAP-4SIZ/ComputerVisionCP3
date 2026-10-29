@@ -151,37 +151,54 @@ def sendToSteamVR(text, num_tries=10, wait_time=0.1):
     return ret
 
     
+class CameraInputError(ValueError):
+    pass
+
+
 class CameraStream():
     def __init__(self, params):
         self.params = params
         self.image_ready = False
         self.frame_lock = threading.Lock()
-        # setup camera capture
-        if len(params.cameraid) <= 2:
-            cameraid = int(params.cameraid)
-        else:
-            cameraid = params.cameraid
-            
-        if params.camera_settings: # use advanced settings
-            self.cap = cv2.VideoCapture(cameraid, cv2.CAP_DSHOW) 
-            self.cap.set(cv2.CAP_PROP_SETTINGS, 1)
-        else:
-            self.cap = cv2.VideoCapture(cameraid)  
-
-        if not self.cap.isOpened():
-            print("ERROR: Could not open camera, try another id/IP")
-            shutdown(params)
-
-        if params.camera_height != 0:
-            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(params.camera_height))
-            
-        if params.camera_width != 0:
-            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(params.camera_width))
-
-        print("INFO: Start camera thread")
+        self.closed = False
+        cameraid = str(params.cameraid).strip()
+        cameraid = int(cameraid) if cameraid.isdecimal() else cameraid
+        apis = [cv2.CAP_DSHOW] if params.camera_settings and platform.startswith('win') else [cv2.CAP_ANY]
+        if platform.startswith('win') and isinstance(cameraid, int) and cv2.CAP_DSHOW not in apis:
+            apis.append(cv2.CAP_DSHOW)
+        for api in apis:
+            self.cap = cv2.VideoCapture(cameraid, api)
+            try:
+                if not self.cap.isOpened():
+                    continue
+                if params.camera_settings:
+                    self.cap.set(cv2.CAP_PROP_SETTINGS, 1)
+                if int(params.camera_height) > 0:
+                    self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(params.camera_height))
+                if int(params.camera_width) > 0:
+                    self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(params.camera_width))
+                for _ in range(5):  # Aquecimento limitado; não abre outras câmeras.
+                    start = time.perf_counter()
+                    ok, image = self.cap.read()
+                    captured = time.perf_counter()
+                    if ok and image is not None and image.size and image.ndim == 3 and image.shape[2] == 3:
+                        self.image_from_thread = image
+                        self.capture_seconds = captured-start
+                        self.captured_at = captured
+                        self.image_ready = True
+                        break
+                if self.image_ready:
+                    break
+            except Exception:
+                pass
+            finally:
+                if not self.image_ready:
+                    self.cap.release()
+        if not self.image_ready:
+            raise CameraInputError('Não foi possível capturar imagem da câmera selecionada. Feche outros aplicativos de câmera, confira permissões do Windows e o número da câmera (0, 1...).')
+        print('INFO: Câmera validada; iniciando captura')
         self.thread = threading.Thread(target=self.update, args=(), daemon=True)
         self.thread.start()
-
     
     def update(self):
         # continuously grab images

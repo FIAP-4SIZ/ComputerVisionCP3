@@ -238,6 +238,7 @@ class RealVideoIntegrationTests(unittest.TestCase):
                     ('DummyBackend', {'return_value': backend}),
                     ('VideoFileSource', {'return_value': source}),
                     ('threading.Thread', {}),
+                    ('inference_gui.create_inference_gui', {'return_value': Mock()}),
                     ('mp.solutions.pose.Pose', {'return_value': detector}),
                     ('cv2.namedWindow', {}), ('cv2.imshow', {}), ('cv2.destroyAllWindows', {}),
                     ('cv2.waitKey', {'side_effect': key}), ('shutdown', {'side_effect': SystemExit}),

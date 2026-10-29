@@ -402,6 +402,7 @@ class RecordedOcclusionIntegrationTests(unittest.TestCase):
                     ('VRChatOSCBackend', {'return_value': backend}),
                     ('VideoFileSource', {'return_value': source}),
                     ('threading.Thread', {}),
+                    ('inference_gui.create_inference_gui', {'return_value': Mock()}),
                     ('mp.solutions.pose.Pose', {'return_value': detector}),
                     ('cv2.namedWindow', {}), ('cv2.imshow', {'side_effect': display}),
                     ('cv2.destroyAllWindows', {}), ('cv2.waitKey', {'side_effect': key}),

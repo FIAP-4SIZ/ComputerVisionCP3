@@ -10,7 +10,7 @@ import threading
 import cv2
 import numpy as np
 
-from helpers import  CameraStream, shutdown, mediapipeTo3dpose, get_rot_mediapipe, get_rot_hands, draw_pose, keypoints_to_original, normalize_screen_coordinates, get_rot
+from helpers import CameraInputError, CameraStream, shutdown, mediapipeTo3dpose, get_rot_mediapipe, get_rot_hands, draw_pose, keypoints_to_original, normalize_screen_coordinates, get_rot
 from scipy.spatial.transform import Rotation as R
 from backends import DummyBackend, SteamVRBackend, VRChatOSCBackend
 import webui
@@ -51,6 +51,7 @@ def main():
 
     backends = { 0: DummyBackend, 1: SteamVRBackend, 2: VRChatOSCBackend, 3: VRChatDesktopBackend }
     backend = backends[params.backend]()
+    gui_root = None
     camera_thread = None
     pose = None
     fingers = None
@@ -61,9 +62,10 @@ def main():
             return
         is_video = getattr(params, 'input_mode', 'camera') == 'video'
         camera_thread = VideoFileSource(params.video_path) if is_video else CameraStream(params)
-        #making gui
-        gui_thread = threading.Thread(target=inference_gui.make_inference_gui, args=(params,), daemon=True)
-        gui_thread.start()
+        if params.exit_ready:
+            return
+        # Tk e OpenCV pertencem à thread principal, inclusive seu encerramento.
+        gui_root = inference_gui.create_inference_gui(params)
 
         print("INFO: Iniciando detector de pose...")
 
@@ -101,6 +103,10 @@ def main():
             camera_thread.start()
 
         while True:
+            gui_root.update()
+            if getattr(params, 'request_autocalibrate', False):
+                params.request_autocalibrate = False
+                params.gui.autocalibrate()
             # Capture frame-by-frame
             if params.exit_ready:
                 shutdown(params)
@@ -322,10 +328,10 @@ def main():
             if key == 27:
                 shutdown(params)
 
-    except VideoInputError as exc:
+    except (VideoInputError, CameraInputError) as exc:
         params.input_status = str(exc)
         print('ERROR: ' + str(exc))
-        messagebox.showerror('Erro ao abrir vídeo', str(exc))
+        messagebox.showerror('Erro na entrada de imagem', str(exc))
     finally:
         if camera_thread is not None and hasattr(camera_thread, 'close'):
             camera_thread.close()
@@ -337,6 +343,9 @@ def main():
         if pose is not None:
             pose.close()
         backend.disconnect()
+        if gui_root is not None:
+            gui_root.destroy()
+            params.gui = None
         cv2.destroyAllWindows()
 
 

@@ -55,3 +55,17 @@ Referência oficial do comando e seu tipo: [OSC Input](https://github.com/vrchat
 
 
 Validação da entrega: 164 testes locais (8 novos), pip check, compilação, GUI real em Xvfb 1280×720 e build/runtime Linux aprovados. A primeira CI Windows identificou um caractere de seta incompatível com console CP1252 na prévia do teste; substituído por `->`, com teste de regressão nessa codificação. Conferir a CI do commit final no PR #11. Não considerar essa correção como comprovação do pulo no cliente.
+
+## Câmera falhou / Tcl_AsyncDelete no Windows
+
+O erro relatado pelo usuário revelou captura sem quadro e uso da interface Tk numa thread secundária. A correção está em `feature/desktop-capture-lifecycle`: valida o primeiro quadro antes de abrir GUI/MediaPipe, tenta aquecimento limitado e DirectShow no mesmo ID no Windows, e mantém todo Tk na thread principal com encerramento coordenado. Calibração solicitada pela interface web agora é agendada para a thread principal.
+
+Feche outras instâncias do aplicativo, OBS, navegador ou programa que esteja usando a webcam. No Windows, confira Configurações → Privacidade e segurança → Câmera → acesso para aplicativos da área de trabalho. Atualize para o branch da correção e execute de tracking:
+
+```cmd
+..\.venv\Scripts\python.exe tools\check_camera.py --camera 0
+```
+
+A ferramenta deve receber dez quadros e liberar a câmera. Se falhar e houver outro dispositivo, repita explicitamente com `--camera 1`; não há varredura automática de webcams. Ela usa a resolução padrão do dispositivo para separar problemas de captura de uma resolução configurada. Se passar, abra `run.py` e escolha a mesma câmera. Um driver pode bloquear chamadas nativas; retries limitados não eliminam toda falha de hardware.
+
+Validação local da correção: 172 testes, incluindo inicialização sem quadro, fallback Windows no mesmo ID, aquecimento, liberação, impedimento de Tk em thread secundária, erros antes da GUI/modelo e encerramento do laço. Repetir CI Linux/Windows e captura real no equipamento do usuário antes de aprovar integração.

@@ -38,7 +38,8 @@ class PortugueseUITests(unittest.TestCase):
         params.rot_change_x.assert_called_once_with(91)
         params.rot_change_z.assert_called_once_with(181)
         params.change_scale.assert_called_once_with(1.01)
-        params.gui.autocalibrate.assert_called_once()
+        self.assertTrue(params.request_autocalibrate)
+        params.gui.autocalibrate.assert_not_called()
 
     def test_video_status_translates_only_display_state(self):
         source = VideoFileSource.__new__(VideoFileSource)

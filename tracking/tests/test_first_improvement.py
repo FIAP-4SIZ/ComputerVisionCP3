@@ -93,6 +93,8 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
     backend = Mock()
     backend.status = 'Teste de destino desktop'
     backend.test_params = params
+    gui_root = Mock()
+    backend.test_gui = gui_root
     if existing_calibration:
         params.pose3d_og = np.ones((29, 3))
     backend.updatepose.return_value = True
@@ -107,6 +109,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
             ('VRChatDesktopBackend', {'return_value': backend}),
             ('CameraStream', {'return_value': camera}),
             ('threading.Thread', {}),
+                    ('inference_gui.create_inference_gui', {'return_value': gui_root}),
             ('mp.solutions.pose.Pose', {'return_value': detector}),
             ('mp.solutions.drawing_utils.draw_landmarks', {}),
             ('cv2.namedWindow', {}), ('cv2.imshow', {}),

@@ -1,4 +1,5 @@
 import tkinter as tk
+import threading
 from tkinter import ttk
 import numpy as np
 from scipy.spatial.transform import Rotation as R
@@ -541,12 +542,18 @@ class InferenceWindow(tk.Frame):
         self.root.after(100, self.refresh_input_status)
 
 
-def make_inference_gui(_params):
+def create_inference_gui(_params):
+    if threading.current_thread() is not threading.main_thread():
+        raise RuntimeError('A interface Tk deve ser criada na thread principal')
     root = tk.Tk()
     InferenceWindow(root, _params).pack(side="top", fill="both", expand=True)
-    root.mainloop()
+    return root
     
 
 if __name__ == "__main__":
     #make_inference_gui()
     print("hehe")
+
+
+def make_inference_gui(params):
+    create_inference_gui(params).mainloop()

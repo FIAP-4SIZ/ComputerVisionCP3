@@ -64,7 +64,7 @@ def scale():
     
 @app.route('/autocalib', methods=["POST"])
 def autocalib():
-    params.gui.autocalibrate()
+    params.request_autocalibrate = True
     return redirect(url_for("hello_world"))
  
 # main driver function

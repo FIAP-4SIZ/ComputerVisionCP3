@@ -45,3 +45,5 @@ Main e develop continuam na proposta inicial até a validação obrigatória. N�
 Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, relatórios em `tracking/docs/reports` e material original em `tracking/docs/reference`. Código de execução permanece em `tracking/bin` para evitar quebra de imports e empacotamento. O lançador `tracking/run.py` permite executar de qualquer diretório com Python 3.12. Apenas `requirements-study.txt` define as bibliotecas de execução; os outros manifests encaminham para ele.
 
 - `feature/vrchat-desktop-input`: entrada OSC de pulo para VRChat Steam sem headset; dependente da organização. Validação no cliente VRChat permanece obrigatória.
+
+- `feature/desktop-capture-lifecycle`: primeiro quadro validado e ciclo de vida Tk na thread principal; dependente do modo desktop.

@@ -204,6 +204,7 @@ class MainLightingTests(unittest.TestCase):
             for target, kwargs in (
                 ('parameters.Parameters', {'return_value': params}), ('DummyBackend', {'return_value': backend}),
                 ('CameraStream', {'return_value': camera}), ('threading.Thread', {}),
+                    ('inference_gui.create_inference_gui', {'return_value': Mock()}),
                 ('mp.solutions.pose.Pose', {'return_value': detector}), ('cv2.namedWindow', {}),
                 ('cv2.imshow', {'side_effect': lambda _, image: views.append(image.copy())}),
                 ('cv2.destroyAllWindows', {}), ('cv2.waitKey', {'side_effect': key}),
