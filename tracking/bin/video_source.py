@@ -12,13 +12,16 @@ class VideoInputError(ValueError):
 
 
 class VideoFileSource:
-    def __init__(self, path, clock=time.perf_counter):
+    def __init__(self, path, clock=time.perf_counter, pace=True):
         self.path = Path(path)
         if not self.path.is_file():
             raise VideoInputError('Selecione um arquivo de vídeo existente.')
         if self.path.suffix.lower() not in {'.mp4', '.avi', '.mov', '.mkv', '.webm', '.m4v', '.mpg', '.mpeg'}:
             raise VideoInputError('Formato de arquivo não suportado.')
         self.clock = clock
+        if not isinstance(pace, bool):
+            raise VideoInputError('Agendamento deve ser booleano')
+        self.pace = pace
         self.cap = None
         self.state = 'ready'
         self.error = ''
@@ -95,7 +98,7 @@ class VideoFileSource:
                 self.state = 'completed'
                 self.close()
                 return None
-            if self.clock() < self._anchor + self._pending[3] / 1000:
+            if self.pace and self.clock() < self._anchor + self._pending[3] / 1000:
                 return None
             image, duration, captured_at, timestamp, index, estimated = self._pending
             self._pending = None
