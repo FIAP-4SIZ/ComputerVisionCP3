@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [Limites do avatar público e bloqueio de detecções inválidas](guides/PUBLIC_AVATAR_LIMITS.md).
+
 - [VRChat Steam no Windows, sem headset: configurar e testar](guides/VRCHAT_DESKTOP.md).
 
 - [Câmera e arquivo de vídeo](guides/VIDEO_INPUT.md).

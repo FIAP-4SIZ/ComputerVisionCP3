@@ -19,14 +19,12 @@ class VRChatDesktopBackend:
 
     def process_image(self, landmarks, timestamp, threshold=.5):
         if not math.isfinite(timestamp):
-            self.reset()
+            self.invalidate()
             return
-        if self.pressed and timestamp >= self.deadline:
-            self.client.send_message('/input/Jump', 0)
-            self.pressed = False
+        self.tick(timestamp)
         observation = observe_body(landmarks, threshold)
         if not {11,12,13,14,15,16} <= observation.visible:
-            self.reset()
+            self.invalidate()
             self.status = 'Desktop: enquadre ombros, cotovelos e pulsos'
             return
         raised = all(landmarks[w].y < landmarks[s].y-.08 for w,s in ((15,11),(16,12)))
@@ -40,6 +38,15 @@ class VRChatDesktopBackend:
             self.deadline = timestamp+.15
             self.armed = False
             self.status = 'Desktop: pulo enviado; abaixe os bracos para repetir'
+
+    def tick(self, timestamp):
+        if self.pressed and timestamp >= self.deadline:
+            self.client.send_message('/input/Jump', 0)
+            self.pressed = False
+
+    def invalidate(self):
+        self.reset()
+        self.armed = False  # Recuperar pontos com braços no alto não dispara ação.
 
     def reset(self):
         if self.pressed and self.client is not None:

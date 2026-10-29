@@ -118,6 +118,16 @@ class FingerTracking:
         bundle = OscBundleBuilder(IMMEDIATELY)
         for side in SIDES:
             frame = frames.get(side)
+            if frame is not None:
+                # Última barreira antes da rede; não publica flexão inválida.
+                try:
+                    valid = frame.side == side and set(frame.curls) == set(FINGERS)
+                    valid = valid and all(not isinstance(v, bool) and math.isfinite(v) and 0 <= v <= 1
+                                          for v in frame.curls.values())
+                except (AttributeError, TypeError, ValueError):
+                    valid = False
+                if not valid:
+                    frame = None
             values = {'Tracked': frame is not None}
             if frame is not None:
                 values.update(frame.curls)

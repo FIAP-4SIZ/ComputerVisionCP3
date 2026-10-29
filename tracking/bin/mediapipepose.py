@@ -26,6 +26,7 @@ from desktop_osc import VRChatDesktopBackend
 from hand_quality import HandQualitySettings
 from finger_tracking import FingerTracking, draw_hands
 from body_observation import observe_body, draw_observation
+from freshness import FrameFreshness
 from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
 from pose_validation import InvalidPose
@@ -97,6 +98,7 @@ def main():
         preview_settings = DEFAULT_LIGHTING
         preview_preprocess_ms = 0.
         active_lighting_key = None
+        freshness = FrameFreshness()
         tracker_lifecycle = TrackerLifecycle(enabled_names(params))
         params.tracker_status = tracker_lifecycle.summary()
         if is_video:
@@ -104,6 +106,8 @@ def main():
 
         while True:
             gui_root.update()
+            if params.backend == 3:
+                backend.tick(time.perf_counter())
             if getattr(params, 'request_autocalibrate', False):
                 params.request_autocalibrate = False
                 params.gui.autocalibrate()
@@ -152,6 +156,17 @@ def main():
             if is_video:
                 params.input_status = camera_thread.status
             if frame is None:
+                if freshness.expire(time.perf_counter()):
+                    if fingers is not None:
+                        fingers.suspend()
+                    if params.backend == 3:
+                        backend.invalidate()
+                    backend.expire_trackers(tracker_lifecycle.invalidate())
+                    if params.backend != 3:
+                        backend.reset()
+                    params.tracker_status = 'Sem quadros recentes: rastreamento suspenso'
+                    if hasattr(params, 'pose3d_og'):
+                        del params.pose3d_og
                 if params.backend == 3 and is_video and camera_thread.state != 'running':
                     backend.reset()
                 if fingers is not None and is_video and camera_thread.state != 'running':
@@ -176,6 +191,7 @@ def main():
                 time.sleep(0.001)
                 continue
 
+            freshness.touch(time.perf_counter())
             img, capture_seconds, captured_at = frame
             params.frame_timestamp_ms = camera_thread.timestamp_ms if is_video else captured_at * 1000
             params.frame_index = camera_thread.index if is_video else None

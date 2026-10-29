@@ -47,3 +47,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/vrchat-desktop-input`: entrada OSC de pulo para VRChat Steam sem headset; dependente da organização. Validação no cliente VRChat permanece obrigatória.
 
 - `feature/desktop-capture-lifecycle`: primeiro quadro validado e ciclo de vida Tk na thread principal; dependente do modo desktop.
+
+- `feature/invalid-tracking-guard`: libera ações sem quadros recentes, bloqueia rearme após perda e valida a publicação de dedos; dependente do ciclo de captura.
