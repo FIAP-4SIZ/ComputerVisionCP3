@@ -22,6 +22,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 import mediapipe as mp
+from body_observation import observe_body, draw_observation
 from frame_metrics import FrameMetrics
 from video_source import VideoFileSource, VideoInputError
 from pose_validation import InvalidPose
@@ -214,6 +215,9 @@ def main():
             img.flags.writeable = True
             tracker_seconds = 0.0
 
+            image_landmarks = results.pose_landmarks.landmark if results.pose_landmarks else None
+            params.body_observation = observe_body(image_landmarks, getattr(params, 'min_visibility', .5))
+            params.body_status = params.body_observation.status
             params.pose_status = 'Sem pose detectavel'
             tracking = None
             valid = dict.fromkeys(tracker_lifecycle.names, False)
@@ -246,8 +250,8 @@ def main():
             tracker_seconds = time.perf_counter() - tracker_start
 
             img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)       #convert back to bgr and draw the pose
-            mp_drawing.draw_landmarks(
-                img, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+            draw_observation(img, image_landmarks, params.body_observation, mp_pose.POSE_CONNECTIONS)
+            cv2.putText(img, params.body_status, (10, 134), cv2.FONT_HERSHEY_SIMPLEX, .4, (255, 255, 0), 1)
             # Exibe a janela anterior: o ciclo atual só termina após imshow/waitKey.
             summary = metrics.summary()
             # Duas linhas cabem na resolução padrão; desenha somente na cópia de exibição.

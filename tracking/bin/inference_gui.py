@@ -383,7 +383,10 @@ class InferenceWindow(tk.Frame):
     def autocalibrate(self):
 
         if not hasattr(self.params, 'pose3d_og'):
-            print('INFO: Nenhuma pose válida disponível para calibrar.')
+            message = ('Analise parcial funciona sem calibrar. Calibracao VR exige corpo inteiro; '
+                       'quadris e pernas fora da imagem nao serao inventados.')
+            self.params.pose_status = message
+            print('INFO: ' + message)
             return
 
         use_steamvr = True if self.params.backend == 1 else False
