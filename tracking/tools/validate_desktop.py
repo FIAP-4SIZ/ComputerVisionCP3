@@ -50,10 +50,10 @@ def main():
         def automated_loop(root, *args, **kwargs):
             root.after(5000, root.quit)
             def save():
-                button(root, 'Somente análise').invoke()
+                button(root, 'SteamVR mãos + OSC').invoke()
                 finger_toggle = next(w for w in widgets(root) if isinstance(w, tk.Checkbutton)
                                      and w.cget('text').startswith('Rastrear dedos'))
-                finger_toggle.invoke()
+                assert finger_toggle.cget('state') == 'disabled'
                 full_body = next(w for w in widgets(root) if isinstance(w, tk.Checkbutton)
                                  and w.cget('text').startswith('OSC: incluir'))
                 full_body.invoke()
@@ -64,7 +64,7 @@ def main():
             original_loop(root, *args, **kwargs)
         with patch.object(tk.Tk, 'mainloop', automated_loop):
             initial = init_gui.getparams()
-        assert initial['backend'] == 0
+        assert initial['backend'] == 4
         assert initial['track_fingers'] is True
         assert initial['osc_full_body'] is True
         assert initial['osc_hand_profile'] == str(profile_path)
@@ -79,6 +79,9 @@ def main():
             window = InferenceWindow(root, params)
             window.pack(side="top", fill="both", expand=True)
             root.update()
+            button(root,'Confirmar FBT no VRChat em 3 segundos').invoke()
+            assert params.request_fbt_confirmation is True
+            params.request_fbt_confirmation=False
             pause = button(root, 'Pausar / retomar rastreamento')
             pause.invoke()
             assert params.paused
