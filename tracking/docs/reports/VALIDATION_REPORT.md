@@ -1,5 +1,27 @@
 # Relatório de validação e integração
 
+## Motivos de invalidação visíveis no terminal — feature/steamvr-hand-diagnostics
+
+O usuário confirmou HMD válido, mas tracked_mask=0, sem apontador no VRChat.
+Isso indica ausência de mão válida recente no receptor naquele instante;
+não prova sozinho falha nos bindings. As opções screen-width/height foram
+aplicadas, mas não resolveram a resolução interna em VR. O guia distingue
+resolução da janela, recomendação de render do HMD e percentual SteamVR.
+
+O backend agora imprime mudanças dos motivos ME/MD no terminal, no máximo
+uma vez a cada dois segundos. O HUD continua atualizado por quadro. O último
+estado realmente impresso é guardado para que uma mudança suprimida pelo
+limite possa ser mostrada quando persistir. Não mudamos limites, geometria,
+aceitação, envio ou expiração para contornar o diagnóstico.
+
+Validação local: 300 testes Python aprovados, quatro novos cobrindo razão
+real de rejeição, ausência de repetição, limite/recuperação e envio válido
+preservado; pip check, compileall, diff check, build PyInstaller Linux e
+runtime Pose/Hands aprovados. CI do PR #24
+anterior passou os oito checks Windows/Linux. A causa específica do mask=0,
+postura, apontamento e resolução final ainda exigem o retorno do Windows.
+Sem merge para develop.
+
 ## Ação explícita OSC em VR — feature/vrchat-osc-use-action
 
 O usuário confirmou que menu-left abre o menu no VRChat Windows. Porém,

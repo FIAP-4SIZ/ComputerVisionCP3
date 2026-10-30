@@ -1,4 +1,5 @@
 """Corpo OSC original + mãos esqueléticas no driver OpenVR próprio."""
+import time
 from backends import VRChatOSCBackend
 from steamvr_protocol import SteamVRHandsClient,DriverConnectionError
 from steamvr_skeleton import prepare_hand
@@ -12,6 +13,16 @@ class SteamVRHandsBackend(VRChatOSCBackend):
         self._invalidated=True
         self.confirm_at=None
         self.status='SteamVR: aguardando driver'
+        self._reported_status=None
+        self._reported_at=None
+
+    def report_status(self):
+        """Mostra mudanças sem imprimir por quadro ou bloquear a inferência."""
+        now=time.monotonic()
+        if self.status!=self._reported_status and (self._reported_at is None or now-self._reported_at>=2.):
+            print('INFO: '+self.status,flush=True)
+            self._reported_status=self.status
+            self._reported_at=now
 
     def connect(self,params):
         super().connect(params)
@@ -44,6 +55,7 @@ class SteamVRHandsBackend(VRChatOSCBackend):
                     labels.append(('ME' if side_index==0 else 'MD')+':'+str(exc))
             self._invalidated=False
             self.status='SteamVR | '+' | '.join(labels)
+            self.report_status()
         except OSError as exc:
             raise DriverConnectionError('Falha ao enviar mãos ao SteamVR: '+str(exc)) from exc
 

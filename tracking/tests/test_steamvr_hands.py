@@ -152,6 +152,40 @@ class HandBackendTests(unittest.TestCase):
         self.assertEqual(calls[1].args,(1,));self.assertEqual(calls[1].kwargs,{'valid':False})
         self.assertIn('ME:ok',backend.status)
 
+    def test_terminal_reports_actual_rejection_reason_without_changing_invalidation(self):
+        frame,_,image,params=fixture();backend=self.backend()
+        with patch('builtins.print') as output:
+            backend.update_hands(params,{'Left':frame},None,image,(480,640,3))
+        self.assertIn('Sem pose/alinhamento',output.call_args.args[0])
+        self.assertIn('MD:Mão ausente',output.call_args.args[0])
+        self.assertEqual(output.call_args.kwargs,{'flush':True})
+        self.assertTrue(all(call.kwargs.get('valid') is False for call in backend.hands.send.call_args_list))
+
+    def test_unchanged_status_not_repeated_even_after_interval(self):
+        backend=self.backend()
+        with patch('steamvr_hands_backend.time.monotonic',side_effect=[0.,10.,20.]),patch('builtins.print') as output:
+            for _ in range(3):backend.report_status()
+        output.assert_called_once()
+
+    def test_status_changes_are_limited_and_latest_change_is_eventually_reported(self):
+        backend=self.backend()
+        with patch('steamvr_hands_backend.time.monotonic',side_effect=[0.,.1,.2,2.]),patch('builtins.print') as output:
+            backend.status='SteamVR | ME:Mão ausente';backend.report_status()
+            backend.status='SteamVR | ME:ok';backend.report_status()
+            backend.status='SteamVR | ME:Sem pose';backend.report_status()
+            backend.status='SteamVR | ME:ok';backend.report_status()
+        self.assertEqual(output.call_count,2)
+        self.assertEqual(output.call_args.args[0],'INFO: SteamVR | ME:ok')
+
+    def test_successful_hand_send_is_preserved_with_terminal_diagnostics(self):
+        frame,world,image,params=fixture();backend=self.backend()
+        with patch('builtins.print') as output:
+            backend.update_hands(params,{'Left':frame},world,image,(480,640,3))
+        self.assertIn('ME:ok',output.call_args.args[0])
+        self.assertEqual(backend.hands.send.call_count,2)
+        self.assertEqual(backend.hands.send.call_args_list[0].args[0],0)
+        self.assertFalse(backend.hands.send.call_args_list[0].kwargs.get('valid') is False)
+
     def test_lost_pose_invalidates_even_when_hand_is_detected(self):
         frame,_,image,params=fixture();backend=self.backend()
         backend.update_hands(params,{'Left':frame},None,image,(480,640,3))

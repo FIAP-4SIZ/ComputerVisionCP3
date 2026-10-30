@@ -177,6 +177,29 @@ aplicativo abaixo. Quando mostrar mãos/punhos e ombros visíveis, consulte
 novamente o driver: máscara 1 = esquerda, 2 = direita, 3 = ambas recebidas.
 Isso ainda não comprova que os bindings foram aplicados pelo VRChat.
 
+Se `tracked_mask` continuar zero **com a captura aberta e sem pausa**, o
+receptor não tem mão válida recente. A partir de
+`feature/steamvr-hand-diagnostics`, o terminal do `run.py` também mostra
+mudanças no estado `INFO: SteamVR | ME:... | MD:...`, no máximo uma vez a
+cada dois segundos. O estado atual continua na imagem a cada quadro. Copie
+a linha completa para diferenciar:
+
+- `Mão ausente`: não chegou mão aceita do detector Hands; não significa
+  apenas mão fisicamente fora do quadro, pois os filtros de confiança,
+  geometria e confirmação temporal também podem recusá-la.
+- `Sem pose/alinhamento`: não há Pose espacial válida para ancorar o punho.
+- `Ombros ou punho fora do quadro/sem visibilidade`: enquadre ambos os
+  ombros e o punho da mão que deseja rastrear; quadris/pernas não são
+  obrigatórios para enviar essa mão.
+- `Mão e punho da pose não correspondem`: a associação entre detectores foi
+  recusada. Confira espelhamento/enquadramento antes de relaxar limites.
+- `ok`: o remetente construiu e enviou os dados; sozinho não é confirmação
+  de recebimento, bindings ou movimento no VRChat.
+
+Durante a consulta, mantenha mãos, punhos e ombros na câmera. Ao parar/pausar
+o aplicativo ou perder a observação, a máscara pode voltar a zero. Não
+publique uma pose fixa só para fazer a máscara parecer válida.
+
 Inicie:
 
 ```bat
@@ -344,6 +367,23 @@ O custo de GPU/memória pode aumentar; não é um aumento medido de qualidade
 de rastreamento. Cada dimensão aceita 320 a 4096 pixels. Sem a opção,
 preserva os campos existentes e só preenche campos ausentes com 1280×720.
 Use `--restore` com o novo backup para desfazer as mudanças de SteamVR.
+
+Se o tamanho da janela está correto, mas a imagem **interna em VR** continua
+em baixa resolução, os parâmetros `-screen-width/-screen-height` não mudam
+a recomendação de render do HMD. Com SteamVR/VRChat fechados, a configuração
+explícita para o pacote já instalado pelo usuário é:
+
+```bat
+..\.venv312\Scripts\python.exe tools\steamvr_setup.py --driver "C:\Users\mauro\Downloads\FIAP-MediaPipe" --render-size 1920x1080 --hide-mirror --apply
+```
+
+Guarde o backup impresso e reinicie SteamVR. Confira também em SteamVR →
+Vídeo a resolução global e por aplicativo VRChat: ajuste a seleção
+automática para manual e use 100% como referência inicial de comparação.
+Registre as dimensões por olho exibidas pelo runtime. A recomendação do
+driver, o percentual SteamVR, a janela normal do jogo e a saída estéreo
+Headset Window são controles diferentes; não garantimos que todos mostrem
+o mesmo número de pixels. O aspecto visual final ainda exige teste Windows.
 
 Teste no Windows: confirme janela normal na resolução escolhida, ausência
 do espelho opcional e continuidade da captura/rastreamento. Esta correção
