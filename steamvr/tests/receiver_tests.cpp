@@ -27,6 +27,16 @@ int main() {
     check(std::memcmp(response,"MPVRP001",8)==0 && mpvr::u32(response+8)==1 && std::abs(mpvr::number(response+40)-1.7f)<.001f,"actual HMD matrix exposed");
     bytes=packet(1,2,false);send(bytes.data(),bytes.size());receiver.poll(1.3,true);
     check(!receiver.hands[1].live(1.3),"loss deactivates recipient");
+    for (unsigned side=0;side<2;++side) {
+        bytes=packet(side,3);send(bytes.data(),bytes.size());
+    }
+    receiver.poll(1.4,true);
+    mpvr::put32(command+8,2);send(command,16);receiver.poll(1.41,true);
+    check(recv(sender,reinterpret_cast<char*>(response),sizeof(response),0)==20,"both hands status response");
+    check(mpvr::u32(response+12)==3,"simultaneous valid hands reported as mask three");
+    send(command,16);receiver.poll(1.91,true);
+    check(recv(sender,reinterpret_cast<char*>(response),sizeof(response),0)==20,"expired hands status response");
+    check(mpvr::u32(response+12)==0,"status reports zero after half-second expiry without changing last frames");
 #ifdef _WIN32
     closesocket(sender);
 #else

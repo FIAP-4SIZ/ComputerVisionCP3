@@ -1,5 +1,28 @@
 # Relatório de validação e integração
 
+## Amostragem temporal do receptor — feature/steamvr-live-status
+
+O usuário confirmou explicitamente `SteamVR | ME:ok | MD:ok` com ambas as
+palmas na câmera. Portanto há aceitação/envio pelo backend; uma consulta
+isolada anterior com máscara zero não basta para decidir se nunca houve
+recepção. O receptor expira mãos em 500 ms após a última atualização válida.
+O usuário também corrigiu Standing Only de 0 cm para 177 cm; postura depois
+de reiniciar o runtime ainda precisa de confirmação, sem inferir altura pelo
+Y bruto. Escala manual continua sendo o caminho do teste com HMD null.
+
+`steamvr_hands_check.py --watch 10` observa mudanças e resume amostras de
+ambas as mãos simultâneas, sem enviar poses ou cliques. Duração limitada,
+memória constante, interrupção com resumo parcial e fechamento do socket.
+Os testes distinguem esquerda/direita vistas separadamente de máscara 3.
+
+Validação local: 308 testes Python aprovados (oito novos, incluindo UDP
+real), quatro CTests aprovados após ampliar o receptor real para verificar
+máscara 3 e retorno a zero por expiração. Build nativo, pip check, compileall,
+diff check, build PyInstaller Linux e runtime Pose/Hands aprovados. Driver
+de produção/protocolo não mudaram, sem necessidade de reinstalar a DLL para
+essa consulta. CI e relatório temporal no Windows permanecem pendentes;
+não há merge para develop nem aprovação de apontamento, corpo ou dedos.
+
 ## Motivos de invalidação visíveis no terminal — feature/steamvr-hand-diagnostics
 
 O usuário confirmou HMD válido, mas tracked_mask=0, sem apontador no VRChat.

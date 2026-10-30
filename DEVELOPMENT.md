@@ -73,3 +73,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/vrchat-osc-use-action`: pulso explícito UseLeft/UseRight em VR para testar interação com apontador, sem depender de botão físico nem gerar cliques por gesto. Base: feature/vrchat-osc-quick-menu.
 
 - `feature/steamvr-hand-diagnostics`: registra mudanças dos motivos de validação das mãos no terminal, com limite de frequência; preserva filtros e envio. Base: feature/vrchat-osc-use-action.
+
+- `feature/steamvr-live-status`: amostragem temporal somente de leitura do receptor, resumo de máscaras e interrupção; testa máscara simultânea e expiração nativa. Base: feature/steamvr-hand-diagnostics.

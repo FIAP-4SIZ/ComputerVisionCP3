@@ -200,6 +200,30 @@ Durante a consulta, mantenha mãos, punhos e ombros na câmera. Ao parar/pausar
 o aplicativo ou perder a observação, a máscara pode voltar a zero. Não
 publique uma pose fixa só para fazer a máscara parecer válida.
 
+Uma consulta única pode ocorrer depois de você tirar as mãos da câmera para
+digitar. O receptor expira dados em 500 ms. Se o terminal mostra
+`SteamVR | ME:ok | MD:ok`, observe o receptor durante dez segundos, mantendo
+a captura aberta e sem pausa:
+
+```bat
+..\.venv312\Scripts\python.exe tools\steamvr_hands_check.py --watch 10
+```
+
+Após iniciar o comando, mostre as duas palmas, punhos e ombros à câmera. A
+ferramenta consulta aproximadamente cinco vezes por segundo e imprime só
+mudanças; não envia posições, cliques ou invalidações. No fim,
+`watch_summary.observed_masks` registra os valores vistos e
+`samples_with_both_hands` conta amostras com máscara **3 simultânea**. Ver
+1 e depois 2 não conta como ambas ao mesmo tempo. Ctrl+C encerra com resumo
+parcial; durações aceitas: maior que zero e até 30 segundos. Consultas podem
+demorar mais em caso de espera pela rede.
+
+Se o resumo inclui 3, o driver recebeu ambas válidas em algum instante;
+isso ainda não valida apontador, pose no avatar ou bindings do VRChat. Se
+mostra só zero enquanto a linha SteamVR permanece com ambos ok, investigue
+receptor, versão do pacote, cadência e outros remetentes invalidando dados.
+O teste não deve ser usado para aumentar o timeout ou fabricar poses.
+
 Inicie:
 
 ```bat
