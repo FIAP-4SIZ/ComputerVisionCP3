@@ -1,0 +1,26 @@
+{
+  "mediapipe": "0.10.21",
+  "image_sha256": "4b5134daa4cb60465535239535f9f74c2842aba3aa5fd30bf04ef5678f93d87f",
+  "left_half": true,
+  "states": [
+    [],
+    [
+      "Right"
+    ],
+    [
+      "Right"
+    ]
+  ],
+  "hands": [
+    {
+      "side": "Right",
+      "score": 0.9805657863616943,
+      "bone_count": 31,
+      "packet_bytes": 916,
+      "native_reply": "1 1 1 0"
+    }
+  ],
+  "vrchat_tested": false,
+  "note": "Imagem est\u00e1tica repetida; origem global sint\u00e9tica s\u00f3 no teste. N\u00e3o mede precis\u00e3o, jitter ou FPS.",
+  "reference_url": "https://storage.googleapis.com/mediapipe-assets/right_hands.jpg"
+}

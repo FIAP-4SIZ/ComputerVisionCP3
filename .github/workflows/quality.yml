@@ -32,6 +32,22 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - run: python -m compileall -q bin tests tools run.py
       - run: git diff --check
+      - name: Construir decoder nativo para integração Python (Windows e Linux)
+        run: |
+          cmake -S ../steamvr -B ../steamvr/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build ../steamvr/build --config Release --target wire_probe
+      - name: MediaPipe real para decoder C++ (Linux)
+        if: runner.os == 'Linux'
+        run: python tools/validate_steamvr_skeleton.py --download-reference --probe ../steamvr/build/wire_probe --output steamvr-skeleton-validation.json
+      - name: MediaPipe real para decoder C++ (Windows)
+        if: runner.os == 'Windows'
+        run: python tools/validate_steamvr_skeleton.py --download-reference --probe ../steamvr/build/Release/wire_probe.exe --output steamvr-skeleton-validation.json
+      - name: Guardar ensaio de esqueleto
+        uses: actions/upload-artifact@v4
+        with:
+          name: steamvr-skeleton-${{ runner.os }}
+          path: tracking/steamvr-skeleton-validation.json
+          retention-days: 7
       - name: Validar interfaces reais em tela pequena (Linux)
         if: runner.os == 'Linux'
         run: |
