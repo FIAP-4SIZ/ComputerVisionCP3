@@ -55,6 +55,13 @@ def install_bindings(driver,manifest):
     if not isinstance(profile,dict) or profile.get('controller_type')!='fiap_mediapipe_hand':raise ValueError('Pacote de driver incompatível')
     bindings,report=make_bindings(manifest)
     profile=copy.deepcopy(profile)
+    sources=profile.get('input_source')
+    trigger=sources.get('/input/trigger') if isinstance(sources,dict) else None
+    if not isinstance(trigger,dict) or trigger.get('type')!='trigger':
+        raise ValueError('Perfil sem fonte /input/trigger compatível; use o pacote mediapipe_hands correto')
+    # O driver cria ambos os handles. O perfil também precisa declarar as
+    # capacidades para expô-las à configuração de bindings do SteamVR.
+    trigger.update(click=True,value=True)
     previous=profile.get('default_bindings',[])
     if not isinstance(previous,list) or any(not isinstance(b,dict) for b in previous):raise ValueError('default_bindings inválido')
     profile['default_bindings']=[b for b in previous if b.get('app_key')!='steam.app.438100']
@@ -74,7 +81,8 @@ def install_bindings(driver,manifest):
             if binding_path.exists():binding_path.unlink()
         else:atomic_write(binding_path,previous_binding)
         raise
-    return dict(report,profile_backup=str(backup),binding_path=str(binding_path))
+    return dict(report,profile_backup=str(backup),binding_path=str(binding_path),
+                trigger_components_enabled=['click','value'])
 
 
 def main(argv=None):

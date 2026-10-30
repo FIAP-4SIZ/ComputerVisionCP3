@@ -22,7 +22,7 @@ def installation(directory,settings=True):
         path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'MZ fixture, not executable')
     (driver/'driver.vrdrivermanifest').write_text(json.dumps({'name':'mediapipe_hands'}))
     profile=driver/'resources/input/mediapipe_hand_profile.json';profile.parent.mkdir(parents=True)
-    profile.write_text(json.dumps({'controller_type':'fiap_mediapipe_hand','input_source':{},'default_bindings':[{'app_key':'other.app','binding_url':'other.json'}]}))
+    profile.write_text(json.dumps({'controller_type':'fiap_mediapipe_hand','input_source':{'/input/trigger':{'type':'trigger'}},'default_bindings':[{'app_key':'other.app','binding_url':'other.json'}]}))
     if settings:(config/'steamvr.vrsettings').write_bytes(b'\xef\xbb\xbf{\r\n "steamvr": {"keep": true}, "unrelated": {"custom": 42}\r\n}\r\n')
     paths=root/'openvrpaths.vrpath'
     paths.write_text(json.dumps({'runtime':[str(runtime)],'config':[str(config)],'external_drivers':[]}))
@@ -215,6 +215,35 @@ class WindowsSetupTests(unittest.TestCase):
 
 
 class VRChatBindingsTests(unittest.TestCase):
+    def test_old_trigger_profile_is_upgraded_with_exact_original_backup(self):
+        with tempfile.TemporaryDirectory() as directory:
+            _,driver,_,_=installation(directory)
+            path=driver/'resources/input/mediapipe_hand_profile.json'
+            old=setup.load_json(path)
+            old['input_source']['/input/trigger'].update(click=False,order=7)
+            old['input_source']['/pose/raw']={'type':'pose'}
+            path.write_text(json.dumps(old));original=path.read_bytes()
+            report=bindings.install_bindings(driver,actions())
+            self.assertEqual(Path(report['profile_backup']).read_bytes(),original)
+            updated=setup.load_json(path)
+            self.assertEqual(updated['input_source']['/input/trigger'],{'type':'trigger','click':True,'value':True,'order':7})
+            self.assertEqual(updated['input_source']['/pose/raw'],{'type':'pose'})
+            self.assertEqual(report['trigger_components_enabled'],['click','value'])
+            bindings.install_bindings(driver,actions())
+            self.assertEqual(setup.load_json(path),updated)
+
+    def test_incompatible_trigger_profile_rejected_without_writing_or_backup(self):
+        for source in (None,[],{}, {'/input/trigger':None},{'/input/trigger':{'type':'button'}}):
+            with self.subTest(source=source),tempfile.TemporaryDirectory() as directory:
+                _,driver,_,_=installation(directory)
+                path=driver/'resources/input/mediapipe_hand_profile.json'
+                old=setup.load_json(path);old['input_source']=source
+                path.write_text(json.dumps(old));original=path.read_bytes()
+                with self.assertRaisesRegex(ValueError,'trigger'):bindings.install_bindings(driver,actions())
+                self.assertEqual(path.read_bytes(),original)
+                self.assertFalse(path.with_name('vrchat_bindings.json').exists())
+                self.assertEqual(list(path.parent.glob('*.bak')),[])
+
     def test_pose_skeleton_and_manual_trigger_use_existing_actions(self):
         binding,report=bindings.make_bindings(actions())
         self.assertEqual(binding['controller_type'],'fiap_mediapipe_hand')

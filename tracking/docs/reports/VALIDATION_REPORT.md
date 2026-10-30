@@ -1,5 +1,30 @@
 # Relatório de validação e integração
 
+## Recepção confirmada e componentes do gatilho — feature/steamvr-trigger-profile
+
+Ensaios manuais Windows enviados pelo usuário: 30/48 e 46/50 amostras com
+máscara 3 simultânea; HMD válido em todas as amostras de ambos. O segundo
+ensaio chegou a máscara 3 em 0,83 s e não mostrou perda posterior no log.
+Isso confirma envio/decodificação/validade no receptor durante o ensaio.
+Não é medida de precisão, latência dos dedos ou resposta do avatar. O
+usuário confirmou que o avatar ainda fica deitado após mudar a referência
+Standing Only para 177 cm. Postura e bindings continuam sem aprovação.
+
+Na revisão do perfil, o gatilho não declarava click/value apesar de ambos
+os handles existirem no C++. Corrigido o recurso e a atualização do perfil
+instalado via steamvr_bindings.py --write, com backup original e restauração
+em erro. Perfil incompatível é recusado antes de gravar. Nenhum novo clique
+automático, limiar alterado ou emulação de outro controlador.
+
+Validação local: 311 testes Python aprovados (três novos e fixtures antigas
+de perfil preservadas para testar migração), quatro CTests, build nativo,
+pip check, compileall, diff check, PyInstaller Linux e runtime Pose/Hands
+aprovados. O pacote de build contém as
+duas declarações. CI do PR #26 anterior passou seus oito checks Windows/Linux.
+Atualizar perfil não garante binding ativo: preferência do usuário tem
+prioridade sobre o default do driver. Relatório das ações reais e teste
+de apontamento/seleção no Windows permanecem pendentes. Sem merge para develop.
+
 ## Amostragem temporal do receptor — feature/steamvr-live-status
 
 O usuário confirmou explicitamente `SteamVR | ME:ok | MD:ok` com ambas as

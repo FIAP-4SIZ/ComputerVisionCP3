@@ -7,6 +7,14 @@ ROOT=Path(__file__).resolve().parents[2]/'steamvr'
 
 
 class DriverResourceTests(unittest.TestCase):
+    def test_trigger_profile_exposes_click_and_value_created_by_driver(self):
+        path=ROOT/'driver/mediapipe_hands/resources/input/mediapipe_hand_profile.json'
+        profile=json.loads(path.read_text(encoding='utf-8'))
+        trigger=profile['input_source']['/input/trigger']
+        self.assertEqual(trigger['type'],'trigger')
+        self.assertIs(trigger['click'],True)
+        self.assertIs(trigger['value'],True)
+
     def test_manifest_and_input_profile_use_own_hand_identity(self):
         driver=ROOT/'driver'/'mediapipe_hands'
         manifest=json.loads((driver/'driver.vrdrivermanifest').read_text(encoding='utf-8'))

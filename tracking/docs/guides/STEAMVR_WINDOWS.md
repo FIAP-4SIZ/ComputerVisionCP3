@@ -136,6 +136,43 @@ atribua cliques automáticos a curls. Reinicie SteamVR após alterar os arquivos
 de perfil para que sejam carregados. Sem Pose/Skeleton vinculados, o driver
 pode receber dados sem que os dedos do avatar se movam.
 
+### Correção do perfil de gatilho e verificação no desktop
+
+`feature/steamvr-trigger-profile` corrige uma inconsistência: o C++ criava
+`/input/trigger/click` e `/input/trigger/value`, mas o perfil JSON não
+declarava `click: true` e `value: true` na fonte `/input/trigger`. A
+[documentação de input profiles da Valve](https://github.com/ValveSoftware/openvr/blob/0924064316de3effbcd1acf1e309182a2deb1c05/docs/Driver_API_Documentation.md#input-profiles)
+descreve a declaração explícita dos componentes. O driver continua tendo
+identidade própria, sem emulação de outro controlador.
+
+Para atualizar o perfil do pacote já instalado, feche VRChat/SteamVR e
+execute o gerador atualizado com `--write`. No computador do usuário:
+
+```bat
+..\.venv312\Scripts\python.exe tools\steamvr_bindings.py --actions "E:\SteamLibrary\steamapps\common\VRChat\VRChat_Data\StreamingAssets\SteamVR\actions.json" --driver "C:\Users\mauro\Downloads\FIAP-MediaPipe" --write
+```
+
+Essa atualização não exige reinstalar a DLL. Preserva outros campos/apps,
+faz backup dos bytes originais e restaura os arquivos se a gravação falhar.
+`trigger_components_enabled: ["click", "value"]` relata a atualização local;
+não confirma que o SteamVR carregou/ativou os bindings. Fonte de gatilho
+ausente ou de tipo incompatível é rejeitada antes de gravar.
+
+Reinicie SteamVR, mantenha a captura no destino SteamVR mãos + OSC e abra
+VRChat em VR. Usando o mouse na interface **desktop** do SteamVR, entre em
+Settings → Controllers → Show Binding UI → VRChat. Selecione o tipo próprio
+MediaPipe/`fiap_mediapipe_hand`, confira o binding atual e suas ações de Pose,
+Skeleton e Use/Interact. Uma preferência de binding do usuário tem prioridade
+sobre o default do driver; gerar o arquivo não prova qual está ativo. Não
+apague preferências de outros controladores para tentar forçar a escolha.
+
+O usuário mediu máscara 3 em 30/48 e 46/50 amostras em dois ensaios; no
+segundo o HMD esteve válido em 50/50. Isso confirma recepção de ambas as
+mãos em vários instantes, sem provar precisão, bindings, apontador ou
+retargeting. Se ainda não houver apontador, registrar o relatório gerado e
+o binding ativo é mais útil que afrouxar os filtros do MediaPipe. A correção
+do gatilho não é apresentada como solução já validada do apontamento.
+
 ## 4. Conferir runtime e iniciar captura
 
 Abra SteamVR. Confira se o addon `mediapipe_hands` está habilitado em
