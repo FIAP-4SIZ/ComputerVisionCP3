@@ -61,3 +61,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/steamvr-hand-driver`: driver próprio OpenVR de mãos, protocolo local e expiração no receptor; base para conectar os keypoints MediaPipe ao Skeletal Input, sem identificação falsa de controladores.
 
 - `feature/windows-openvr-paths`: aceita external_drivers=null do OpenVR Windows como lista vazia, mantendo validação de tipos e diagnóstico sem gravação.
+
+- `feature/mediapipe-steamvr-hands`: conecta keypoints ao driver, mantém corpo OSC e prepara HMD virtual/bindings/rollback Windows. Base: feature/windows-openvr-paths. Sem merge até testes e validação real no SteamVR/VRChat.

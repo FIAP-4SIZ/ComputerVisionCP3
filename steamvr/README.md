@@ -16,6 +16,11 @@ WithoutController. O guia atual de drivers do VRChat cita MediaPipe como
 fonte possível para Full, e desaconselha a falsa identificação de hardware.
 Full é classificação da estrutura de dados; não significa profundidade medida.
 
+A [integração Windows](../tracking/docs/guides/STEAMVR_WINDOWS.md) conecta
+MediaPipe e driver, prepara HMD null de forma reversível e gera bindings a
+partir do manifest de ações do VRChat. A referência do HMD virtual é simulada,
+não a cabeça fisicamente medida de um usuário.
+
 ## Build e testes
 
 Com CMake >= 3.20 e compilador C++17 (Windows: Visual Studio Build Tools com
@@ -70,13 +75,20 @@ clique. Comando 2/valor 0 retorna `MPVRA001`, versão uint32 1, máscara das mã
 válidas uint32 e flag HMD válido uint32. O handshake prova driver vivo,
 não aplicação de IK pelo VRChat.
 
+Comando 3/valor 0 consulta a matriz bruta 3×4 do HMD: `MPVRP001`, uint32
+validade e 12 floats em ordem de linhas (60 bytes). O cliente usa essa referência
+para manter a calibração de yaw/escala, em vez de inventar altura. Sem altura
+válida positiva, autoescala é recusada. Comandos 1/2 e datagramas das mãos
+mantêm o contrato anterior. Use o pacote atualizado para a consulta adicional.
+
 ## Integração e limites
 
 É preciso registrar o pacote via `vrpathreg adddriver`, habilitá-lo em addons
 SteamVR, fornecer um HMD real ou virtual e configurar os bindings do VRChat.
-A etapa Python subsequente fornecerá conversão das mãos e preparação
-reversível do HMD null para desenvolvimento. Este componente sozinho não é
-um aplicativo de rastreamento completo.
+A camada Python fornece conversão das mãos e preparação reversível do HMD
+null para desenvolvimento. Este componente sozinho não é um aplicativo de
+rastreamento completo. No Windows a biblioteca e os testes usam CRT estático,
+evitando exigir uma instalação adicional de runtime C++ no PC do estudante.
 
 Corpo pode continuar por OSC Trackers, como na versão original alternativa,
 com VRChat iniciado em VR. Dedos por Skeletal Input não dependem dos

@@ -2,6 +2,8 @@
 
 ## Usar a aplicação
 
+- [Windows: MediaPipe, driver SteamVR de mãos, HMD virtual e VRChat](guides/STEAMVR_WINDOWS.md).
+
 - [Enviar corpo e mãos por OSC: configuração, perfis e testes](guides/OSC_BODY_HANDS.md).
 
 - [Análise do exemplo leapmotion-osc e requisitos do avatar](guides/LEAPMOTION_OSC_ANALYSIS.md).

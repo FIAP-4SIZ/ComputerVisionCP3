@@ -1,5 +1,7 @@
 # Revisão e integração no GitHub
 
+Novos componentes Windows em revisão: [PR #18](https://github.com/FIAP-4SIZ/ComputerVisionCP3/pull/18) (`feature/steamvr-hand-driver`, base câmera), [PR #19](https://github.com/FIAP-4SIZ/ComputerVisionCP3/pull/19) (`feature/windows-openvr-paths`, base driver) e a integração `feature/mediapipe-steamvr-hands` baseada na correção OpenVR. Driver `35f2688` e diagnóstico `bd123f3` tiveram checks aprovados em Windows/Ubuntu; integração precisa dos próprios checks e da validação em SteamVR/VRChat. [Guia e critérios Windows](../guides/STEAMVR_WINDOWS.md). Nenhum merge para develop.
+
 Atualização: `feature/vrchat-osc-body-hands`, baseada em `feature/vrchat-documentation-audit`, amplia exclusivamente a saída OSC de corpo/mãos e seus testes/controles. Os 219 testes locais, GUI virtual, build/runtime Linux e ensaio positivo de modelos/UDP estão registrados no [relatório](VALIDATION_REPORT.md). Revisão/CI do head publicado e validação no Windows/VRChat continuam necessárias; nenhum merge autorizado por estes resultados locais. Configuração e limites no [guia](../guides/OSC_BODY_HANDS.md).
 
 Todos os commits estão em FIAP-4SIZ/ComputerVisionCP3. Os PRs são rascunhos, comparados com a base imediatamente anterior para não misturar os diffs das features:

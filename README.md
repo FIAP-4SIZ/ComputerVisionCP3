@@ -6,6 +6,8 @@ Projeto acadêmico FIAP 4SIZ com Python 3.12, OpenCV e MediaPipe: análise por c
 
 Para VRChat Steam **sem headset**, consulte primeiro o [modo desktop e teste de pulo](tracking/docs/guides/VRCHAT_DESKTOP.md).
 
+Para usar **nosso MediaPipe** com corpo e dedos pelo SteamVR no Windows, há uma [integração experimental com driver próprio e HMD virtual](tracking/docs/guides/STEAMVR_WINDOWS.md). O driver e a preparação reversível estão implementados; funcionamento no VRChat ainda depende da validação no PC do usuário. O original pressupunha modo VR, não desktop comum.
+
 Para enviar o rastreamento MediaPipe por OSC, consulte [corpo e mãos: configuração e testes](tracking/docs/guides/OSC_BODY_HANDS.md). Há até oito trackers corporais opcionais e perfis de parâmetros por dedo. O corpo não exige editar o avatar; dedos por parâmetros exigem um avatar que já reconheça o contrato. O movimento no cliente e a calibração FBT em desktop ainda precisam ser validados.
 
 ## Começar
@@ -38,7 +40,7 @@ Na primeira tela, escolha **Somente análise**, câmera **0** ou **Arquivo de v�
 - OSC ampliado opcional para peito/joelhos/cotovelos, abertura lateral aproximada de dedos e perfis JSON configuráveis, com monitor UDP local.
 - Ajustes opcionais de iluminação e comparação com a imagem original preservada.
 - Telas Tk e interface web em português; formulários com rolagem para telas menores.
-- SteamVR e OSC corporais preservados. A feature de dedos usa parâmetros customizados do avatar; não implementa esqueleto de dedos no driver SteamVR.
+- SteamVR e OSC corporais preservados. Dedos por OSC de avatar usam parâmetros customizados; o destino adicional **SteamVR mãos + OSC** usa driver esquelético próprio com perfil de mão, sem se identificar como Knuckles/Touch.
 
 Uma câmera não mede profundidade real. Partes ocultas não devem ser tratadas como observações confiáveis. As regras de validação podem rejeitar movimentos reais; não há demonstração de ganho de precisão em usuários sem avaliação anotada.
 

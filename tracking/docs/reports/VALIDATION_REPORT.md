@@ -1,5 +1,55 @@
 # Relatório de validação e integração
 
+## SteamVR Windows — driver, diagnóstico OpenVR e conexão MediaPipe
+
+Implementação em branches separados, todos no FIAP:
+
+- `feature/steamvr-hand-driver`: driver próprio OpenVR, 31 ossos, perfil de mão,
+  protocolo UDP local, liberação de gatilhos e invalidação no receptor.
+- `feature/windows-openvr-paths`: correção de `external_drivers:null`, formato
+  relatado no diagnóstico Windows. O usuário executou a versão corrigida e
+  confirmou SteamVR, vrserver, vrpathreg e driver null presentes, sem alterações.
+- `feature/mediapipe-steamvr-hands`: associação/conversão dos keypoints,
+  backend combinado corpo OSC + mãos SteamVR, consulta da pose do HMD,
+  preparação reversível Windows, bindings a partir do manifest real e confirmação
+  explícita de calibração. Código de câmera/vídeo original permanece no fluxo.
+
+O primeiro teste Windows da fábrica da DLL ficou parado porque o executável
+de teste não encontrava a biblioteca. Corrigido em `35f2688` copiando a DLL ao
+lado do teste, sem desativá-lo. As execuções seguintes de driver e aplicação
+aprovaram Ubuntu e Windows. A revisão `bd123f3` do diagnóstico também teve CI
+aprovada nos dois sistemas. Isso não transfere aprovação para o novo head de
+integração: consultar os checks desse PR.
+
+| Verificação local da integração | Resultado |
+|---|---|
+| Suíte Python completa | 281 testes aprovados |
+| Build C++ Linux e quatro CTests | Protocolo, UDP/handshake/HMD, fábrica da biblioteca e Python→C++ aprovados |
+| MediaPipe Hands real → decoder C++ compilado | 21 keypoints estimados, 31 transforms, pacote 916 bytes aceito |
+| GUI real em Xvfb | Destino combinado, checkbox obrigatório e confirmação em 3 s exercitados; janela 640×480 com rolagem |
+| pip check / compileall / git diff --check | Aprovados |
+| PyInstaller Linux e runtime | Build e modelos Pose/Hands aprovados |
+| HMD virtual no Windows do usuário | Arquivos presentes; ativação/pose ainda precisam de teste |
+| Bindings e movimento no VRChat em VR | Pendentes; nenhum merge aprovado |
+
+O [ensaio positivo](../../evaluation/steamvr_skeleton_integration.json) registra
+SHA-256 da referência pública, confirmação temporal, lateralidade e aceitação
+do pacote nativo. Sua posição global é uma fixture de transporte, não uma
+posição inferida nem fallback da produção. Imagem estática não mede precisão,
+jitter, FPS ou retargeting de um avatar. A CI executa o ensaio nos dois sistemas.
+
+A produção exige punho/ombros visíveis e compatibilidade da mão com a pose.
+Metacarpos intermediários são interpolações documentadas, não observações novas.
+Não se identifica como Knuckles/Touch e não depende de MP_* no avatar nesse
+destino. Um avatar precisa de rig compatível; mãos ocultas não ganham posições
+padrão. O HMD null é referência simulada, não rastreamento real da cabeça.
+
+Instalação, bindings, rollback e teste no cliente:
+[guia Windows](../guides/STEAMVR_WINDOWS.md). Fluxo original analisado:
+headset + SteamVR + driver rígido, ou OSC em cliente VR; não havia dedos
+articulados nem FBT desktop comum comprovado. Sem SteamVR/VRChat no ambiente
+na nuvem, funcionamento físico permanece pendente e bloqueia o merge.
+
 ## Rotação inicial da câmera — feature/camera-rotation-default
 
 Em 29/10/2026, uma captura do usuário mostrou imagem lateral, pés expirados e mensagens OSC recebidas. A inspeção confirmou que `Parameters.rotate_image` iniciava com `0`, constante OpenCV para 90° horários. Corrigido para `None`, sem modificar rotações explícitas em `saved_params.json`. Quem já salvou 90° deve selecionar 0 na interface; apagar o arquivo não é necessário.
