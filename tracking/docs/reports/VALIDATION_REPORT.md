@@ -1,5 +1,24 @@
 # Relatório de validação e integração
 
+## Ajustes de exibição Windows — feature/windows-vr-display
+
+Relato manual: captura aberta, algum movimento percebido no jogo, avatar
+deitado, janela normal em resolução inadequada e outra janela de visão VR.
+Movimento percebido não confirma FBT ou dedos corretos. Título/dono da janela
+extra e preparação de cômodo ainda precisam ser confirmados.
+
+O instalador sobrescrevia posição/tamanho/render do driver null em toda
+execução. Agora preserva campos existentes, preenche só ausentes e aceita
+`--render-size` explícito. `--hide-mirror` altera só showMirrorView do SteamVR.
+A janela normal do VRChat deve usar seus próprios parâmetros oficiais
+`-screen-width`, `-screen-height`, `-screen-fullscreen`; não confundimos os
+dois renderizadores nem prometemos ocultar a saída necessária do compositor.
+
+Validação local: 286 testes Python aprovados (5 novos: preservação,
+aplicação/restauração, limites, API inválida e CLI). pip check, compileall e
+git diff --check aprovados. Windows real, resolução final, identificação da
+janela extra e postura/calibração no jogo continuam pendentes. Sem merge.
+
 ## Windows: HMD ativo e preparação de cômodo pendente
 
 O usuário executou `steamvr_hands_check.py --head` após a instalação:

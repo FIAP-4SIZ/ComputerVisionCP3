@@ -65,3 +65,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/mediapipe-steamvr-hands`: conecta keypoints ao driver, mantém corpo OSC e prepara HMD virtual/bindings/rollback Windows. Base: feature/windows-openvr-paths. Sem merge até testes e validação real no SteamVR/VRChat.
 
 - `feature/windows-room-setup`: documenta C201/Standing Only e distingue altura bruta de espaço calibrado, após teste manual Windows; não altera código ou configurações do usuário.
+
+- `feature/windows-vr-display`: preserva preferências de exibição do HMD virtual, permite resolução VR explícita e desativa espelho opcional com backup; documenta resolução independente da janela VRChat. Base: feature/windows-room-setup.

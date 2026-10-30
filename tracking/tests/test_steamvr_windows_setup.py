@@ -37,6 +37,60 @@ def actions(interact=True,pose_name='Pose'):
 
 
 class WindowsSetupTests(unittest.TestCase):
+    def test_display_defaults_only_fill_missing_values(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths,driver,settings,_=installation(directory)
+            data=setup.load_json(settings)
+            data['driver_null']={'windowX':-1920,'windowY':100,'windowWidth':900,
+                                 'windowHeight':600,'renderWidth':2048,'renderHeight':1536}
+            data['steamvr']['showMirrorView']=True
+            settings.write_text(json.dumps(data));original=settings.read_bytes()
+            plan=setup.make_plan(paths,driver)
+            for key,value in data['driver_null'].items():
+                self.assertEqual(plan['after']['driver_null'][key],value)
+            self.assertTrue(plan['after']['steamvr']['showMirrorView'])
+            self.assertEqual(settings.read_bytes(),original)
+
+    def test_render_and_mirror_changes_are_explicit_and_reversible(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths,driver,settings,_=installation(directory)
+            data=setup.load_json(settings);data['steamvr']['showMirrorView']=True
+            settings.write_text(json.dumps(data));original=settings.read_bytes()
+            plan=setup.make_plan(paths,driver,render_size=(1920,1080),hide_mirror=True)
+            null=plan['after']['driver_null']
+            self.assertEqual((null['renderWidth'],null['renderHeight']),(1920,1080))
+            self.assertEqual((null['windowWidth'],null['windowHeight']),(1280,720))
+            self.assertFalse(plan['after']['steamvr']['showMirrorView'])
+            result=setup.apply_plan(plan,check_processes=lambda:[],run=Mock())
+            setup.restore(result['backup'],check_processes=lambda:[],run=Mock())
+            self.assertEqual(settings.read_bytes(),original)
+
+    def test_display_size_validation(self):
+        self.assertEqual(setup.display_size('1920x1080'),(1920,1080))
+        self.assertEqual(setup.display_size('320X4096'),(320,4096))
+        for value in ('0x1080','1920x319','4097x1080','-1x720','1.5x720','1920','1920x1080extra'):
+            with self.subTest(value=value),self.assertRaises(setup.argparse.ArgumentTypeError):
+                setup.display_size(value)
+
+    def test_invalid_display_api_arguments_rejected_before_file_access(self):
+        for value in ((True,720),(320,4097),[1920,1080],(320,),('1920',1080)):
+            with self.subTest(value=value),self.assertRaisesRegex(ValueError,'Resolução'):
+                setup.make_plan('missing','missing',render_size=value)
+        with self.assertRaisesRegex(ValueError,'booleano'):
+            setup.make_plan('missing','missing',hide_mirror=1)
+
+    def test_display_cli_preview_apply_and_restore_conflict(self):
+        with patch.object(setup,'make_plan',return_value={'register_tool':'/runtime/bin/win64/tool'}) as plan,patch.object(setup,'discover_actions',return_value=None),patch('builtins.print'),patch.object(setup,'apply_plan',return_value={'changes_applied':True}) as apply:
+            setup.main(['--driver','package','--render-size','1920x1080','--hide-mirror'])
+            self.assertEqual(plan.call_args.kwargs,{'render_size':(1920,1080),'hide_mirror':True})
+            apply.assert_not_called()
+            setup.main(['--driver','package','--render-size','1920x1080','--hide-mirror','--apply'])
+            apply.assert_called_once()
+        with patch.object(setup,'restore') as restore,patch('sys.stderr'):
+            with self.assertRaises(SystemExit) as error:
+                setup.main(['--restore','backup.json','--hide-mirror'])
+            self.assertEqual(error.exception.code,2);restore.assert_not_called()
+
     def test_plan_is_read_only_and_preserves_other_settings(self):
         with tempfile.TemporaryDirectory() as directory:
             paths,driver,settings,_=installation(directory);before=settings.read_bytes()

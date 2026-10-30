@@ -255,6 +255,53 @@ incorretas. Explicite essas limitações na apresentação acadêmica.
 
 ## Situação e próximas validações
 
+### Janela do jogo, espelho e saída do HMD virtual
+
+São três superfícies diferentes. A resolução da janela normal do **VRChat**
+não é controlada por `driver_null.renderWidth`. Na Steam → Biblioteca →
+VRChat → Propriedades → Geral → Opções de inicialização, preserve opções
+não relacionadas e remova valores conflitantes de resolução antes de usar:
+
+```text
+-screen-width 1920 -screen-height 1080 -screen-fullscreen 0
+```
+
+Use uma resolução suportada pelo seu monitor; por exemplo, 1280×720 se não
+suportar 1920×1080. Reinicie o jogo **em modo VR**. Estes parâmetros são
+[documentados pelo VRChat](https://docs.vrchat.com/docs/launch-options).
+Para desfazer, remova somente esses três parâmetros. Não troque para desktop
+para ocultar uma janela: isso muda o caminho de rastreamento que estamos testando.
+
+O **VR View / espelho do SteamVR** é opcional. Feche sua própria janela ou,
+com SteamVR/VRChat fechados, use a configuração reversível abaixo. O branch
+`feature/windows-vr-display` preserva os valores de exibição já existentes;
+versões anteriores redefiniam os seis campos de janela/render para 1280×720
+e posição zero em toda execução do instalador.
+
+```bat
+..\.venv312\Scripts\python.exe tools\steamvr_setup.py --driver "C:\Users\mauro\Downloads\FIAP-MediaPipe" --hide-mirror
+..\.venv312\Scripts\python.exe tools\steamvr_setup.py --driver "C:\Users\mauro\Downloads\FIAP-MediaPipe" --hide-mirror --apply
+```
+
+O primeiro comando mostra o plano; o segundo grava com backup. `--hide-mirror`
+define `steamvr.showMirrorView=false`, chave presente no SDK OpenVR. Não
+fecha a janela de renderização do compositor/HMD virtual. Se uma janela
+semelhante continuar aparecendo, registre seu título e o executável dono
+antes de fechá-la: encerrar o compositor pode interromper o runtime. Não
+ative Direct Display Mode para tentar ocultar a saída do driver null.
+
+Para mudar **separadamente** a resolução renderizada para o HMD de teste,
+adicione `--render-size 1920x1080` à prévia e ao comando de aplicação. Isso
+preserva tamanho/posição da janela do HMD e resolução da janela do jogo.
+O custo de GPU/memória pode aumentar; não é um aumento medido de qualidade
+de rastreamento. Cada dimensão aceita 320 a 4096 pixels. Sem a opção,
+preserva os campos existentes e só preenche campos ausentes com 1280×720.
+Use `--restore` com o novo backup para desfazer as mudanças de SteamVR.
+
+Teste no Windows: confirme janela normal na resolução escolhida, ausência
+do espelho opcional e continuidade da captura/rastreamento. Esta correção
+de exibição não resolve nem comprova a altura/orientação do avatar.
+
 O usuário confirmou arquivos SteamVR/null no Windows. Driver, teste do
 protocolo e testes automatizados não aprovam sozinhos o VRChat. Ainda precisam
 ser registrados: HMD virtual ativo, bindings reais, Calibrate FBT em VR,

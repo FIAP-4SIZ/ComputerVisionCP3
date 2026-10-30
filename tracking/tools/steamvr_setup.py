@@ -24,7 +24,22 @@ def load_json(path):
     return data
 
 
-def make_plan(paths_file,driver):
+def display_size(value):
+    """Largura x altura em pixels; limite evita alocações acidentais excessivas."""
+    match=re.fullmatch(r'([0-9]+)[xX]([0-9]+)',value)
+    if not match:raise argparse.ArgumentTypeError('Use LARGURAxALTURA, por exemplo 1920x1080')
+    size=tuple(map(int,match.groups()))
+    if any(dimension<320 or dimension>4096 for dimension in size):
+        raise argparse.ArgumentTypeError('Cada dimensão deve estar entre 320 e 4096 pixels')
+    return size
+
+
+def make_plan(paths_file,driver,render_size=None,hide_mirror=False):
+    if render_size is not None:
+        if (not isinstance(render_size,tuple) or len(render_size)!=2 or
+            any(type(value) is not int or not 320<=value<=4096 for value in render_size)):
+            raise ValueError('Resolução VR inválida; informe duas dimensões inteiras de 320 a 4096')
+    if type(hide_mirror) is not bool:raise ValueError('hide_mirror deve ser booleano')
     paths=load_json(paths_file)
     for key in ('runtime','config','external_drivers'):
         values=paths.get(key,[])
@@ -51,8 +66,15 @@ def make_plan(paths_file,driver):
         after.setdefault(section,{})
     after['steamvr'].update(activateMultipleDrivers=True,forcedDriver='null',forcedHmd='',requireHmd=True,enableHomeApp=False)
     after['driver_null'].update(enable=True,id='Null Driver',serialNumber='FIAP-Development-HMD',modelNumber='MediaPipe Development HMD',
-        windowX=0,windowY=0,windowWidth=1280,windowHeight=720,renderWidth=1280,renderHeight=720,
         secondsFromVsyncToPhotons=.01111111,displayFrequency=60.)
+    # A janela do HMD não é a janela do VRChat. Não redefina preferências
+    # existentes ao reaplicar a configuração de rastreamento.
+    for key,value in dict(windowX=0,windowY=0,windowWidth=1280,windowHeight=720,
+                          renderWidth=1280,renderHeight=720).items():
+        after['driver_null'].setdefault(key,value)
+    if render_size is not None:
+        after['driver_null'].update(renderWidth=render_size[0],renderHeight=render_size[1])
+    if hide_mirror:after['steamvr']['showMirrorView']=False
     after['driver_mediapipe_hands']['enable']=True
     normalize=lambda p:os.path.normcase(str(Path(p).resolve()))
     return dict(settings_path=str(settings),before_hash=digest(raw) if raw is not None else None,
@@ -196,14 +218,16 @@ def main(argv=None):
     parser.add_argument('--driver',type=Path)
     parser.add_argument('--apply',action='store_true')
     parser.add_argument('--restore',type=Path)
+    parser.add_argument('--render-size',type=display_size,help='Resolução VR do HMD virtual, ex.: 1920x1080. Não altera a janela do VRChat.')
+    parser.add_argument('--hide-mirror',action='store_true',help='Desativar o espelho SteamVR (não fecha a saída do HMD virtual).')
     args=parser.parse_args(argv)
     try:
         if args.restore:
-            if args.apply or args.driver:parser.error('--restore não combina com --apply/--driver')
+            if args.apply or args.driver or args.render_size or args.hide_mirror:parser.error('--restore não combina com opções de configuração')
             report=restore(args.restore)
         else:
             if args.driver is None:parser.error('Informe --driver com o pacote compilado')
-            plan=make_plan(args.paths,args.driver)
+            plan=make_plan(args.paths,args.driver,render_size=args.render_size,hide_mirror=args.hide_mirror)
             actions=discover_actions(Path(plan['register_tool']).parents[2])
             report={'plan':plan,'actions_manifest':str(actions) if actions else None,
                     'bindings_note':'Use steamvr_bindings.py --actions CAMINHO --driver PACOTE --write, ou configure Pose/Skeleton no SteamVR Binding UI.'}
