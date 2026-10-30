@@ -2,10 +2,12 @@
   "jsonid": "input_profile",
   "controller_type": "fiap_mediapipe_hand",
   "input_bindingui_mode": "controller_handed",
+  "input_bindingui_left": {"image": "{mediapipe_hands}/icons/hand.svg"},
+  "input_bindingui_right": {"image": "{mediapipe_hands}/icons/hand.svg"},
   "input_source": {
     "/pose/raw": {"type": "pose"},
-    "/input/trigger": {"type": "trigger", "order": 1},
-    "/input/system": {"type": "button", "order": 2},
+    "/input/trigger": {"type": "trigger", "order": 1, "binding_image_point": [160,220]},
+    "/input/system": {"type": "button", "order": 2, "binding_image_point": [160,260]},
     "/input/skeleton/left": {"type": "skeleton", "skeleton": "/skeleton/hand/left", "side": "left"},
     "/input/skeleton/right": {"type": "skeleton", "skeleton": "/skeleton/hand/right", "side": "right"}
   },

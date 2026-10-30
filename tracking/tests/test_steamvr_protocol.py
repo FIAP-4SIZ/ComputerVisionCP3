@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import Mock,patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'bin'))
 from steamvr_protocol import (PACKET_SIZE,DriverConnectionError,encode_frame,
-                             control,decode_status,SteamVRHandsClient)
+                             control,decode_status,decode_head_pose,SteamVRHandsClient)
 
 
 def geometry():
@@ -59,6 +59,21 @@ class SteamVRProtocolTests(unittest.TestCase):
         self.assertEqual(decode_status(struct.pack('<8sIII',b'MPVRA001',1,3,1)),dict(protocol=1,tracked_mask=3,hmd_valid=True))
         for packet in (b'',struct.pack('<8sIII',b'MPVRA001',2,3,1),struct.pack('<8sIII',b'MPVRA001',1,4,1),struct.pack('<8sIII',b'MPVRA001',1,3,2)):
             with self.assertRaises(DriverConnectionError):decode_status(packet)
+
+    def test_head_matrix_query_decodes_only_valid_finite_pose(self):
+        matrix=[1,0,0,0,0,1,0,1.7,0,0,1,0]
+        packet=struct.pack('<8sI12f',b'MPVRP001',1,*matrix)
+        self.assertAlmostEqual(decode_head_pose(packet)[1][3],1.7,places=6)
+        self.assertEqual(control(3),struct.pack('<8sII',b'MPVRC001',3,0))
+        for invalid in (packet[:-1],struct.pack('<8sI12f',b'MPVRP001',0,*matrix),struct.pack('<8sI12f',b'MPVRP001',1,*([math.nan]*12))):
+            with self.assertRaises(DriverConnectionError):decode_head_pose(invalid)
+
+    def test_head_pose_client_requests_native_matrix(self):
+        matrix=[1,0,0,0,0,1,0,1.7,0,0,1,0]
+        with patch('steamvr_protocol.socket.socket') as factory:
+            client=SteamVRHandsClient();client.socket.recv.return_value=struct.pack('<8sI12f',b'MPVRP001',1,*matrix)
+            self.assertAlmostEqual(client.head_pose()[1][3],1.7,places=6)
+            client.socket.send.assert_called_once_with(control(3));client.close()
 
     def test_real_udp_client_handshake_data_and_controls(self):
         captured=[]

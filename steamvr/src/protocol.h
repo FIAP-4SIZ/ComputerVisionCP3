@@ -19,6 +19,7 @@ inline void put32(unsigned char* p, std::uint32_t n) {
     for (unsigned i=0;i<4;++i) p[i]=static_cast<unsigned char>((n>>(i*8))&255);
 }
 inline float number(const unsigned char* p) { const auto n=u32(p); float f; std::memcpy(&f,&n,4); return f; }
+inline void put_number(unsigned char* p,float value) { std::uint32_t n; std::memcpy(&n,&value,4); put32(p,n); }
 inline bool transform(const unsigned char* p, Transform& out, float limit) {
     for (unsigned i=0;i<3;++i) { out.position[i]=number(p+i*4); if (!std::isfinite(out.position[i]) || std::abs(out.position[i])>limit) return false; }
     double norm=0;

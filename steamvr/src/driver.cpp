@@ -120,7 +120,14 @@ public:
         vr::TrackedDevicePose_t head{};
         vr::VRServerDriverHost()->GetRawTrackedDevicePoses(0,&head,1);
         const double now=seconds();
-        receiver_.poll(now,head.bPoseIsValid && head.bDeviceIsConnected);
+        std::array<float,12> matrix{};
+        bool valid=head.bPoseIsValid && head.bDeviceIsConnected;
+        for (unsigned row=0;row<3;++row) for (unsigned col=0;col<4;++col) {
+            matrix[row*4+col]=head.mDeviceToAbsoluteTracking.m[row][col];
+            valid=valid && std::isfinite(matrix[row*4+col]);
+        }
+        if (!valid) head.bPoseIsValid=false;
+        receiver_.poll(now,valid,matrix);
         left_.update(receiver_.hands[0],receiver_.control,now,head);
         right_.update(receiver_.hands[1],receiver_.control,now,head);
     }

@@ -23,6 +23,8 @@ from tkinter import messagebox
 
 import mediapipe as mp
 from desktop_osc import VRChatDesktopBackend
+from steamvr_hands_backend import SteamVRHandsBackend
+from steamvr_protocol import DriverConnectionError
 from hand_quality import HandQualitySettings
 from finger_tracking import FingerTracking, draw_hands
 from body_observation import observe_body, draw_observation
@@ -52,7 +54,7 @@ def main():
     else:
         print("INFO: Interface web desativada nas configurações")
 
-    backends = { 0: DummyBackend, 1: SteamVRBackend, 2: VRChatOSCBackend, 3: VRChatDesktopBackend }
+    backends = { 0: DummyBackend, 1: SteamVRBackend, 2: VRChatOSCBackend, 3: VRChatDesktopBackend, 4: SteamVRHandsBackend }
     backend = backends[params.backend]()
     gui_root = None
     camera_thread = None
@@ -114,6 +116,12 @@ def main():
             gui_root.update()
             if params.backend == 3:
                 backend.tick(time.perf_counter())
+            if params.backend == 4:
+                if getattr(params,'request_fbt_confirmation',False):
+                    params.request_fbt_confirmation=False
+                    backend.request_confirmation(time.perf_counter())
+                backend.tick(time.perf_counter())
+                params.steamvr_status=backend.status
             if getattr(params, 'request_autocalibrate', False):
                 params.request_autocalibrate = False
                 params.gui.autocalibrate()
@@ -175,7 +183,7 @@ def main():
                         del params.pose3d_og
                 if params.backend == 3 and is_video and camera_thread.state != 'running':
                     backend.reset()
-                if params.backend == 2 and is_video and camera_thread.state != 'running':
+                if params.backend in (2,4) and is_video and camera_thread.state != 'running':
                     backend.reset()  # Retomar não mistura posições anteriores à pausa/fim.
                 if fingers is not None and is_video and camera_thread.state != 'running':
                     fingers.suspend()
@@ -221,7 +229,7 @@ def main():
             params.lighting_status = f'{LABELS[settings.mode]} | PDI:{preprocess_ms:.2f}ms'
 
             if params.paused and not is_video:
-                if params.backend in (2, 3):
+                if params.backend in (2, 3, 4):
                     backend.reset()
                 if fingers is not None:
                     fingers.suspend()
@@ -277,6 +285,14 @@ def main():
             image_landmarks = results.pose_landmarks.landmark if results.pose_landmarks else None
             params.body_observation = observe_body(image_landmarks, getattr(params, 'min_visibility', .5))
             params.body_status = params.body_observation.status
+            hand_tracker_seconds=0.
+            if params.backend == 4:
+                hand_tracker_start=time.perf_counter()
+                world=results.pose_world_landmarks.landmark if results.pose_world_landmarks else None
+                backend.update_hands(params,finger_frames,world,image_landmarks,img.shape)
+                hand_tracker_seconds=time.perf_counter()-hand_tracker_start
+                params.steamvr_status=backend.status
+                if fingers is not None:fingers.status=backend.status
             if params.backend == 3:
                 backend.process_image(image_landmarks, time.perf_counter(), getattr(params, "min_visibility", .5))
                 params.body_status = backend.status
@@ -297,7 +313,7 @@ def main():
                                      else tracker_lifecycle.summary())
             calibration = None
             extras = None
-            if params.backend == 2 and getattr(params, 'osc_full_body', False):
+            if params.backend in (2,4) and getattr(params, 'osc_full_body', False):
                 world = results.pose_world_landmarks.landmark if results.pose_world_landmarks else None
                 extras = prepare_extra_trackers(world, image_landmarks, params)
                 backend.expire_trackers(set(EXTRA_IDS) - set(extras))
@@ -318,7 +334,7 @@ def main():
                 params.pose3d_og = calibration
             elif hasattr(params, 'pose3d_og'):
                 del params.pose3d_og
-            tracker_seconds = time.perf_counter() - tracker_start
+            tracker_seconds = time.perf_counter() - tracker_start + hand_tracker_seconds
 
             img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)       #convert back to bgr and draw the pose
             if fingers is not None:
@@ -360,7 +376,7 @@ def main():
             if key == 27:
                 shutdown(params)
 
-    except (VideoInputError, CameraInputError, OSCProfileError) as exc:
+    except (VideoInputError, CameraInputError, OSCProfileError, DriverConnectionError) as exc:
         params.input_status = str(exc)
         print('ERROR: ' + str(exc))
         messagebox.showerror('Erro na entrada ou configuração', str(exc))

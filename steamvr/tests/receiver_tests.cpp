@@ -21,6 +21,10 @@ int main() {
     unsigned char response[64]{};
     check(recv(sender,reinterpret_cast<char*>(response),sizeof(response),0)==20,"status response");
     check(std::memcmp(response,"MPVRA001",8)==0 && mpvr::u32(response+8)==1 && mpvr::u32(response+12)==2 && mpvr::u32(response+16)==1,"status protocol/hands/HMD");
+    const std::array<float,12> head={1,0,0,0,0,1,0,1.7f,0,0,1,0};
+    mpvr::put32(command+8,3);send(command,16);receiver.poll(1.21,true,head);
+    check(recv(sender,reinterpret_cast<char*>(response),sizeof(response),0)==60,"head pose response");
+    check(std::memcmp(response,"MPVRP001",8)==0 && mpvr::u32(response+8)==1 && std::abs(mpvr::number(response+40)-1.7f)<.001f,"actual HMD matrix exposed");
     bytes=packet(1,2,false);send(bytes.data(),bytes.size());receiver.poll(1.3,true);
     check(!receiver.hands[1].live(1.3),"loss deactivates recipient");
 #ifdef _WIN32

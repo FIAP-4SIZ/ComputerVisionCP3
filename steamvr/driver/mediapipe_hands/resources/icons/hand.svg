@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="360" viewBox="0 0 320 360">
+  <rect width="320" height="360" fill="#18242c"/>
+  <g fill="none" stroke="#65d1d8" stroke-width="5" stroke-linejoin="round">
+    <path d="M110 295 L92 227 L55 183 Q42 162 58 154 Q68 149 85 166 L101 183 L101 85 Q101 63 116 63 Q130 63 130 85 L130 151 L134 48 Q134 28 149 28 Q164 28 164 48 L164 151 L171 65 Q173 46 188 49 Q201 52 199 72 L196 163 L204 108 Q207 91 220 94 Q233 98 228 118 L214 239 L197 295 Z"/>
+    <circle cx="160" cy="220" r="9"/><circle cx="160" cy="260" r="9"/>
+  </g>
+  <text x="160" y="330" fill="#ffffff" text-anchor="middle" font-family="sans-serif" font-size="18">MediaPipe</text>
+</svg>

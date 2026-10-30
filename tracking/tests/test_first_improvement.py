@@ -107,6 +107,7 @@ def run_one_frame(module, with_pose, existing_calibration=False, parameter_overr
             ('parameters.Parameters', {'return_value': params}),
             ('VRChatOSCBackend', {'return_value': backend}),
             ('VRChatDesktopBackend', {'return_value': backend}),
+            ('SteamVRHandsBackend', {'return_value': backend}),
             ('CameraStream', {'return_value': camera}),
             ('threading.Thread', {}),
                     ('inference_gui.create_inference_gui', {'return_value': gui_root}),

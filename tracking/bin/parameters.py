@@ -58,6 +58,11 @@ class Parameters():
         self.camera_height = param["camera_height"]
 
         self.backend = param["backend"]
+        if self.backend == 4:
+            self.track_fingers=True
+            self.use_hands=False  # Punhos vêm da associação Pose+Hands, não de trackers rígidos experimentais.
+        self.request_fbt_confirmation=False
+        self.steamvr_status='SteamVR: aguardando dados'
         self.backend_ip = param["backend_ip"]
         self.backend_port = param["backend_port"]
         

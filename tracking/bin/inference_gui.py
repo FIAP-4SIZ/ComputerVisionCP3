@@ -6,6 +6,7 @@ from scipy.spatial.transform import Rotation as R
 from helpers import shutdown, sendToSteamVR
 from lighting import DEFAULT_LIGHTING
 from scrollable_panel import ScrollablePanel
+from steamvr_protocol import DriverConnectionError
 
 #use_steamvr = True
 
@@ -57,6 +58,11 @@ class InferenceWindow(tk.Frame):
         # recalibrate
         tk.Button(self.root, text='Recalibrar os ajustes automáticos selecionados acima',
                     command=self.autocalibrate).pack()
+        if getattr(params,'backend',0)==4:
+            def request_fbt():
+                params.request_fbt_confirmation=True
+            tk.Button(self.root,text='Confirmar FBT no VRChat em 3 segundos',command=request_fbt).pack()
+            tk.Label(self.root,text='Primeiro inicie Calibrate FBT no VRChat em modo VR. Depois confirme aqui.',wraplength=650).pack()
                     
         # pause tracking
         tk.Button(self.root, text='Pausar / retomar rastreamento',
@@ -420,6 +426,18 @@ class InferenceWindow(tk.Frame):
             return
 
         use_steamvr = True if self.params.backend == 1 else False
+        use_hand_driver=getattr(self.params,'backend',0)==4
+        if use_hand_driver:
+            try:
+                matrix=np.asarray(self.params.read_hmd_pose(),dtype=float)
+                if matrix.shape!=(3,4) or not np.isfinite(matrix).all() or not np.allclose(matrix[:,:3].T@matrix[:,:3],np.eye(3),atol=.001) or not np.isclose(np.linalg.det(matrix[:,:3]),1,atol=.001):
+                    raise DriverConnectionError('Matriz de pose do HMD inválida')
+                headsetpos=matrix[:,3]
+                headsetrot=R.from_matrix(matrix[:,:3])
+            except (DriverConnectionError,ValueError,TypeError,AttributeError) as exc:
+                self.params.pose_status='Calibração cancelada: '+str(exc)
+                print('INFO: '+self.params.pose_status)
+                return
 
         if use_steamvr:
             array = sendToSteamVR("getdevicepose 0")        #get hmd data to allign our skeleton to
@@ -476,7 +494,7 @@ class InferenceWindow(tk.Frame):
             
             print("INFO: Postcalib x angle: ", value)
 
-        if use_steamvr and self.params.calib_rot:
+        if (use_steamvr or use_hand_driver) and self.params.calib_rot:
             feet_rot = self.params.pose3d_og[0] - self.params.pose3d_og[5]
             value = np.arctan2(feet_rot[0],feet_rot[2])
             value_hmd = np.arctan2(headsetrot.as_matrix()[0][0],headsetrot.as_matrix()[2][0])
@@ -504,10 +522,14 @@ class InferenceWindow(tk.Frame):
             
             print("INFO: Postcalib y value: ", value * 57.295779513)
 
-        if use_steamvr and self.params.calib_scale:
+        if (use_steamvr or use_hand_driver) and self.params.calib_scale:
             #calculate the height of the skeleton, calculate the height in steamvr as distance of hmd from the ground.
             #divide the two to get scale 
             skelSize = np.max(self.params.pose3d_og, axis=0)-np.min(self.params.pose3d_og, axis=0)
+            if use_hand_driver and (headsetpos[1]<=.1 or skelSize[1]<1e-6):
+                self.params.pose_status='Altura HMD insuficiente para autoescala; configure a origem/altura virtual ou ajuste escala manualmente.'
+                print('INFO: '+self.params.pose_status)
+                return
             self.params.posescale = headsetpos[1]/skelSize[1]
 
             self.set_scale_var()

@@ -19,7 +19,7 @@ def enabled_names(params):
     names = list(NAMES[:3])
     if getattr(params, 'ignore_hip', False):
         names.remove('hip')
-    if getattr(params, 'use_hands', False) and getattr(params, 'backend', 1) != 2:
+    if getattr(params, 'use_hands', False) and getattr(params, 'backend', 1) not in (2,4):
         names.extend(NAMES[3:])
     return tuple(names)
 

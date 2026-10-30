@@ -146,7 +146,8 @@ def getparams():
     tk.Label(content, text="-"*50, width = 50).pack()
 
     varfingers = tk.IntVar(value=param["track_fingers"])
-    tk.Checkbutton(content, text="Rastrear dedos (OSC requer avatar configurado)", variable=varfingers).pack()
+    finger_check=tk.Checkbutton(content, text="Rastrear dedos (OSC de avatar exige perfil; SteamVR usa esqueleto)", variable=varfingers)
+    finger_check.pack()
     full_body = tk.IntVar(value=param['osc_full_body'])
     tk.Checkbutton(content, text='OSC: incluir peito, joelhos e cotovelos (até 8 trackers)', variable=full_body).pack()
     hand_profile = tk.StringVar(value=param['osc_hand_profile'])
@@ -211,7 +212,12 @@ def getparams():
     varbackend = tk.IntVar(value = param["backend"])
 
     def show_hide_backend_options():
-        if varbackend.get() in (2,3):
+        if varbackend.get()==4:
+            varfingers.set(1)
+            finger_check.configure(state=tk.DISABLED)
+        else:
+            finger_check.configure(state=tk.NORMAL)
+        if varbackend.get() in (2,3,4):
             backend_options_frame.pack(side = tk.BOTTOM)
         else:
             backend_options_frame.pack_forget()
@@ -221,6 +227,7 @@ def getparams():
     tk.Radiobutton(backend_selection_frame, text="SteamVR", variable = varbackend, value = 1, command = show_hide_backend_options).pack(side = tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text='VRChat OSC',  variable = varbackend, value = 2, command = show_hide_backend_options).pack(side = tk.LEFT)
     tk.Radiobutton(backend_selection_frame, text='VRChat desktop (pulo)', variable=varbackend, value=3, command=show_hide_backend_options).pack(side=tk.LEFT)
+    tk.Radiobutton(backend_selection_frame, text='SteamVR mãos + OSC', variable=varbackend, value=4, command=show_hide_backend_options).pack(side=tk.LEFT)
     backend_selection_frame.pack(side = tk.TOP)
 
     tk.Label(backend_options_frame, text='IP/porta:').pack(side = tk.LEFT)
@@ -328,6 +335,9 @@ def getparams():
     param["static_image"] = static_image
     param["min_tracking_confidence"] = min_tracking_confidence
     param["backend"] = backend
+    if backend == 4:
+        param['track_fingers']=True
+        param['use_hands']=False
     param["backend_ip"] = backend_ip_set
     param["backend_port"] = backend_port_set
     param["webui"] = webui

@@ -70,7 +70,7 @@ public:
 #endif
         hands={}; control={};
     }
-    void poll(double now, bool hmd_valid) {
+    void poll(double now, bool hmd_valid,const std::array<float,12>& head_matrix={}) {
         // Sem threads soltas; processamento limitado por RunFrame.
         for (unsigned count=0;count<32;++count) {
             unsigned char buffer[1024]{}; sockaddr_in peer{};
@@ -90,6 +90,12 @@ public:
             if (command==2 && value==0) {
                 unsigned char response[20]; std::memcpy(response,"MPVRA001",8);
                 put32(response+8,1); put32(response+12,(hands[0].live(now)?1u:0u)|(hands[1].live(now)?2u:0u)); put32(response+16,hmd_valid?1u:0u);
+                sendto(socket_,reinterpret_cast<const char*>(response),sizeof(response),0,reinterpret_cast<const sockaddr*>(&peer),length);
+            }
+            if (command==3 && value==0) {
+                unsigned char response[60]{};std::memcpy(response,"MPVRP001",8);
+                put32(response+8,hmd_valid?1u:0u);
+                if (hmd_valid) for (unsigned i=0;i<12;++i) put_number(response+12+i*4,head_matrix[i]);
                 sendto(socket_,reinterpret_cast<const char*>(response),sizeof(response),0,reinterpret_cast<const sockaddr*>(&peer),length);
             }
         }

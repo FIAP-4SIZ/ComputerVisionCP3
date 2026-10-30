@@ -55,10 +55,10 @@ def encode_frame(side, sequence, pose=None, bones=None, valid=True):
 
 
 def control(command, value=0):
-    if type(command) is not int or command not in (1,2):
+    if type(command) is not int or command not in (1,2,3):
         raise ValueError('Comando inválido')
     uint32(value)
-    if (command==1 and value>500) or (command==2 and value!=0):
+    if (command==1 and value>500) or (command in (2,3) and value!=0):
         raise ValueError('Valor de comando inválido')
     return struct.pack('<8sII',b'MPVRC001',command,value)
 
@@ -70,6 +70,14 @@ def decode_status(data):
     if magic!=b'MPVRA001' or version!=1 or mask>3 or hmd>1:
         raise DriverConnectionError('Versão ou resposta do driver SteamVR incompatível')
     return dict(protocol=version,tracked_mask=mask,hmd_valid=bool(hmd))
+
+
+def decode_head_pose(data):
+    if len(data)!=60:raise DriverConnectionError('Resposta de pose HMD incompleta; atualize o driver')
+    magic,valid,*matrix=struct.unpack('<8sI12f',data)
+    if magic!=b'MPVRP001' or valid!=1 or not all(math.isfinite(v) for v in matrix):
+        raise DriverConnectionError('Pose HMD inválida ou não disponível')
+    return [matrix[i:i+4] for i in range(0,12,4)]
 
 
 class SteamVRHandsClient:
@@ -105,6 +113,12 @@ class SteamVRHandsClient:
         packet=encode_frame(side,sequence,pose,bones,valid)
         self.socket.send(packet)
         self.sequences[side]=sequence
+
+    def head_pose(self):
+        try:
+            self.socket.send(control(3))
+            return decode_head_pose(self.socket.recv(1024))
+        except OSError as exc:raise DriverConnectionError('HMD não respondeu à consulta de pose; atualize/reinicie o driver') from exc
 
     def invalidate(self):
         for side in (0,1):self.send(side,valid=False)

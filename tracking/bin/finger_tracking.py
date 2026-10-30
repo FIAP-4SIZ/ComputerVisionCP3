@@ -68,6 +68,7 @@ class HandFrame:
     points: object
     curls: dict
     spreads: object = None
+    world_points: object = None
 
 
 class FingerTracking:
@@ -123,7 +124,10 @@ class FingerTracking:
             except (AttributeError, TypeError, ValueError):
                 continue
             if side not in frames or score > frames[side].score:
-                frames[side] = HandFrame(side, score, points, curls, finger_spreads(world.landmark))
+                camera_spatial=spatial.copy()
+                if not mirrored:
+                    camera_spatial[:,0]*=-1  # Restaura o mesmo referencial da imagem usada pelo Pose.
+                frames[side] = HandFrame(side, score, points, curls, finger_spreads(world.landmark), camera_spatial)
         for side in duplicates:
             frames.pop(side, None)  # Lateralidade ambígua não deve animar duas mãos.
         previous, counts, accepted = {}, {}, {}
