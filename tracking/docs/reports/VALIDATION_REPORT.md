@@ -1,5 +1,26 @@
 # Relatório de validação e integração
 
+## Menu OSC e identificação da janela estéreo — feature/vrchat-osc-quick-menu
+
+O usuário confirmou título Headset Window e enviou imagem estéreo (dois
+olhos). Não confundir essa saída do HMD virtual com espelho opcional ou janela
+normal do jogo. A orientação é minimizar; ocultação sem interromper o
+runtime não foi implementada/validada. A resolução da janela normal continua
+separada da resolução renderizada para o HMD.
+
+O teste OSC existente ganhou comandos explícitos menu-left/menu-right,
+endereços oficiais QuickMenuToggleLeft/Right, espera limitada e fechamento
+do socket. Pulo e send_jump permanecem compatíveis. Não há acionamento por
+gesto nem abertura/seleção automática da calibração.
+
+Validação local: 294 testes Python aprovados, oito novos incluindo UDP real
+com ambos os endpoints, ordem/tipos, prévia, erros, cancelamento e liberação.
+pip check, compileall, git diff --check, build PyInstaller Linux e runtime
+Pose/Hands aprovados. O PR #22 anterior passou seus oito checks Windows/Linux.
+O novo comando ainda exige confirmação visual de abertura e seleção no
+cliente Windows. Avatar deitado, calibração FBT, corpo/dedos e perda/retorno
+continuam pendentes; nenhum merge aprovado.
+
 ## Ajustes de exibição Windows — feature/windows-vr-display
 
 Relato manual: captura aberta, algum movimento percebido no jogo, avatar

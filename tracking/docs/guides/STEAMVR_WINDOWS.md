@@ -202,6 +202,28 @@ Na Steam, inicie **VRChat em modo SteamVR/VR**, não “Desktop Mode”. Habilit
 OSC no cliente e confirme recepção corporal. O bloco Calibrate FBT é
 documentado para **VR Only**, com pelo menos um tracker ativo.
 
+### Abrir o menu sem botão de controle físico
+
+Com OSC habilitado no VRChat, execute em `tracking/` e volte à janela do jogo
+durante os três segundos de espera:
+
+```bat
+..\.venv312\Scripts\python.exe tools\vrchat_desktop_check.py --command menu-left --delay 3 --send
+```
+
+O comando oficial `/input/QuickMenuToggleLeft` **alterna** o menu: se já
+estiver aberto, pode fechá-lo. Para o lado direito, use `--command menu-right`.
+Sem `--send`, mostra somente a prévia. A espera aceita de 0 a 30 segundos.
+O pulso envia inteiros 0, 1, 0, liberando o botão mesmo após interrupção.
+Sem `--command`, o teste anterior de pulo permanece como padrão.
+
+Fonte: [OSC as Input Controller](https://docs.vrchat.com/docs/osc-as-input-controller).
+UDP não confirma recepção nem o estado do menu. Esse comando não seleciona
+opções, não movimenta o cursor e não inicia Calibrate FBT automaticamente;
+a interação pelo apontador das mãos e o binding Use/Interact continuam
+dependendo da validação real no cliente. Registre se o menu apareceu e se
+é possível apontar/selecionar antes de considerar a navegação aprovada.
+
 Inicie **Calibrate FBT**. Com corpo alinhado e mãos/punhos detectados, use
 **Confirmar FBT no VRChat em 3 segundos** no nosso aplicativo e volte ao jogo.
 O comando só pulsa os gatilhos; não abre por si só o modo de calibração.
@@ -289,6 +311,13 @@ fecha a janela de renderização do compositor/HMD virtual. Se uma janela
 semelhante continuar aparecendo, registre seu título e o executável dono
 antes de fechá-la: encerrar o compositor pode interromper o runtime. Não
 ative Direct Display Mode para tentar ocultar a saída do driver null.
+
+O usuário confirmou título **Headset Window** e imagem estéreo com os dois
+olhos. Isso é compatível com a saída de exibição do HMD virtual; não é a
+janela normal do VRChat e não deve ser prometida como removida por
+`--hide-mirror`. Minimize-a para deixar a janela do jogo acessível. Não há
+ocultação automática implementada/validada para essa saída. Minimizar também
+não comprova economia de renderização ou correção da postura do avatar.
 
 Para mudar **separadamente** a resolução renderizada para o HMD de teste,
 adicione `--render-size 1920x1080` à prévia e ao comando de aplicação. Isso
