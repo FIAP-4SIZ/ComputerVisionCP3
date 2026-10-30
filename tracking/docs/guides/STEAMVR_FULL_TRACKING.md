@@ -26,6 +26,8 @@ Instale SteamVR pela biblioteca da Steam e execute-o uma vez. Sem headset, ele p
 
 O diagnóstico lê `%LOCALAPPDATA%\openvr\openvrpaths.vrpath`, aponta runtime, binários, presença do driver null e manifests externos. Não inicia SteamVR, instala drivers, grava configurações ou envia poses. Presença de driver_null.dll não significa que foi ativado ou que VRChat aceitará esse ambiente. Se o arquivo estiver em outro local, passe `--paths "caminho"`.
 
+Compatibilidade Windows: `external_drivers: null` é aceito como nenhum addon externo, assim como campo ausente ou `[]`. A versão anterior rejeitava esse formato com “Lista inválida: external_drivers”. Não edite o arquivo OpenVR para contornar isso; atualize o diagnóstico. Strings/objetos/booleanos nesse campo continuam inválidos e a mensagem informa o tipo encontrado.
+
 Envie o resultado para definirmos o próximo passo concreto. Não precisamos de credenciais Steam/VRChat. O computador na nuvem não tem SteamVR/HMD; mocks e builds não comprovam compatibilidade com o cliente.
 
 ## Plano de integração, em branches separados

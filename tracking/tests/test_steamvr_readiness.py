@@ -41,3 +41,20 @@ class SteamVRReadinessTests(unittest.TestCase):
             self.assertFalse(result['runtimes'][0]['directory_exists'])
             self.assertFalse(result['runtimes'][0]['null_driver'])
             path.write_text('{}');self.assertEqual(tool.inspect(path)['runtimes'],[])
+
+    def test_windows_null_external_drivers_is_valid_empty_list_without_writing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'openvrpaths.vrpath'
+            path.write_text(json.dumps({'runtime':[], 'external_drivers':None}),encoding='utf-8-sig')
+            original=path.read_bytes()
+            report=tool.inspect(path)
+            self.assertEqual(report['external_drivers'],[])
+            self.assertFalse(report['configuration_changed'])
+            self.assertEqual(path.read_bytes(),original)
+
+    def test_null_runtime_and_wrong_external_types_still_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'paths'
+            for data in ({'runtime':None},{'external_drivers':'driver'},{'external_drivers':{}},{'external_drivers':False}):
+                path.write_text(json.dumps(data))
+                with self.assertRaisesRegex(ValueError,'tipo'):tool.inspect(path)

@@ -16,8 +16,12 @@ def inspect(paths_file):
     if not isinstance(data,dict):raise ValueError('Documento OpenVR deve ser um objeto JSON')
     for key in ('runtime','external_drivers'):
         values=data.get(key,[])
+        # OpenVR no Windows serializa a lista vazia de addons como JSON null.
+        if key=='external_drivers' and values is None:
+            values=[]
         if not isinstance(values,list) or any(not isinstance(item,str) or not item.strip() for item in values):
-            raise ValueError('Lista inválida: '+key)
+            raise ValueError('Lista inválida: '+key+' (tipo '+type(values).__name__+'; esperado array de caminhos'+(' ou null' if key=='external_drivers' else '')+')')
+        data[key]=values
     runtimes=[]
     for item in data.get('runtime',[]):
         root=Path(item)
