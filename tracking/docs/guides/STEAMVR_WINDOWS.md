@@ -151,6 +151,32 @@ para diagnóstico; não é a pose corporal da câmera. `tracked_mask: 0` antes d
 captura é esperado. Timeout significa que o addon não respondeu; não prossiga
 como se o runtime estivesse aprovado.
 
+### Preparação de cômodo C201 e matriz bruta com Y zero
+
+No Windows do usuário, o driver respondeu com HMD válido e matriz bruta
+identidade, mas SteamVR mostrou **Preparação de cômodo (C201)**. Conclua a
+preparação pelo link do próprio aviso, escolhendo **Standing Only / Somente
+em pé**. Ao definir a distância virtual do HMD ao piso, use uma referência
+explícita para o teste, por exemplo **1,70 m / 170 cm**, observando a unidade
+do campo. Não há headset físico sendo colocado no chão ou medido neste modo.
+Se o assistente bloquear uma etapa, registre a tela/erro em vez de presumir
+que a configuração terminou.
+
+O SDK declara que GetRawTrackedDevicePoses devolve poses no espaço bruto de
+cada driver. Portanto, Y bruto igual a zero, sozinho, não prova altura zero
+no espaço calibrado da aplicação; pode continuar zero depois do assistente.
+A autoescala atual usa essa coordenada bruta e recusa Y não positivo. Para
+este teste, **desmarque Calibrar escala automaticamente e use Escala 1,00**
+como ponto de partida, ajustando-a manualmente quando houver dados do avatar.
+Não substitua silenciosamente a matriz recebida por uma altura inventada.
+
+`enableHomeApp=false` desativa o SteamVR Home. A visão VR pode permanecer
+preta antes de abrir um aplicativo VR; isso não substitui o teste no cliente.
+Após o assistente, feche outras execuções que usam a webcam e inicie o
+aplicativo abaixo. Quando mostrar mãos/punhos e ombros visíveis, consulte
+novamente o driver: máscara 1 = esquerda, 2 = direita, 3 = ambas recebidas.
+Isso ainda não comprova que os bindings foram aplicados pelo VRChat.
+
 Inicie:
 
 ```bat
@@ -234,3 +260,8 @@ protocolo e testes automatizados não aprovam sozinhos o VRChat. Ainda precisam
 ser registrados: HMD virtual ativo, bindings reais, Calibrate FBT em VR,
 movimento corporal, cada dedo, perda/retorno, enquadramento parcial e latência.
 Não há merge aprovado enquanto essa validação estiver pendente.
+
+Atualização do teste manual: HMD e driver responderam no Windows com
+`hmd_valid=true`, `tracked_mask=0` e matriz bruta identidade antes da captura.
+A captura mostrou C201, preparação de cômodo ainda pendente. Não houve
+confirmação de corpo/dedos em movimento no jogo.

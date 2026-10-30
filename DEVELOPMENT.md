@@ -63,3 +63,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/windows-openvr-paths`: aceita external_drivers=null do OpenVR Windows como lista vazia, mantendo validação de tipos e diagnóstico sem gravação.
 
 - `feature/mediapipe-steamvr-hands`: conecta keypoints ao driver, mantém corpo OSC e prepara HMD virtual/bindings/rollback Windows. Base: feature/windows-openvr-paths. Sem merge até testes e validação real no SteamVR/VRChat.
+
+- `feature/windows-room-setup`: documenta C201/Standing Only e distingue altura bruta de espaço calibrado, após teste manual Windows; não altera código ou configurações do usuário.

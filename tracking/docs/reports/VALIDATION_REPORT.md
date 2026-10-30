@@ -1,5 +1,22 @@
 # Relatório de validação e integração
 
+## Windows: HMD ativo e preparação de cômodo pendente
+
+O usuário executou `steamvr_hands_check.py --head` após a instalação:
+`protocol=1`, `tracked_mask=0`, `hmd_valid=true`, matriz bruta identidade.
+É evidência de resposta do driver e pose válida do HMD no teste manual;
+ainda não havia confirmação de captura de mãos. A imagem posterior mostrou
+SteamVR 2.18.4 com **Preparação de cômodo (C201)**.
+
+Correção do diagnóstico: não interpretar Y **bruto** igual a zero como prova
+de altura incorreta no espaço calibrado. O SDK GetRawTrackedDevicePoses
+declara explicitamente o espaço bruto por driver. A autoescala atual usa Y
+bruto e recusa zero; o caminho existente de escala manual deve ser usado
+neste teste. Guia atualizado com preparação Standing Only, referência
+virtual explícita, escala manual e verificação posterior das mãos. Nenhum
+novo driver/HMD foi implementado com base apenas na captura. Movimento e
+bindings no VRChat permanecem pendentes; nenhum merge aprovado.
+
 ## SteamVR Windows — driver, diagnóstico OpenVR e conexão MediaPipe
 
 Implementação em branches separados, todos no FIAP:
