@@ -45,7 +45,9 @@ def validate(image_path,probe,left_half=False):
         # Somente fixture de transporte: produção usa punho observado pelo Pose.
         pose=np.r_[np.zeros(3),quaternion[[3,0,1,2]]]
         packet=encode_frame(0 if side=='Left' else 1,1,pose,bones)
-        native=subprocess.run([str(Path(probe).resolve())],input=packet,capture_output=True,check=True,timeout=10)
+        native=subprocess.run([str(Path(probe).resolve())],input=packet,capture_output=True,timeout=10)
+        if native.returncode:
+            raise ValueError('Decoder nativo rejeitou o pacote: '+native.stderr.decode('utf-8',errors='replace'))
         results.append({'side':side,'score':frame.score,'bone_count':len(bones),'packet_bytes':len(packet),
                         'native_reply':native.stdout.decode('ascii').strip()})
     return {'mediapipe':mp.__version__,'image_sha256':hashlib.sha256(Path(image_path).read_bytes()).hexdigest(),
