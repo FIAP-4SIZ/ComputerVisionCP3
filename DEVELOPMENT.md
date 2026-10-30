@@ -69,3 +69,5 @@ Guias em `tracking/docs/guides`, diagnóstico em `tracking/docs/architecture`, r
 - `feature/windows-vr-display`: preserva preferências de exibição do HMD virtual, permite resolução VR explícita e desativa espelho opcional com backup; documenta resolução independente da janela VRChat. Base: feature/windows-room-setup.
 
 - `feature/vrchat-osc-quick-menu`: comandos explícitos oficiais para alternar menu esquerdo/direito por OSC, com atraso para voltar ao jogo, liberação e fechamento do socket; preserva o teste anterior de pulo. Base: feature/windows-vr-display.
+
+- `feature/vrchat-osc-use-action`: pulso explícito UseLeft/UseRight em VR para testar interação com apontador, sem depender de botão físico nem gerar cliques por gesto. Base: feature/vrchat-osc-quick-menu.

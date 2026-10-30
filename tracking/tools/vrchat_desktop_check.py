@@ -1,4 +1,4 @@
-"""Testa pulo ou alterna o menu rápido do VRChat por OSC, sem avatar customizado."""
+"""Testa pulo, menu ou ação de usar do VRChat por OSC, sem avatar customizado."""
 import argparse
 import math
 import time
@@ -9,6 +9,8 @@ COMMANDS={
     'jump':('/input/Jump','Pulo enviado.'),
     'menu-left':('/input/QuickMenuToggleLeft','Alternância do menu esquerdo enviada.'),
     'menu-right':('/input/QuickMenuToggleRight','Alternância do menu direito enviada.'),
+    'use-left':('/input/UseLeft','Ação de usar da mão esquerda enviada.'),
+    'use-right':('/input/UseRight','Ação de usar da mão direita enviada.'),
 }
 
 
@@ -34,7 +36,7 @@ def main(argv=None):
     parser.add_argument('--send',action='store_true',help='Enviar comando; sem esta opção só mostra a prévia.')
     parser.add_argument('--ip',default='127.0.0.1')
     parser.add_argument('--port',type=int,default=9000)
-    parser.add_argument('--command',choices=COMMANDS,default='jump',help='jump preserva o teste anterior; menu-left/menu-right alternam o menu rápido.')
+    parser.add_argument('--command',choices=COMMANDS,default='jump',help='jump: pulo; menu-left/right: menu; use-left/right: ação de usar da mão em VR.')
     parser.add_argument('--delay',type=float,default=0.,help='Espera de 0 a 30 segundos para voltar à janela do VRChat.')
     args=parser.parse_args(argv)
     if not 1 <= args.port <= 65535: parser.error('Porta deve estar entre 1 e 65535')

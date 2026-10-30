@@ -224,6 +224,24 @@ a interação pelo apontador das mãos e o binding Use/Interact continuam
 dependendo da validação real no cliente. Registre se o menu apareceu e se
 é possível apontar/selecionar antes de considerar a navegação aprovada.
 
+Se o menu abre, mas não há botão físico para acionar a mão, teste a ação
+oficial `/input/UseRight` em modo VR. Primeiro aponte a mão direita para
+uma opção inofensiva, como Configurações. Em outro terminal, execute:
+
+```bat
+..\.venv312\Scripts\python.exe tools\vrchat_desktop_check.py --command use-right --delay 5 --send
+```
+
+Volte ao jogo e mantenha o apontador sobre a opção durante a espera. Para a
+mão esquerda use `--command use-left`. O comando envia somente um pulso
+0 → 1 → 0 e independe do binding de gatilho do driver; não move o apontador.
+UseLeft/UseRight são documentados para VR. Se não aparece raio/apontador,
+ou ele não acompanha a mão, um clique sozinho não resolve: verifique pose
+válida, associação de mãos e bindings antes de repetir. Isso é um teste
+de interação, não uma confirmação de que todo menu aceitará a ação.
+Não há cliques contínuos, automáticos por gesto ou confirmação automática
+de compras, diálogos ou calibração.
+
 Inicie **Calibrate FBT**. Com corpo alinhado e mãos/punhos detectados, use
 **Confirmar FBT no VRChat em 3 segundos** no nosso aplicativo e volte ao jogo.
 O comando só pulsa os gatilhos; não abre por si só o modo de calibração.

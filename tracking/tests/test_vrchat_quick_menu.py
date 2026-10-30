@@ -15,7 +15,7 @@ import vrchat_desktop_check as tool
 
 class QuickMenuTests(unittest.TestCase):
     def test_real_udp_for_both_menu_sides_in_order_with_integer_buttons(self):
-        for command in ('menu-left','menu-right'):
+        for command in ('menu-left','menu-right','use-left','use-right'):
             with self.subTest(command=command),socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as receiver:
                 receiver.bind(('127.0.0.1',0));receiver.settimeout(2)
                 client=SimpleUDPClient(*receiver.getsockname())
@@ -35,7 +35,7 @@ class QuickMenuTests(unittest.TestCase):
             client.assert_not_called();sleep.assert_not_called()
 
     def test_delayed_menu_send_closes_socket_and_jump_remains_default(self):
-        for command,address in (('menu-left','/input/QuickMenuToggleLeft'),('menu-right','/input/QuickMenuToggleRight'),('jump','/input/Jump')):
+        for command,address in (('menu-left','/input/QuickMenuToggleLeft'),('menu-right','/input/QuickMenuToggleRight'),('use-left','/input/UseLeft'),('use-right','/input/UseRight'),('jump','/input/Jump')):
             with self.subTest(command=command),patch.object(tool,'SimpleUDPClient') as client,patch.object(tool.time,'sleep') as sleep,patch.object(tool,'send_button') as send,patch('sys.stdout',new_callable=io.StringIO):
                 arguments=['--send','--delay','3']
                 if command!='jump':arguments+=['--command',command]
@@ -43,6 +43,20 @@ class QuickMenuTests(unittest.TestCase):
                 sleep.assert_called_once_with(3.)
                 send.assert_called_once_with(client.return_value,address)
                 client.return_value.close.assert_called_once()
+
+    def test_use_preview_reports_real_endpoint_without_sending(self):
+        for side in ('left','right'):
+            with self.subTest(side=side),patch.object(tool,'SimpleUDPClient') as client,patch('sys.stdout',new_callable=io.StringIO) as output:
+                tool.main(['--command','use-'+side])
+                self.assertIn('/input/Use'+side.title()+' 0 -> 1 -> 0',output.getvalue())
+                client.assert_not_called()
+
+    def test_use_release_after_interruption(self):
+        for side in ('Left','Right'):
+            client=Mock()
+            with self.subTest(side=side),self.assertRaises(KeyboardInterrupt):
+                tool.send_button(client,'/input/Use'+side,sleep=Mock(side_effect=KeyboardInterrupt))
+            client.send_message.assert_called_with('/input/Use'+side,0)
 
     def test_invalid_command_delay_and_port_never_create_client(self):
         for arguments in (['--command','unknown'],['--port','65536'],['--delay','-1'],['--delay','31'],['--delay','nan'],['--delay','inf']):

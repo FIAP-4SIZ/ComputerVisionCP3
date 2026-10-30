@@ -1,5 +1,24 @@
 # Relatório de validação e integração
 
+## Ação explícita OSC em VR — feature/vrchat-osc-use-action
+
+O usuário confirmou que menu-left abre o menu no VRChat Windows. Porém,
+não consegue selecionar opções; avatar permanece deitado e janela do jogo
+continua em resolução baixa. Portanto, não considerar navegação, calibração
+ou exibição aprovadas. Ainda faltam confirmação de raio/apontador das mãos,
+conclusão de Standing Only e opções reais de inicialização usadas pelo jogo.
+
+O utilitário passou a aceitar use-left/use-right, com os endereços oficiais
+UseLeft/UseRight e o mesmo pulso/liberação já testado. Isso permite testar
+a ação de usar sem botão físico e sem depender do binding de gatilho; não
+posiciona o apontador nem confirma interação no receptor.
+
+Validação local: 296 testes Python aprovados. Casos UDP reais e seleção de
+comandos foram ampliados para ambos os lados; dois testes novos verificam
+prévia e liberação após interrupção dos comandos Use. pip check, compileall,
+diff check, build PyInstaller Linux e runtime Pose/Hands aprovados. CI e
+seleção real no Windows continuam pendentes; não há merge para develop.
+
 ## Menu OSC e identificação da janela estéreo — feature/vrchat-osc-quick-menu
 
 O usuário confirmou título Headset Window e enviou imagem estéreo (dois
